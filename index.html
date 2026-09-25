@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>الأدب الأندلسي — من خطبة طارق بن زياد</title>
+<meta name="description" content="عرض تقديمي تفاعلي عن الأدب الأندلسي: من خطبة طارق بن زياد عند فتح الأندلس">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================= RESET ============================= */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;background:#0d0b09;}
+body{
+  font-family:'IBM Plex Sans Arabic',sans-serif;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  touch-action:none;
+}
+img{display:block;max-width:100%;}
+button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit;}
+
+/* ============================= TOKENS ============================= */
+:root{
+  --ink:#1c1712;
+  --ink-soft:#2c241c;
+  --paper:#f1e8d6;
+  --paper-dim:#e4d5b3;
+  --sand:#c9ad7e;
+  --clay:#9c5233;
+  --clay-bright:#b6663f;
+  --olive:#454f3c;
+  --olive-dark:#31392b;
+  --gold:#b8955a;
+  --gold-soft:#cdae7c;
+  --line:rgba(241,232,214,.18);
+  --shadow:0 20px 60px rgba(0,0,0,.45);
+  --f-display:'Amiri',serif;
+  --f-body:'IBM Plex Sans Arabic',sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-soft:cubic-bezier(.16,.84,.44,1);
+}
+
+/* ============================= STAGE / CANVAS ============================= */
+#stageWrap{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  background:#0d0b09;
+}
+#canvas{
+  position:relative;
+  width:min(100vw, 177.78vh);
+  height:min(100vh, 56.25vw);
+  background:var(--ink);
+  overflow:hidden;
+  container-type:inline-size;
+  box-shadow:var(--shadow);
+}
+@supports not (container-type: inline-size){
+  #canvas{ }
+}
+
+/* fluid type scale relative to canvas width, with px fallback bounds */
+.t-hero  { font-size:clamp(2.6rem, 9cqw, 7.5rem); }
+.t-xl    { font-size:clamp(1.9rem, 6.4cqw, 4.4rem); }
+.t-lg    { font-size:clamp(1.35rem, 4.2cqw, 2.7rem); }
+.t-md    { font-size:clamp(1.05rem, 2.6cqw, 1.7rem); }
+.t-sm    { font-size:clamp(.86rem, 1.7cqw, 1.15rem); }
+.t-xs    { font-size:clamp(.72rem, 1.25cqw, .92rem); }
+
+/* ============================= SLIDES ============================= */
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  color:var(--paper);
+  opacity:0;visibility:hidden;pointer-events:none;
+  will-change:transform,opacity,clip-path,filter;
+}
+.slide.is-active{opacity:1;visibility:visible;pointer-events:auto;z-index:5;}
+.slide.is-leaving{z-index:4;}
+
+.slide-bg{position:absolute;inset:0;z-index:0;overflow:hidden;background:var(--ink);}
+.slide-bg img{
+  position:absolute;inset:-2% ;width:104%;height:104%;object-fit:cover;
+  filter:saturate(.92) contrast(1.03);
+  opacity:0;transition:opacity .6s var(--ease);
+}
+.slide-bg img.is-loaded{opacity:1;}
+.slide-bg .overlay{position:absolute;inset:0;}
+.slide-bg .fallback{
+  position:absolute;inset:0;
+  background:linear-gradient(155deg,var(--olive-dark),var(--ink) 60%,var(--clay) 140%);
+}
+.slide-bg.drift img{animation:drift 26s ease-in-out infinite alternate;}
+@keyframes drift{from{transform:scale(1.04) translate(0,0);}to{transform:scale(1.1) translate(-1.4%,-1%);}}
+
+.slide-body{
+  position:relative;z-index:2;
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding:6cqw 7.5cqw;
+  gap:1.1cqw;
+}
+.kicker{
+  font-family:var(--f-body);letter-spacing:.02em;
+  color:var(--gold-soft);font-weight:600;
+  display:flex;align-items:center;gap:.6em;
+}
+.kicker::before{content:'';width:2.2em;height:1px;background:var(--gold);display:inline-block;}
+.slide h1,.slide h2{font-family:var(--f-display);font-weight:700;line-height:1.18;color:var(--paper);}
+.slide p{font-family:var(--f-body);line-height:1.85;color:var(--paper-dim);max-width:62cqw;}
+.slide .lede{color:var(--paper);}
+
+.stack{display:flex;flex-direction:column;gap:.9cqw;}
+.reveal{opacity:0;transform:translateY(1.4cqw);}
+.is-active .reveal{animation:revealUp .8s var(--ease-soft) forwards;}
+.is-active .reveal:nth-child(1){animation-delay:.05s;}
+.is-active .reveal:nth-child(2){animation-delay:.18s;}
+.is-active .reveal:nth-child(3){animation-delay:.32s;}
+.is-active .reveal:nth-child(4){animation-delay:.46s;}
+.is-active .reveal:nth-child(5){animation-delay:.6s;}
+.is-active .reveal:nth-child(6){animation-delay:.74s;}
+@keyframes revealUp{to{opacity:1;transform:none;}}
+
+/* ============================= INTERACTIVE TERMS ============================= */
+.term{
+  position:relative;cursor:pointer;color:inherit;
+  font-weight:600;
+  transition:color .2s var(--ease);
+}
+.term::after{
+  content:'';position:absolute;right:0;left:0;bottom:-.06em;height:1px;
+  background:var(--gold);transform:scaleX(0);transform-origin:right;
+  transition:transform .25s var(--ease);
+}
+.term::before{
+  content:'';position:absolute;top:-.15em;left:-.55em;
+  width:.28em;height:.28em;border-radius:50%;background:var(--gold);
+  opacity:.85;
+}
+.term:hover,.term:focus-visible{color:var(--gold-soft);}
+.term:hover::after,.term:focus-visible::after{transform:scaleX(1);}
+
+/* ============================= COVER SLIDE ============================= */
+.slide-cover .slide-body{justify-content:flex-end;padding-bottom:8cqw;gap:.6cqw;}
+.slide-cover .eyebrow{
+  font-family:var(--f-body);font-weight:600;color:var(--gold-soft);
+  font-size:clamp(.8rem,1.6cqw,1.05rem);letter-spacing:.04em;
+}
+.slide-cover h1{font-size:clamp(2.6rem, 8.6cqw, 7.2rem);}
+.slide-cover .sub{font-family:var(--f-display);color:var(--paper-dim);font-size:clamp(1.05rem,2.9cqw,1.9rem);max-width:70cqw;}
+.slide-cover .yr{margin-top:.6cqw;color:var(--gold-soft);font-size:clamp(.8rem,1.4cqw,1rem);letter-spacing:.06em;}
+.start-hint{
+  position:absolute;bottom:3.2cqw;left:50%;transform:translateX(-50%);
+  color:var(--paper-dim);font-size:clamp(.72rem,1.1cqw,.85rem);
+  display:flex;align-items:center;gap:.5em;opacity:.75;
+}
+.chev{width:.6em;height:.6em;border-left:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);animation:bob 1.6s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:rotate(-45deg) translateY(0);}50%{transform:rotate(-45deg) translateY(4px);}}
+
+/* ============================= QUOTE / SPEECH SLIDES ============================= */
+.speech-frame{
+  position:relative;z-index:2;flex:1;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:6cqw 8cqw;
+}
+.speech-label{color:var(--gold-soft);font-family:var(--f-body);font-weight:600;font-size:clamp(.78rem,1.4cqw,1rem);margin-bottom:1.4cqw;display:flex;align-items:center;gap:.6em;}
+.speech-label::before{content:'';width:2.2em;height:1px;background:var(--gold);}
+.speech-text{font-family:var(--f-display);line-height:1.9;color:var(--paper);}
+.speech-hero{
+  font-size:clamp(2.1rem,6.4cqw,4.6rem);font-weight:700;line-height:1.3;
+  color:var(--paper);
+}
+.speech-body{font-size:clamp(1.1rem,2.5cqw,1.65rem);max-width:78cqw;}
+.speech-note{
+  margin-top:1.6cqw;padding-top:1.1cqw;border-top:1px solid var(--line);
+  font-family:var(--f-body);color:var(--sand);font-size:clamp(.8rem,1.4cqw,1rem);max-width:60cqw;
+}
+.tag-word{
+  display:inline-flex;align-items:center;gap:.35em;
+  font-family:var(--f-body);font-size:.55em;font-weight:600;
+  color:var(--ink);background:var(--gold-soft);
+  padding:.15em .6em;border-radius:999px;vertical-align:middle;margin-inline-start:.4em;
+}
+
+/* ============================= CARD GRIDS ============================= */
+.card-grid{display:grid;gap:1.1cqw;position:relative;z-index:2;}
+.cards-2{grid-template-columns:repeat(2,1fr);}
+.card{
+  background:rgba(28,23,18,.55);
+  border:1px solid var(--line);
+  border-radius:.5cqw;
+  padding:1.5cqw 1.7cqw;
+  backdrop-filter:blur(6px);
+  display:flex;flex-direction:column;gap:.5cqw;
+}
+.card .num{font-family:var(--f-display);color:var(--gold-soft);font-size:clamp(1rem,2.2cqw,1.5rem);}
+.card h3{font-family:var(--f-display);font-size:clamp(1rem,2cqw,1.35rem);color:var(--paper);font-weight:700;}
+.card p{font-size:clamp(.8rem,1.5cqw,1.02rem);line-height:1.75;color:var(--paper-dim);max-width:none;}
+
+.rhet-card{cursor:pointer;transition:border-color .25s var(--ease),transform .25s var(--ease);}
+.rhet-card:hover{border-color:var(--gold);transform:translateY(-.2cqw);}
+.rhet-card .q{font-family:var(--f-display);font-weight:700;font-size:clamp(1.05rem,2.3cqw,1.55rem);color:var(--paper);}
+.rhet-card .hint-open{font-size:clamp(.68rem,1.1cqw,.82rem);color:var(--gold-soft);display:flex;align-items:center;gap:.4em;}
+.rhet-card .hint-open::after{content:'';width:.5em;height:.5em;border-left:1.4px solid currentColor;border-bottom:1.4px solid currentColor;transform:rotate(135deg);}
+
+/* ============================= VOCAB SLIDE ============================= */
+.vocab-tabs{display:flex;gap:.6cqw;margin-bottom:1.2cqw;position:relative;z-index:3;}
+.vocab-tab{
+  font-family:var(--f-body);font-weight:600;font-size:clamp(.78rem,1.4cqw,1rem);
+  color:var(--paper-dim);padding:.5cqw 1.3cqw;border:1px solid var(--line);border-radius:999px;
+  transition:all .2s var(--ease);
+}
+.vocab-tab.is-on{background:var(--gold-soft);color:var(--ink);border-color:var(--gold-soft);}
+.vocab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7cqw;position:relative;z-index:2;}
+.vocab-item{display:none;}
+.vocab-item.is-on{display:block;}
+.vocab-pill{
+  width:100%;text-align:right;
+  border:1px solid var(--line);border-radius:.35cqw;
+  padding:.75cqw .95cqw;font-family:var(--f-display);font-weight:700;
+  font-size:clamp(.92rem,1.8cqw,1.25rem);color:var(--paper);
+  background:rgba(28,23,18,.4);
+  transition:background .2s var(--ease),border-color .2s var(--ease);
+}
+.vocab-pill:hover,.vocab-pill:focus-visible{background:rgba(184,149,90,.18);border-color:var(--gold);}
+
+/* ============================= FEATURES CONNECT (final slide) ============================= */
+.chain{display:flex;align-items:center;flex-wrap:wrap;gap:.5cqw;position:relative;z-index:2;margin-bottom:1.2cqw;}
+.chain span{
+  font-family:var(--f-body);font-weight:600;font-size:clamp(.78rem,1.5cqw,1.05rem);
+  color:var(--gold-soft);padding:.4cqw 1cqw;border:1px solid var(--line);border-radius:999px;
+}
+.chain i{color:var(--sand);opacity:.6;}
+
+/* ============================= START SCREEN ============================= */
+#startScreen{
+  position:absolute;inset:0;z-index:50;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw;
+  background:radial-gradient(circle at 50% 30%, rgba(60,48,32,.55), rgba(13,11,9,.94) 70%), var(--ink);
+  text-align:center;padding:6cqw;
+  transition:opacity .7s var(--ease), visibility .7s;
+}
+#startScreen.is-hidden{opacity:0;visibility:hidden;pointer-events:none;}
+#startScreen .eyebrow{color:var(--gold-soft);font-weight:600;font-size:clamp(.8rem,1.5cqw,1rem);letter-spacing:.05em;}
+#startScreen h1{font-family:var(--f-display);color:var(--paper);font-size:clamp(2.1rem,6cqw,4.4rem);font-weight:700;}
+#startScreen .sub{font-family:var(--f-display);color:var(--paper-dim);font-size:clamp(1rem,2.2cqw,1.5rem);max-width:70cqw;}
+#startBtn{
+  margin-top:1.4cqw;
+  font-family:var(--f-body);font-weight:700;font-size:clamp(.9rem,1.7cqw,1.15rem);
+  color:var(--ink);background:var(--gold-soft);
+  padding:.9em 2.6em;border-radius:999px;
+  display:inline-flex;align-items:center;gap:.6em;
+  transition:transform .2s var(--ease),background .2s var(--ease);
+}
+#startBtn:hover{background:var(--gold);transform:translateY(-2px);}
+#startBtn svg{width:1em;height:1em;}
+
+/* ============================= CONTROL BAR ============================= */
+#controls{
+  position:absolute;bottom:1.6cqw;left:50%;transform:translate(-50%,0);
+  z-index:40;display:flex;align-items:center;gap:.35cqw;
+  background:rgba(20,16,12,.72);border:1px solid var(--line);
+  border-radius:999px;padding:.5cqw .7cqw;
+  backdrop-filter:blur(10px);
+  opacity:1;transition:opacity .5s var(--ease), transform .5s var(--ease);
+}
+#controls.is-dim{opacity:0;transform:translate(-50%,10px);pointer-events:none;}
+.ctl-btn{
+  width:clamp(28px,3.2cqw,42px);height:clamp(28px,3.2cqw,42px);
+  display:flex;align-items:center;justify-content:center;border-radius:50%;
+  color:var(--paper);transition:background .2s var(--ease);
+}
+.ctl-btn:hover{background:rgba(241,232,214,.12);}
+.ctl-btn svg{width:46%;height:46%;}
+.ctl-btn.is-off{color:var(--paper-dim);}
+#slideCounter{
+  font-family:var(--f-body);font-weight:600;font-size:clamp(.7rem,1.1cqw,.88rem);
+  color:var(--paper-dim);padding:0 .7cqw;min-width:3.6em;text-align:center;
+  letter-spacing:.03em;
+}
+.dots{display:flex;gap:.3cqw;padding:0 .3cqw;}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--line);transition:background .2s;}
+.dot.is-on{background:var(--gold-soft);}
+
+/* ============================= MODAL ============================= */
+#modalLayer{
+  position:absolute;inset:0;z-index:60;
+  display:flex;align-items:center;justify-content:center;
+  padding:6cqw;
+  background:rgba(10,8,6,0);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .3s var(--ease), background .3s var(--ease), visibility .3s;
+}
+#modalLayer.is-open{opacity:1;visibility:visible;pointer-events:auto;background:rgba(10,8,6,.62);}
+#modalCard{
+  width:min(46cqw,560px);max-width:100%;
+  background:var(--paper);color:var(--ink);
+  border-radius:.6cqw;padding:2cqw 2.2cqw;
+  box-shadow:0 30px 70px rgba(0,0,0,.5);
+  transform:translateY(1.6cqw) scale(.96);opacity:0;
+  transition:transform .35s var(--ease-soft), opacity .35s var(--ease-soft);
+  position:relative;
+}
+#modalLayer.is-open #modalCard{transform:none;opacity:1;}
+#modalCard .m-type{
+  display:inline-block;font-family:var(--f-body);font-weight:700;font-size:clamp(.68rem,1.1cqw,.8rem);
+  color:var(--paper);background:var(--clay);padding:.25em .85em;border-radius:999px;margin-bottom:.9cqw;
+}
+#modalCard h3{font-family:var(--f-display);font-weight:700;font-size:clamp(1.3rem,2.8cqw,2rem);color:var(--ink);margin-bottom:.7cqw;}
+#modalCard p{font-family:var(--f-body);line-height:1.85;font-size:clamp(.9rem,1.6cqw,1.08rem);color:var(--ink-soft);}
+#modalClose{
+  position:absolute;top:1.1cqw;left:1.1cqw;
+  width:clamp(26px,2.6cqw,34px);height:clamp(26px,2.6cqw,34px);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(28,23,18,.08);color:var(--ink);
+}
+#modalClose:hover{background:rgba(28,23,18,.16);}
+#modalClose svg{width:44%;height:44%;}
+
+/* ============================= FIRST-TIME HINT ============================= */
+#termHint{
+  position:absolute;bottom:6.4cqw;left:50%;transform:translate(-50%,6px);
+  z-index:35;background:rgba(20,16,12,.85);border:1px solid var(--line);
+  color:var(--paper);font-family:var(--f-body);font-size:clamp(.72rem,1.2cqw,.9rem);
+  padding:.55em 1.2em;border-radius:999px;
+  opacity:0;pointer-events:none;transition:opacity .45s var(--ease), transform .45s var(--ease);
+}
+#termHint.is-on{opacity:1;transform:translate(-50%,0);}
+
+/* ============================= DEBUG ============================= */
+#debugOverlay{
+  position:absolute;top:1cqw;right:1cqw;z-index:80;
+  background:rgba(0,0,0,.75);color:#9fe870;font-family:monospace;
+  font-size:11px;line-height:1.5;padding:.6em .8em;border-radius:4px;
+  white-space:pre;pointer-events:none;display:none;text-align:left;direction:ltr;
+}
+#debugOverlay.is-on{display:block;}
+
+/* ============================= TRANSITIONS ============================= */
+/* dissolve */
+.tr-dissolve.is-active{animation:xDissolveIn .85s var(--ease) forwards;}
+.tr-dissolve.is-leaving{animation:xDissolveOut .85s var(--ease) forwards;}
+@keyframes xDissolveIn{from{opacity:0;}to{opacity:1;}}
+@keyframes xDissolveOut{from{opacity:1;}to{opacity:0;}}
+
+/* zoom push-in */
+.tr-zoom.is-active{animation:xZoomIn .95s var(--ease) forwards;}
+.tr-zoom.is-leaving{animation:xZoomOut .95s var(--ease) forwards;}
+@keyframes xZoomIn{from{opacity:0;transform:scale(1.09);filter:blur(6px);}to{opacity:1;transform:scale(1);filter:blur(0);}}
+@keyframes xZoomOut{from{opacity:1;transform:scale(1);}to{opacity:0;transform:scale(.94);}}
+
+/* wipe horizontal */
+.tr-wipe.is-active{animation:xWipeIn .8s var(--ease) forwards;}
+.tr-wipe.is-leaving{animation:xWipeOut .8s var(--ease) forwards;}
+@keyframes xWipeIn{from{clip-path:inset(0 0 0 100%);}to{clip-path:inset(0 0 0 0);}}
+@keyframes xWipeOut{from{clip-path:inset(0);opacity:1;}to{clip-path:inset(0);opacity:0;}}
+
+/* mask reveal (vertical) */
+.tr-mask.is-active{animation:xMaskIn .9s var(--ease) forwards;}
+.tr-mask.is-leaving{animation:xMaskOut .7s var(--ease) forwards;}
+@keyframes xMaskIn{from{clip-path:inset(100% 0 0 0);}to{clip-path:inset(0 0 0 0);}}
+@keyframes xMaskOut{from{opacity:1;}to{opacity:0;}}
+
+/* curtain */
+.tr-curtain.is-active{animation:xCurtainIn 1s var(--ease) forwards;}
+.tr-curtain.is-leaving{animation:xCurtainOut .7s var(--ease) forwards;}
+@keyframes xCurtainIn{from{clip-path:inset(0 50% 0 50%);}to{clip-path:inset(0 0 0 0);}}
+@keyframes xCurtainOut{from{opacity:1;}to{opacity:0;}}
+
+/* push */
+.tr-push.is-active{animation:xPushIn .85s var(--ease) forwards;}
+.tr-push.is-leaving{animation:xPushOut .85s var(--ease) forwards;}
+@keyframes xPushIn{from{transform:translateX(4%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+@keyframes xPushOut{from{transform:translateX(0);opacity:1;}to{transform:translateX(-4%);opacity:0;}}
+
+/* depth (parallax-ish) */
+.tr-depth.is-active{animation:xDepthIn 1s var(--ease) forwards;}
+.tr-depth.is-leaving{animation:xDepthOut .8s var(--ease) forwards;}
+@keyframes xDepthIn{from{opacity:0;transform:scale(.97) translateY(1.4cqw);}to{opacity:1;transform:none;}}
+@keyframes xDepthOut{from{opacity:1;}to{opacity:0;transform:scale(1.02);}}
+
+/* ============================= REDUCED MOTION ============================= */
+@media (prefers-reduced-motion: reduce){
+  .slide-bg.drift img{animation:none!important;}
+  .reveal{animation:none!important;opacity:1!important;transform:none!important;}
+  [class*="tr-"].is-active,[class*="tr-"].is-leaving{animation-duration:.25s!important;}
+  .chev{animation:none;}
+}
+
+/* ============================= RESPONSIVE ============================= */
+@media (max-width: 640px){
+  .cards-2{grid-template-columns:1fr;}
+  .vocab-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div id="stageWrap">
+  <div id="canvas">
+
+    <!-- START SCREEN -->
+    <div id="startScreen">
+      <div class="eyebrow">عرض تقديمي تفاعلي</div>
+      <h1>الأَدَبُ الأَنْدَلُسِيُّ</h1>
+      <div class="sub">مِنْ خُطْبَةِ طَارِقِ بْنِ زِيَادٍ عِنْدَ فَتْحِ الأَنْدَلُسِ</div>
+      <button id="startBtn">
+        <span>ابدأ العرض</span>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <!-- SLIDES injected here by JS -->
+    <div id="slideHost"></div>
+
+    <!-- TERM FIRST-USE HINT -->
+    <div id="termHint">اضغط على الكلمة لمعرفة معناها</div>
+
+    <!-- DEFINITION MODAL -->
+    <div id="modalLayer">
+      <div id="modalCard" role="dialog" aria-modal="true">
+        <button id="modalClose" aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="m-type" id="modalType">مفردة</div>
+        <h3 id="modalTitle"></h3>
+        <p id="modalBody"></p>
+      </div>
+    </div>
+
+    <!-- CONTROL BAR -->
+    <div id="controls">
+      <button class="ctl-btn" id="btnPrev" aria-label="السابقة" title="السابقة">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div id="slideCounter">١ / ١٦</div>
+      <button class="ctl-btn" id="btnNext" aria-label="التالية" title="التالية">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span style="width:1px;height:1.2cqw;background:var(--line);margin:0 .2cqw;"></span>
+      <button class="ctl-btn" id="btnMusic" aria-label="الموسيقى" title="تشغيل/إيقاف الموسيقى">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 18V6l11-2v12M9 18a3 3 0 11-3-3 3 3 0 013 3zm11-2a3 3 0 11-3-3 3 3 0 013 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="ctl-btn" id="btnFullscreen" aria-label="ملء الشاشة" title="ملء الشاشة">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H4v4M16 4h4v4M8 20H4v-4M16 20h4v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <!-- DEBUG OVERLAY -->
+    <div id="debugOverlay"></div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ==================================================================
+   DEBUG
+   ================================================================== */
+const DEBUG = false;
+
+/* ==================================================================
+   ASSET REGISTRY — عدّل المسارات هنا فقط لتغيير الصور
+   ================================================================== */
+const ASSETS = {
+  hero:         "assets/images/hero.jpg",
+  map:          "assets/images/map.jpg",
+  strait:       "assets/images/strait.jpg",
+  battle:       "assets/images/battle.jpg",
+  architecture: "assets/images/architecture.jpg",
+  manuscript:   "assets/images/manuscript.jpg",
+  portrait:     "assets/images/portrait.jpg",
+  closing:      "assets/images/closing.jpg"
+};
+
+const AUDIO_CONFIG = {
+  src: "assets/audio/background.mp3",
+  volume: 0.35,
+  loop: true
+};
+
+/* ==================================================================
+   DEFINITIONS — كل التعريفات في مكان واحد
+   ================================================================== */
+const DEFINITIONS = {
+  // -------- المفردات الـ25 (من شرح المفردات) --------
+  arfah:      { title:"الأَرْفَهُ", type:"مفردة", definition:"أَفْعَلُ تَفْضِيلٍ مِنْ رَفَهَ العَيْشُ: صَارَ رَغَداً لَيِّناً." },
+  ashrar:     { title:"أَشْرَارٌ", type:"مفردة", definition:"لِئَامٌ يَتَّصِفُونَ بِالشَّرِّ." },
+  adyaa:      { title:"أَضْيَعُ", type:"مفردة", definition:"أَفْعَلُ تَفْضِيلٍ مِنْ ضَاعَ / يَضِيعُ، بِمَعْنَى فَقَدَ." },
+  aqwat:      { title:"أَقْوَاتٌ", type:"مفردة", definition:"جَمْعُ قُوتٍ: القَلِيلُ مِنَ الطَّعَامِ وَالرِّزْقِ." },
+  iqnaa:      { title:"إِقْنَاعٌ", type:"مفردة", definition:"أَنْ يَعْرِضَ الإِنْسَانُ وِجْهَةَ نَظَرٍ بِأُسْلُوبٍ يُرْضِي الآخَرِينَ وَيُطْمَئِنُهُمْ." },
+  aytam:      { title:"أَيْتَامٌ", type:"مفردة", definition:"جَمْعُ يَتِيمٍ، وَهُوَ الَّذِي فَقَدَ وَالِدَيْهِ أَوْ أَحَدَهُمَا." },
+  tabaa:      { title:"تَابَعَ / يُتَابِعُ", type:"مفردة", definition:"وَالَى يُوَالِي، وَالمَقْصُودُ: اسْتَمَرَّ." },
+  taawwud:    { title:"تَعَوَّضَ / يَتَعَوَّضُ", type:"مفردة", definition:"أَخْذُ العِوَضِ." },
+  jarua:      { title:"جَرُؤَ / يَجْرُؤُ", type:"مفردة", definition:"شَجُعَ وَأَقْدَمَ." },
+  hasina:     { title:"حَصِينَةٌ", type:"مفردة", definition:"مَنِيعَةٌ، وَدِرْعٌ حَصِينَةٌ: مُحْكَمَةٌ، وَالبَلْدَةُ الحَصِينَةُ: الَّتِي بُنِيَ حَوْلَهَا بِنَاءٌ قَوِيٌّ لِيَمْنَعَ عَنْهَا المُعْتَدِينَ." },
+  hamasa:     { title:"حَمَاسَةٌ", type:"مفردة", definition:"الشَّجَاعَةُ." },
+  khadhlan:   { title:"خَذْلَانٌ", type:"مفردة", definition:"تَرْكُ العَوْنِ وَالنَّصْرَةِ، وَالفِعْلُ: خَذَلَهُ يَخْذُلُهُ." },
+  ruub:       { title:"رَعَبَ / يَرْعَبُ", type:"مفردة", definition:"الرُّعْبُ: الفَزَعُ وَالخَوْفُ." },
+  rafaha:     { title:"رَفَهَ / يَرْفَهُ", type:"مفردة", definition:"عَاشَ فِي رَغَدٍ مِنَ العَيْشِ." },
+  silaa:      { title:"السِّلْعَةُ", type:"مفردة", definition:"مَا يُشْتَرَى وَيُبَاعُ مِنَ الأَشْيَاءِ." },
+  shawatee:   { title:"شَوَاطِئُ", type:"مفردة", definition:"جَمْعُ شَاطِئٍ، وَهُوَ الجُزْءُ مِنَ البَرِّ الَّذِي يَلِي النَّهْرَ أَوِ البَحْرَ." },
+  taghiya:    { title:"الطَّاغِيَةُ", type:"مفردة", definition:"الظَّالِمُ الَّذِي كَثُرَ ظُلْمُهُ وَكِبْرُهُ." },
+  iftaqara:   { title:"اِفْتَقَرَ / يَفْتَقِرُ", type:"مفردة", definition:"ضِدُّ: غَنِيَ / يَغْنَى." },
+  liaam:      { title:"لِئَامٌ", type:"مفردة", definition:"أَشْرَارُ النَّاسِ، وَالمُفْرَدُ: لَئِيمٌ." },
+  maduba:     { title:"مَأْدُبَةٌ", type:"مفردة", definition:"طَعَامٌ يُصْنَعُ لِدَعْوَةٍ أَوْ عُرْسٍ." },
+  madiq:      { title:"مَضِيقٌ", type:"مفردة", definition:"مَا ضَاقَ مِنَ الأَمَاكِنِ، وَالمُرَادُ هُنَا: المَمَرُّ الضَّيِّقُ مِنَ البَحْرِ بَيْنَ بَرَّيْنِ، مِثْلُ مَضِيقِ جَبَلِ طَارِقٍ." },
+  maniaa:     { title:"المَنِيعَةُ", type:"مفردة", definition:"الحَصِينَةُ، وَالفِعْلُ (مَنَعَ) كَكَرُمَ." },
+  intakhaba:  { title:"اِنْتَخَبَ / يَنْتَخِبُ", type:"مفردة", definition:"اخْتَارَ." },
+  najwa:      { title:"نَجْوَةٌ", type:"مفردة", definition:"مَا ارْتَفَعَ مِنَ الأَرْضِ، وَالمُرَادُ هُنَا: النَّجَاةُ وَالسَّلَامَةُ." },
+  huroub:     { title:"هُرُوبٌ", type:"مفردة", definition:"فِرَارٌ." },
+
+  // -------- الصور البلاغية (من خصائص النص) --------
+  ayna_almafar: { title:"أَيْنَ المَفَرُّ؟", type:"بلاغة", definition:"السُّؤَالُ هُنَا لَيْسَ حَقِيقِيّاً؛ لِأَنَّهُ لَا يَنْتَظِرُ مِنْهُمْ جَوَاباً، وَلٰكِنَّ مَعْنَاهُ النَّفْيُ، أَيْ: لَا مَفَرَّ لَكُمْ." },
+  adyaa_quote:  { title:"أَضْيَعُ مِنَ الأَيْتَامِ فِي مَأْدُبَةِ اللِّئَامِ", type:"بلاغة", definition:"تَعْبِيرٌ يَدْعُو إِلَى اليَقَظَةِ وَالحِرْصِ؛ لِأَنَّ أَعْدَاءَهُمْ أَكْثَرُ لُؤْماً وَأَحْرَصُ عَلَى اسْتِغْلَالِهِمْ." },
+  dhahabat_reeh:{ title:"ذَهَبَتْ رِيحُكُمْ", type:"بلاغة", definition:"تَعْبِيرٌ يُقْصَدُ بِهِ ذَهَابُ القُوَّةِ، فَإِذَا ذَهَبَتِ الرِّيحُ وَتَوَقَّفَتْ تَمَاماً، وَلَمْ يَجِدِ الإِنْسَانُ هَوَاءً يَتَنَفَّسُهُ، ضَعُفَ، وَأَدَّى بِهِ الضَّعْفُ إِلَى الهَلَاكِ." },
+  alqat_madina: { title:"أَلْقَتْ بِهِ إِلَيْكُمْ مَدِينَتُهُ الحَصِينَةُ", type:"بلاغة", definition:"تَعْبِيرٌ يَدُلُّ عَلَى فَقْدِ القُوَّةِ وَالأَمَانِ وَالتَّعَرُّضِ لِلضَّعْفِ، فَإِلْقَاءُ هٰذِهِ المَدِينَةِ بِمَنْ فِيهَا بَعِيداً عَنْهَا يُفْقِدُهُمْ صِفَةَ القُوَّةِ، وَكَأَنَّهُمْ صَيْدٌ سَهْلٌ." },
+
+  // -------- شخصيات وأماكن وأحداث ذُكرت في المادة --------
+  tariq:      { title:"طَارِقُ بْنُ زِيَادٍ", type:"شخصية", definition:"طَارِقُ بْنُ زِيَادٍ اللَّيْثِيُّ (٥٠-١٠٢هـ / ٦٧٠-٧٢٠م)، انْتَخَبَهُ مُوسَى بْنُ نُصَيْرٍ لِقِيَادَةِ جَيْشِ المُسْلِمِينَ لِغَزْوِ الأَنْدَلُسِ، فَقَادَ الجَيْشَ قِيَادَةَ شَجَاعَةٍ حَتَّى تَمَكَّنَ مِنْ قَتْلِ مَلِكِ القُوطِ لُوذَرِيقَ، وَفَتَحَ طُلَيْطِلَةَ عَاصِمَةَ الأَنْدَلُسِ آنَذَاكَ." },
+  musa:       { title:"مُوسَى بْنُ نُصَيْرٍ", type:"شخصية", definition:"كَانَ قَائِدُ المُسْلِمِينَ عَلَى شَمَالِ إِفْرِيقِيَا مِنْ قِبَلِ الوَلِيدِ بْنِ عَبْدِ المَلِكِ. رَحَّبَ بِعَرْضِ يُولِيَان، وَأَرْسَلَ أَوَّلَ جَيْشٍ سَنَةَ ٩١هـ، ثُمَّ أَرْسَلَ جَيْشَ طَارِقِ بْنِ زِيَادٍ سَنَةَ ٩٢هـ." },
+  yulian:     { title:"يُولِيَان", type:"شخصية", definition:"حَاكِمُ «سَبْتَةَ»، شَجَّعَ عَلَى الفَتْحِ وَعَرَضَ أَنْ يُسَلِّمَ سَبْتَةَ وَيُسَاعِدَ عَلَى الفَتْحِ. وَقِيلَ إِنَّ سَبَبَ ذٰلِكَ هُوَ النِّزَاعُ الشَّدِيدُ بَيْنَهُ وَبَيْنَ لُوذَرِيقَ مَلِكِ القُوطِ." },
+  luthariq:   { title:"لُوذَرِيقُ", type:"شخصية", definition:"مَلِكُ القُوطِ، أَعَدَّ جَيْشاً عَظِيماً قِيلَ إِنَّهُ بَلَغَ أَرْبَعِينَ أَلْفاً لِلِقَاءِ طَارِقٍ، وَانْتَهَتِ المَعْرَكَةُ بِانْتِصَارِ المُسْلِمِينَ عَلَيْهِ." },
+  waleed:     { title:"الوَلِيدُ بْنُ عَبْدِ المَلِكِ", type:"شخصية", definition:"مَنْ كَانَ مُوسَى بْنُ نُصَيْرٍ قَائِداً مِنْ قِبَلِهِ. اسْتَدْعَى مُوسَى وَطَارِقاً بَعْدَ الخِلَافِ بَيْنَهُمَا، وَأَصْلَحَ بَيْنَهُمَا." },
+  qut:        { title:"القُوطُ", type:"شخصية", definition:"القَوْمُ الَّذِينَ كَانُوا يَحْكُمُونَ الأَنْدَلُسَ قَبْلَ الفَتْحِ الإِسْلَامِيِّ، وَكَانَ مَلِكُهُمْ لُوذَرِيقَ. هُزِمُوا فِي مَعْرَكَةٍ كَبِيرَةٍ أَمَامَ جَيْشِ طَارِقٍ رَغْمَ أَنَّهُمْ كَانُوا أَكْثَرَ عَدَداً وَعُدَّةً." },
+  sabta:      { title:"سَبْتَةُ", type:"مكان", definition:"المَدِينَةُ الَّتِي كَانَ يَحْكُمُهَا يُولِيَان، وَعَرَضَ تَسْلِيمَهَا وَالمُسَاعَدَةَ عَلَى فَتْحِ الأَنْدَلُسِ." },
+  jabal_tariq:{ title:"جَبَلُ طَارِقٍ", type:"مكان", definition:"المَكَانُ الَّذِي نَزَلَ عَلَيْهِ طَارِقٌ بَعْدَ عُبُورِ المَضِيقِ عَلَى سُفُنِ يُولِيَان." },
+  tulaytila:  { title:"طُلَيْطِلَةُ", type:"مكان", definition:"العَاصِمَةُ القُوطِيَّةُ، اتَّجَهَ إِلَيْهَا طَارِقٌ بِأَكْثَرِ الجَيْشِ فَدَخَلَهَا، وَأَسَّسَ فِيهَا دَوْلَةَ المُسْلِمِينَ فِي الأَنْدَلُسِ." },
+  sharish:    { title:"شَرِيشُ", type:"مكان", definition:"سُهُولٌ قُرْبَ مَدِينَةِ قَادِسَ، الْتَقَى فِيهَا جَيْشُ طَارِقٍ بِجَيْشِ لُوذَرِيقَ فِي المَعْرَكَةِ الحَاسِمَةِ." },
+  qadis:      { title:"قَادِسُ", type:"مكان", definition:"مَدِينَةٌ أَسْبَانِيَّةٌ قُرْبَ سُهُولِ شَرِيشَ، حَيْثُ دَارَتِ المَعْرَكَةُ الكُبْرَى بَيْنَ المُسْلِمِينَ وَالقُوطِ." },
+  andalus:    { title:"الأَنْدَلُسُ", type:"مكان", definition:"شِبْهُ جَزِيرَةٍ تَقَعُ فِي الجَنُوبِ الغَرْبِيِّ مِنْ أُورُوبَّا، تَطُوفُ بِهَا المِيَاهُ مِنْ جَوَانِبِهَا إِلَّا مِنَ الشَّمَالِ الشَّرْقِيِّ. فَتَحَهَا المُسْلِمُونَ سَنَةَ ٩٢هـ / ٧١١م." },
+  madiq_event:{ title:"عُبُورُ المَضِيقِ", type:"حدث", definition:"عَبَرَ طَارِقٌ بِجَيْشِهِ الَّذِي بَلَغَ اثْنَيْ عَشَرَ أَلْفَ مُقَاتِلٍ المَضِيقَ الَّذِي سُمِّيَ فِيمَا بَعْدُ بِاسْمِهِ، عَلَى سُفُنِ يُولِيَان، وَنَزَلَ عَلَى جَبَلِ طَارِقٍ." },
+  ships_event:{ title:"إِحْرَاقُ السُّفُنِ", type:"حدث", definition:"نُسِبَ إِلَى طَارِقٍ أَنَّهُ أَحْرَقَ السُّفُنَ الَّتِي عَبَرَ بِهَا إِلَى الشَّاطِئِ الأَنْدَلُسِيِّ، حَتَّى لَا يَجِدَ جُنْدُهُ أَمَامَهُمْ سَبِيلاً إِلَّا قِتَالَ عَدُوِّهِمْ وَالاِنْتِصَارَ عَلَيْهِ." },
+  khutba_event:{ title:"الخُطْبَةُ", type:"حدث", definition:"قِيلَ: إِنَّ طَارِقاً خَطَبَ فِي جُيُوشِهِ خُطْبَةً أَثَارَتْ مَشَاعِرَهُمْ، وَأَشْعَلَتْ حَمَاسَتَهُمْ، فَتَمَكَّنُوا مِنَ الاِنْتِصَارِ عَلَى أَعْدَائِهِمْ مِنَ القُوطِ الَّذِينَ كَانُوا أَكْثَرَ مِنْهُمْ عَدَداً وَعُدَّةً. وَقَدْ نُسِبَتْ هٰذِهِ الخُطْبَةُ إِلَى طَارِقِ بْنِ زِيَادٍ." }
+};
+
+/* ==================================================================
+   HELPERS
+   ================================================================== */
+function T(key, label){
+  return '<span class="term" data-def="'+key+'" tabindex="0" role="button">'+label+'</span>';
+}
+function esc(s){ return s; }
+
+function bgHTML(assetKey, opts){
+  opts = opts || {};
+  const drift = opts.drift !== false ? " drift" : "";
+  const overlay = opts.overlay || "linear-gradient(180deg, rgba(13,11,9,.15) 0%, rgba(13,11,9,.55) 62%, rgba(13,11,9,.92) 100%)";
+  return (
+    '<div class="slide-bg'+drift+'" data-asset="'+assetKey+'">'+
+      '<div class="fallback"></div>'+
+      '<img alt="" data-src="'+ASSETS[assetKey]+'">'+
+      '<div class="overlay" style="background:'+overlay+'"></div>'+
+    '</div>'
+  );
+}
+
+/* ==================================================================
+   SLIDE CONTENT
+   ================================================================== */
+const SLIDES = [
+
+{ // 1 — الغلاف
+  id:"cover", cls:"slide-cover", transition:"zoom",
+  bg:()=>bgHTML("hero",{overlay:"linear-gradient(0deg, rgba(13,11,9,.95) 4%, rgba(13,11,9,.35) 46%, rgba(13,11,9,.55) 100%)"}),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="eyebrow reveal">الأَدَبُ الأَنْدَلُسِيُّ — دِرَاسَةٌ فِي النَّصِّ</div>'+
+      '<h1 class="reveal">الأَدَبُ الأَنْدَلُسِيُّ</h1>'+
+      '<div class="sub reveal">مِنْ خُطْبَةِ '+T("tariq","طَارِقِ بْنِ زِيَادٍ")+' عِنْدَ فَتْحِ '+T("andalus","الأَنْدَلُسِ")+'</div>'+
+      '<div class="yr reveal">٩٢ هـ  —  ٧١١ م</div>'+
+    '</div>'+
+    '<div class="start-hint"><span>مرّر أو اضغط للمتابعة</span><span class="chev"></span></div>'
+  )
+},
+
+{ // 2 — بلاد الأندلس
+  id:"geo", transition:"mask",
+  bg:()=>bgHTML("map"),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">التَّقْدِيمُ</div>'+
+      '<h2 class="t-xl reveal">بِلَادُ '+T("andalus","الأَنْدَلُسِ")+'</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">شِبْهُ جَزِيرَةٍ تَقَعُ فِي الجَنُوبِ الغَرْبِيِّ مِنْ أُورُوبَّا، تَطُوفُ بِهَا المِيَاهُ مِنْ جَوَانِبِهَا إِلَّا مِنَ الشَّمَالِ الشَّرْقِيِّ.</p>'+
+        '<p class="t-sm reveal">أَقَالِيمُهَا الجَنُوبِيَّةُ وَالشَّرْقِيَّةُ وَالغَرْبِيَّةُ الَّتِي أَقَامَ فِيهَا المُسْلِمُونَ سُهُولٌ خَصْبَةٌ، كَثِيرَةُ الأَنْهَارِ، مُعْتَدِلَةُ الهَوَاءِ.</p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 3 — بداية الفتح
+  id:"begin", transition:"push",
+  bg:()=>bgHTML("strait",{drift:false}),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">٩١ هـ</div>'+
+      '<h2 class="t-xl reveal">بِدَايَةُ الفَتْحِ</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">كَانَ قَائِدُ المُسْلِمِينَ عَلَى شَمَالِ إِفْرِيقِيَا '+T("musa","مُوسَى بْنَ نُصَيْرٍ")+' مِنْ قِبَلِ '+T("waleed","الوَلِيدِ بْنِ عَبْدِ المَلِكِ")+'.</p>'+
+        '<p class="t-sm reveal">شَجَّعَهُ عَلَى الفَتْحِ '+T("yulian","يُولِيَان")+' حَاكِمُ '+T("sabta","سَبْتَةَ")+'، حَيْثُ عَرَضَ أَنْ يُسَلِّمَهُ سَبْتَةَ وَيُسَاعِدَهُ عَلَى الفَتْحِ. وَقِيلَ إِنَّ سَبَبَ ذٰلِكَ: النِّزَاعُ الشَّدِيدُ بَيْنَ يُولِيَان وَ'+T("luthariq","لُوذَرِيقَ")+' مَلِكِ '+T("qut","القُوطِ")+'.</p>'+
+        '<p class="t-sm reveal">رَحَّبَ مُوسَى بْنُ نُصَيْرٍ بِهٰذَا العَرْضِ، وَأَرْسَلَ أَوَّلَ جَيْشٍ إِلَيْهَا سَنَةَ ٩١هـ، فَعَادَ يَبُثُّ الطُّمَأْنِينَةَ فِي قَلْبِهِ وَيُشَجِّعُهُ عَلَى الفَتْحِ.</p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 4 — عبور المضيق
+  id:"cross", transition:"depth",
+  bg:()=>bgHTML("strait"),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">٩٢ هـ  /  ٧١١ م</div>'+
+      '<h2 class="t-xl reveal">'+T("madiq_event","عُبُورُ المَضِيقِ")+'</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">أَرْسَلَ مُوسَى بْنُ نُصَيْرٍ جَيْشاً مِنِ اثْنَيْ عَشَرَ أَلْفَ مُقَاتِلٍ (١٢٬٠٠٠) بِقِيَادَةِ '+T("tariq","طَارِقِ بْنِ زِيَادٍ")+'.</p>'+
+        '<p class="t-sm reveal">فَعَبَرَ طَارِقٌ بِجَيْشِهِ '+T("madiq","المَضِيقَ")+' الَّذِي سُمِّيَ فِيمَا بَعْدُ بِاسْمِهِ، عَلَى سُفُنِ يُولِيَان، وَنَزَلَ عَلَى '+T("jabal_tariq","جَبَلِ طَارِقٍ")+'.</p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 5 — المعركة الحاسمة
+  id:"battle", transition:"wipe",
+  bg:()=>bgHTML("battle"),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">المُوَاجَهَةُ</div>'+
+      '<h2 class="t-xl reveal">المَعْرَكَةُ الحَاسِمَةُ</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">هَزَمَ المُسْلِمُونَ كُلَّ الجُنُودِ الَّذِينَ تَعَرَّضُوا لَهُمْ عَلَى الشَّاطِئِ الأَسْبَانِيِّ.</p>'+
+        '<p class="t-sm reveal">وَصَلَ نَبَأُ طَارِقٍ وَجَيْشِهِ إِلَى مَلِكِ القُوطِ، فَأَعَدَّ جَيْشاً عَظِيماً وَأَسْرَعَ لِلِقَائِهِ فِي سُهُولِ '+T("sharish","شَرِيشَ")+' قُرْبَ مَدِينَةِ '+T("qadis","قَادِسَ")+'.</p>'+
+        '<p class="t-sm reveal">وَهُنَاكَ الْتَقَى الجَيْشَانِ فِي مَعْرَكَةٍ كَبِيرَةٍ انْتَهَتْ بِانْتِصَارِ المُسْلِمِينَ عَلَى '+T("qut","القُوطِ")+' انْتِصَاراً عَظِيماً.</p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 6 — تأسيس الدولة
+  id:"found", transition:"curtain",
+  bg:()=>bgHTML("architecture"),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">مَا بَعْدَ الاِنْتِصَارِ</div>'+
+      '<h2 class="t-xl reveal">تَأْسِيسُ الدَّوْلَةِ</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">أَرْسَلَ طَارِقٌ بَعْضَ قُوَّادِهِ لِفَتْحِ «قُرْطُبَةَ» وَ«غَرْنَاطَةَ» وَ«مَالَقَةَ» وَغَيْرِهَا مِنَ المُدُنِ وَالأَقَالِيمِ، فَفُتِحَتْ بِسُهُولَةٍ.</p>'+
+        '<p class="t-sm reveal">ثُمَّ اتَّجَهَ طَارِقٌ بِأَكْثَرِ الجَيْشِ إِلَى العَاصِمَةِ القُوطِيَّةِ '+T("tulaytila","طُلَيْطِلَةَ")+' فَدَخَلَهَا، وَأَسَّسَ دَوْلَةَ المُسْلِمِينَ فِي الأَنْدَلُسِ بَعْدَ انْتِصَارِهِمْ عَلَى القُوطِ.</p>'+
+        '<p class="t-sm reveal" style="color:var(--gold-soft);">وَقِيلَ: إِنَّ طَارِقاً خَطَبَ فِي جُيُوشِهِ '+T("khutba_event","خُطْبَةً")+' أَثَارَتْ مَشَاعِرَهُمْ، وَأَشْعَلَتْ حَمَاسَتَهُمْ، فَتَمَكَّنُوا مِنَ الاِنْتِصَارِ عَلَى أَعْدَائِهِمْ مِنَ القُوطِ الَّذِينَ كَانُوا أَكْثَرَ مِنْهُمْ عَدَداً وَعُدَّةً.</p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 7 — طارق بن زياد (الهوية)
+  id:"profile1", transition:"zoom",
+  bg:()=>bgHTML("portrait",{overlay:"linear-gradient(100deg, rgba(13,11,9,.94) 30%, rgba(13,11,9,.35) 100%)"}),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">قَائِلُ النَّصِّ</div>'+
+      '<h2 class="t-xl reveal">طَارِقُ بْنُ زِيَادٍ</h2>'+
+      '<div class="t-sm reveal" style="color:var(--gold-soft);margin-top:-.4cqw;">اللَّيْثِيُّ  ·  ٥٠ - ١٠٢ هـ  /  ٦٧٠ - ٧٢٠ م</div>'+
+      '<div class="stack" style="margin-top:1cqw;">'+
+        '<p class="lede t-md reveal">'+T("intakhaba","انْتَخَبَهُ")+' '+T("musa","مُوسَى بْنُ نُصَيْرٍ")+' لِقِيَادَةِ جَيْشِ المُسْلِمِينَ لِغَزْوِ الأَنْدَلُسِ، فَقَادَ الجَيْشَ قِيَادَةَ شَجَاعَةٍ حَتَّى تَمَكَّنَ مِنْ قَتْلِ مَلِكِ القُوطِ '+T("luthariq","لُوذَرِيقَ")+'.</p>'+
+      '</div>'+
+      '<div class="card-grid cards-2 reveal" style="margin-top:1.4cqw;max-width:60cqw;">'+
+        '<div class="card"><div class="num">٤٠٬٠٠٠</div><p style="font-size:.85em;">جَيْشُ لُوذَرِيقَ — قِيلَ إِنَّهُ بَلَغَ أَرْبَعِينَ أَلْفاً</p></div>'+
+        '<div class="card"><div class="num">١٢٬٠٠٠</div><p style="font-size:.85em;">جَيْشُ طَارِقٍ — لَا يَتَجَاوَزُ اثْنَيْ عَشَرَ أَلْفاً</p></div>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 8 — بين القيادة والخلاف
+  id:"profile2", transition:"dissolve",
+  bg:()=>bgHTML("manuscript"),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">بَعْدَ الفَتْحِ</div>'+
+      '<h2 class="t-xl reveal">بَيْنَ القِيَادَةِ وَالخِلَافِ</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">تَمَكَّنَ طَارِقٌ مِنْ فَتْحِ '+T("tulaytila","طُلَيْطِلَةَ")+' عَاصِمَةِ الأَنْدَلُسِ آنَذَاكَ، ثُمَّ مَضَى فِي فَتْحِ البِلَادِ الأَنْدَلُسِيَّةِ مُخَالِفاً بِذٰلِكَ أَمْرَ قَائِدِهِ مُوسَى بْنِ نُصَيْرٍ، الَّذِي عَدَّ ذٰلِكَ مُغَامَرَةً وَمَعْصِيَةً.</p>'+
+        '<p class="t-sm reveal">فَقِيلَ: إِنَّهُ حَبَسَهُ بَعْدَ أَنْ أَبْعَدَهُ عَنِ القِيَادَةِ، ثُمَّ اسْتَدْعَاهُمَا '+T("waleed","الوَلِيدُ بْنُ عَبْدِ المَلِكِ")+' وَأَصْلَحَ بَيْنَهُمَا، وَعَادَ طَارِقٌ إِلَى قِيَادَةِ الجَيْشِ.</p>'+
+      '</div>'+
+      '<div class="stack reveal" style="margin-top:1.3cqw;padding-top:1.1cqw;border-top:1px solid var(--line);max-width:60cqw;">'+
+        '<p class="t-sm" style="color:var(--sand);">وَقَدْ نُسِبَتْ هٰذِهِ '+T("khutba_event","الخُطْبَةُ")+' إِلَى طَارِقِ بْنِ زِيَادٍ<span class="tag-word">نُسِبَتْ</span></p>'+
+        '<p class="t-sm" style="color:var(--sand);">كَمَا نُسِبَ إِلَيْهِ أَنَّهُ '+T("ships_event","أَحْرَقَ السُّفُنَ")+' الَّتِي عَبَرَ بِهَا إِلَى الشَّاطِئِ الأَنْدَلُسِيِّ، حَتَّى لَا يَجِدَ جُنْدُهُ أَمَامَهُمْ سَبِيلاً إِلَّا قِتَالَ عَدُوِّهِمْ وَالاِنْتِصَارَ عَلَيْهِ.<span class="tag-word">نُسِبَ</span></p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 9 — أين المفر (النص أ-١)
+  id:"speechA1", cls:"slide-speech", transition:"mask",
+  bg:()=>bgHTML("manuscript",{overlay:"linear-gradient(200deg, rgba(13,11,9,.55), rgba(13,11,9,.9) 75%)"}),
+  body:()=>(
+    '<div class="speech-frame">'+
+      '<div class="speech-label reveal">النَّصُّ — بَعْدَ أَنْ حَمِدَ اللهَ وَأَثْنَى عَلَيْهِ قَالَ</div>'+
+      '<div class="speech-text">'+
+        '<div class="speech-hero reveal">«أَيُّهَا النَّاسُ: '+T("ayna_almafar","أَيْنَ المَفَرُّ؟")+'»</div>'+
+        '<div class="speech-body reveal" style="margin-top:1cqw;">البَحْرُ وَرَاءَكُمْ وَالعَدُوُّ أَمَامَكُمْ، وَلَيْسَ لَكُمْ وَاللهِ إِلَّا الصِّدْقُ وَالصَّبْرُ.</div>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 10 — أضيع من الأيتام (النص أ-٢)
+  id:"speechA2", cls:"slide-speech", transition:"push",
+  bg:()=>bgHTML("manuscript",{overlay:"linear-gradient(200deg, rgba(13,11,9,.55), rgba(13,11,9,.9) 75%)"}),
+  body:()=>(
+    '<div class="speech-frame">'+
+      '<div class="speech-label reveal">تَتِمَّةُ النَّصِّ (أ)</div>'+
+      '<div class="speech-text speech-body" style="max-width:84cqw;">'+
+        '<span class="reveal" style="display:block;">وَاعْلَمُوا أَنَّكُمْ فِي هٰذِهِ الجَزِيرَةِ '+T("adyaa_quote","أَضْيَعُ مِنَ الأَيْتَامِ فِي مَأْدُبَةِ اللِّئَامِ")+'، وَلَا '+T("aqwat","أَقْوَاتَ")+' لَكُمْ إِلَّا مَا تَسْتَخْلِصُونَهُ مِنْ أَيْدِي عَدُوِّكُمْ.</span>'+
+        '<span class="reveal" style="display:block;margin-top:.8cqw;">وَإِنِ امْتَدَّتِ الأَيَّامُ عَلَى '+T("iftaqara","اِفْتِقَارِكُمْ")+' وَلَمْ تُنْجِزُوا لَكُمْ أَمْراً '+T("dhahabat_reeh","ذَهَبَتْ رِيحُكُمْ")+'، وَتَعَوَّضَتِ القُلُوبُ مِنْ رُعْبِهَا مِنْكُمُ '+T("jarua","الجُرْأَةَ")+' عَلَيْكُمْ.</span>'+
+        '<span class="reveal" style="display:block;margin-top:.8cqw;">فَادْفَعُوا عَنْ أَنْفُسِكُمْ '+T("khadhlan","خَذْلَانَ")+' هٰذِهِ العَاقِبَةِ مِنْ أَمْرِكُمْ بِمُنَاجَزَةِ هٰذَا '+T("taghiya","الطَّاغِيَةِ")+'، فَقَدْ '+T("alqat_madina","أَلْقَتْ بِهِ إِلَيْكُمْ مَدِينَتُهُ الحَصِينَةُ")+'، وَإِنَّ انْتِهَازَ الفُرْصَةِ فِيهِ لَمُمْكِنٌ إِنْ سَمَحْتُمْ لِأَنْفُسِكُمْ بِالمَوْتِ.</span>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 11 — مشاركة الخطر (ب)
+  id:"speechB", cls:"slide-speech", transition:"curtain",
+  bg:()=>bgHTML("manuscript",{overlay:"linear-gradient(200deg, rgba(13,11,9,.55), rgba(13,11,9,.9) 75%)"}),
+  body:()=>(
+    '<div class="speech-frame">'+
+      '<div class="speech-label reveal">النَّصُّ (ب) — مُشَارَكَةُ الخَطَرِ</div>'+
+      '<div class="speech-text speech-body reveal" style="max-width:82cqw;">وَإِنِّي لَمْ أُحَذِّرْكُمْ أَمْراً أَنَا عَنْهُ بِ'+T("najwa","نَجْوَةٍ")+'، وَلَا حَمَلْتُكُمْ عَلَى خُطَّةٍ أَرْخَصُ مَتَاعٍ فِيهَا النُّفُوسُ — أَبْرَأُ مِنْهَا بِنَفْسِي.</div>'+
+      '<div class="speech-note reveal">بَيَانُ المَعْنَى: تَقْوِيَةُ عَزَائِمِهِمْ لِأَنَّهُ سَيُشَارِكُهُمْ كُلَّ أَمْرٍ أَشَارَ بِهِ عَلَيْهِمْ.</div>'+
+    '</div>'
+  )
+},
+
+{ // 12 — الصبر والفرج (ج)
+  id:"speechC", cls:"slide-speech", transition:"depth",
+  bg:()=>bgHTML("architecture",{overlay:"linear-gradient(200deg, rgba(13,11,9,.6), rgba(13,11,9,.92) 78%)"}),
+  body:()=>(
+    '<div class="speech-frame">'+
+      '<div class="speech-label reveal">النَّصُّ (ج) — الصَّبْرُ وَالفَرَجُ</div>'+
+      '<div class="speech-text speech-body reveal" style="max-width:82cqw;">وَاعْلَمُوا أَنَّكُمْ إِنْ صَبَرْتُمْ عَلَى الأَشَقِّ قَلِيلاً اسْتَمْتَعْتُمْ بِ'+T("arfah","الأَرْفَهِ")+' الطَّوِيلِ، فَلَا تَرْغَبُوا بِأَنْفُسِكُمْ عَنْ نَفْسِي، فَمَا حَظُّكُمْ فِيهِ بِأَوْفَى مِنْ حَظِّي.</div>'+
+      '<div class="speech-note reveal">بَيَانُ المَعْنَى: بَيَّنَ لَهُمْ أَنَّ الصَّبْرَ عَلَى الصَّعْبِ يُحَقِّقُ لَهُمْ مَا يُحِبُّونَ.</div>'+
+    '</div>'
+  )
+},
+
+{ // 13 — خصائص النص الأدبية
+  id:"features", transition:"wipe",
+  bg:()=>bgHTML("architecture"),
+  body:()=>(
+    '<div class="slide-body" style="justify-content:flex-start;padding-top:7cqw;">'+
+      '<div class="kicker reveal">قِرَاءَةٌ فِي الأُسْلُوبِ</div>'+
+      '<h2 class="t-xl reveal">خَصَائِصُ النَّصِّ الأَدَبِيَّةُ</h2>'+
+      '<div class="card-grid cards-2 reveal" style="margin-top:1.4cqw;">'+
+        '<div class="card"><h3>وُضُوحُ الأَلْفَاظِ</h3><p>أَلْفَاظُ هٰذِهِ الخُطْبَةِ وَاضِحَةٌ، وَمَا قَدْ يَكُونُ فِيهَا مِنْ كَلِمَاتٍ غَرِيبَةٍ يَسْتَطِيعُ القَارِئُ أَنْ يَفْهَمَهَا مِنَ السِّيَاقِ.</p></div>'+
+        '<div class="card"><h3>مُنَاسَبَةُ الأَفْكَارِ</h3><p>الأَفْكَارُ مُنَاسِبَةٌ لِمَوْضُوعِ الخُطْبَةِ، تَعْتَمِدُ عَلَى إِثَارَةِ الحَمَاسَةِ فِي نُفُوسِ الجُنْدِ، وَحَثِّهِمْ عَلَى سُرْعَةِ الهُجُومِ وَتَرْغِيبِهِمْ فِي المَوْتِ فِي سَبِيلِ اللهِ.</p></div>'+
+        '<div class="card"><h3>الحَثُّ وَالإِقْنَاعُ</h3><p>جَمَعَتِ الخُطْبَةُ بَيْنَ حَثِّ الخَطِيبِ المُحَارِبِينَ وَحَضِّهِمْ عَلَى الشَّجَاعَةِ، وَبَيْنَ '+T("iqnaa","إِقْنَاعِهِمْ")+' بِأُسْلُوبِ القَائِدِ الحَازِمِ، فَبَيَّنَ أَنَّ فِرَارَهُمْ لَيْسَ نَجَاةً بَلْ هُوَ الهَلَاكُ عَيْنُهُ.</p></div>'+
+        '<div class="card"><h3>أَدَوَاتُ التَّأْثِيرِ</h3><p>اسْتَعَانَ الخَطِيبُ لِلتَّأْثِيرِ بِقِصَرِ الجُمَلِ، وَاخْتِيَارِ الأَلْفَاظِ المُلَائِمَةِ، وَالمُزَاوَجَةِ بَيْنَ الأَسَالِيبِ الخَبَرِيَّةِ وَالإِنْشَائِيَّةِ.</p></div>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 14 — الصور البلاغية
+  id:"rhetoric", transition:"zoom",
+  bg:()=>bgHTML("manuscript"),
+  body:()=>(
+    '<div class="slide-body" style="justify-content:flex-start;padding-top:7cqw;">'+
+      '<div class="kicker reveal">أَمْثِلَةٌ مِنَ النَّصِّ</div>'+
+      '<h2 class="t-xl reveal">الصُّوَرُ البَلَاغِيَّةُ</h2>'+
+      '<div class="card-grid cards-2 reveal" style="margin-top:1.4cqw;">'+
+        '<div class="card rhet-card" data-def="ayna_almafar"><div class="q">أَيْنَ المَفَرُّ؟</div><div class="hint-open">اضغط لعرض الشرح</div></div>'+
+        '<div class="card rhet-card" data-def="adyaa_quote"><div class="q">أَضْيَعُ مِنَ الأَيْتَامِ فِي مَأْدُبَةِ اللِّئَامِ</div><div class="hint-open">اضغط لعرض الشرح</div></div>'+
+        '<div class="card rhet-card" data-def="dhahabat_reeh"><div class="q">ذَهَبَتْ رِيحُكُمْ</div><div class="hint-open">اضغط لعرض الشرح</div></div>'+
+        '<div class="card rhet-card" data-def="alqat_madina"><div class="q">أَلْقَتْ بِهِ إِلَيْكُمْ مَدِينَتُهُ الحَصِينَةُ</div><div class="hint-open">اضغط لعرض الشرح</div></div>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 15 — المفردات
+  id:"vocab", transition:"push",
+  bg:()=>bgHTML("manuscript"),
+  body:()=>{
+    const groups = [
+      ["arfah","ashrar","adyaa","aqwat","iqnaa","aytam","tabaa","taawwud"],
+      ["jarua","hasina","hamasa","khadhlan","ruub","rafaha","silaa","shawatee"],
+      ["taghiya","iftaqara","liaam","maduba","madiq","maniaa","intakhaba","najwa","huroub"]
+    ];
+    let tabs = groups.map((g,i)=>'<button class="vocab-tab'+(i===0?' is-on':'')+'" data-vg="'+i+'">المَجْمُوعَةُ '+(["الأُولَى","الثَّانِيَةُ","الثَّالِثَةُ"][i])+'</button>').join("");
+    let items = groups.map((g,i)=>{
+      let pills = g.map(k=>'<button class="vocab-pill" data-def="'+k+'">'+DEFINITIONS[k].title+'</button>').join("");
+      return '<div class="vocab-item'+(i===0?' is-on':'')+'" data-vgi="'+i+'"><div class="vocab-grid">'+pills+'</div></div>';
+    }).join("");
+    return (
+      '<div class="slide-body" style="justify-content:flex-start;padding-top:6.4cqw;">'+
+        '<div class="kicker reveal">٢٥ كَلِمَةً</div>'+
+        '<h2 class="t-xl reveal" style="margin-bottom:.6cqw;">شَرْحُ المُفْرَدَاتِ</h2>'+
+        '<div class="vocab-tabs reveal">'+tabs+'</div>'+
+        items+
+      '</div>'
+    );
+  }
+},
+
+{ // 16 — الخلاصة
+  id:"summary", transition:"dissolve",
+  bg:()=>bgHTML("closing",{overlay:"linear-gradient(0deg, rgba(13,11,9,.96) 10%, rgba(13,11,9,.45) 55%, rgba(13,11,9,.75) 100%)"}),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">الخُلَاصَةُ</div>'+
+      '<h2 class="t-xl reveal">مِنَ التَّارِيخِ إِلَى الأَدَبِ</h2>'+
+      '<div class="chain reveal">'+
+        '<span>الفَتْحُ ٩٢هـ</span><i>←</i><span>الخُطْبَةُ</span><i>←</i><span>الإِقْنَاعُ</span><i>←</i><span>البَلَاغَةُ</span><i>←</i><span>الأَدَبُ الأَنْدَلُسِيُّ</span>'+
+      '</div>'+
+      '<p class="lede t-md reveal" style="max-width:74cqw;">وَقِيلَ: إِنَّ طَارِقاً خَطَبَ فِي جُيُوشِهِ خُطْبَةً أَثَارَتْ مَشَاعِرَهُمْ، وَأَشْعَلَتْ حَمَاسَتَهُمْ، فَتَمَكَّنُوا مِنَ الاِنْتِصَارِ عَلَى أَعْدَائِهِمْ مِنَ القُوطِ الَّذِينَ كَانُوا أَكْثَرَ مِنْهُمْ عَدَداً وَعُدَّةً.</p>'+
+    '</div>'
+  )
+}
+
+];
+
+/* ==================================================================
+   STATE MACHINE
+   ================================================================== */
+const state = {
+  currentSlide: 0,
+  isTransitioning: false,
+  isModalOpen: false,
+  isPlaying: false,
+  isFullscreen: false
+};
+
+const els = {
+  startScreen: document.getElementById("startScreen"),
+  startBtn: document.getElementById("startBtn"),
+  slideHost: document.getElementById("slideHost"),
+  controls: document.getElementById("controls"),
+  btnPrev: document.getElementById("btnPrev"),
+  btnNext: document.getElementById("btnNext"),
+  btnMusic: document.getElementById("btnMusic"),
+  btnFullscreen: document.getElementById("btnFullscreen"),
+  slideCounter: document.getElementById("slideCounter"),
+  modalLayer: document.getElementById("modalLayer"),
+  modalCard: document.getElementById("modalCard"),
+  modalType: document.getElementById("modalType"),
+  modalTitle: document.getElementById("modalTitle"),
+  modalBody: document.getElementById("modalBody"),
+  modalClose: document.getElementById("modalClose"),
+  termHint: document.getElementById("termHint"),
+  debugOverlay: document.getElementById("debugOverlay"),
+  canvas: document.getElementById("canvas")
+};
+
+const ARABIC_DIGITS = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
+function toArabicNum(n){ return String(n).split("").map(d=>ARABIC_DIGITS[+d] || d).join(""); }
+
+/* ==================================================================
+   BUILD SLIDES (pre-rendered, hidden)
+   ================================================================== */
+const slideEls = [];
+function buildSlides(){
+  const frag = document.createDocumentFragment();
+  SLIDES.forEach((s, i)=>{
+    const el = document.createElement("div");
+    el.className = "slide " + (s.cls||"") + " tr-" + s.transition;
+    el.dataset.index = i;
+    el.dataset.id = s.id;
+    el.innerHTML = s.bg() + s.body();
+    frag.appendChild(el);
+    slideEls.push(el);
+  });
+  els.slideHost.appendChild(frag);
+  els.slideCounter.textContent = toArabicNum(1) + " / " + toArabicNum(SLIDES.length);
+}
+
+/* Lazy / preload image loading with graceful fallback */
+function loadSlideImages(index){
+  const el = slideEls[index];
+  if(!el) return;
+  const img = el.querySelector(".slide-bg img");
+  if(!img || img.dataset.loaded) return;
+  img.dataset.loaded = "1";
+  const src = img.getAttribute("data-src");
+  const probe = new Image();
+  probe.onload = ()=>{ img.src = src; img.classList.add("is-loaded"); };
+  probe.onerror = ()=>{ if(DEBUG) markAssetMissing(el.dataset.id); };
+  probe.src = src;
+}
+function preloadNeighbors(index){
+  [index-1, index, index+1, index+2].forEach(i=>{
+    if(i>=0 && i<SLIDES.length) loadSlideImages(i);
+  });
+}
+
+/* ==================================================================
+   NAVIGATION
+   ================================================================== */
+function goTo(index, dir){
+  if(state.isTransitioning) return;
+  if(index < 0 || index >= SLIDES.length) return;
+  if(index === state.currentSlide) return;
+
+  const from = slideEls[state.currentSlide];
+  const to = slideEls[index];
+  state.isTransitioning = true;
+
+  to.classList.add("is-active");
+  from.classList.add("is-leaving");
+
+  const cleanup = ()=>{
+    from.classList.remove("is-active","is-leaving");
+    to.classList.remove("is-leaving");
+    state.currentSlide = index;
+    state.isTransitioning = false;
+    els.slideCounter.textContent = toArabicNum(index+1) + " / " + toArabicNum(SLIDES.length);
+    preloadNeighbors(index);
+    updateDebug();
+  };
+
+  let done = 0;
+  const onEnd = (e)=>{
+    if(e.target !== to && e.target !== from) return;
+    done++;
+    if(done >= 2){
+      to.removeEventListener("animationend", onEnd);
+      from.removeEventListener("animationend", onEnd);
+      cleanup();
+    }
+  };
+  to.addEventListener("animationend", onEnd);
+  from.addEventListener("animationend", onEnd);
+  // safety fallback in case one animation event doesn't fire
+  setTimeout(()=>{ if(state.isTransitioning) cleanup(); }, 1400);
+}
+
+function next(){ goTo(state.currentSlide+1, 1); }
+function prev(){ goTo(state.currentSlide-1, -1); }
+
+/* ==================================================================
+   AUDIO CONTROLLER
+   ================================================================== */
+const AudioCtl = (function(){
+  let audio = null;
+  let enabled = true;
+  function ensure(){
+    if(audio) return audio;
+    audio = new Audio();
+    audio.src = AUDIO_CONFIG.src;
+    audio.loop = AUDIO_CONFIG.loop;
+    audio.volume = AUDIO_CONFIG.volume;
+    audio.preload = "auto";
+    audio.addEventListener("error", ()=>{ if(DEBUG) console.warn("تعذّر تحميل الموسيقى"); });
+    return audio;
+  }
+  function play(){
+    try{
+      const a = ensure();
+      const p = a.play();
+      if(p && p.catch) p.catch(()=>{ /* منع التشغيل التلقائي من المتصفح، سيُحاول لاحقاً بتفاعل المستخدم */ });
+      state.isPlaying = true;
+      updateMusicBtn();
+    }catch(err){ if(DEBUG) console.warn(err); }
+  }
+  function pause(){
+    try{ if(audio) audio.pause(); }catch(err){}
+    state.isPlaying = false;
+    updateMusicBtn();
+  }
+  function toggle(){
+    if(!enabled) return;
+    if(state.isPlaying) pause(); else play();
+  }
+  return { play, pause, toggle };
+})();
+
+function updateMusicBtn(){
+  els.btnMusic.classList.toggle("is-off", !state.isPlaying);
+}
+
+/* ==================================================================
+   MODAL / DEFINITIONS
+   ================================================================== */
+function openDefinition(key){
+  const def = DEFINITIONS[key];
+  if(!def) return;
+  els.modalType.textContent = def.type;
+  els.modalTitle.textContent = def.title;
+  els.modalBody.textContent = def.definition;
+  els.modalLayer.classList.add("is-open");
+  state.isModalOpen = true;
+  updateDebug();
+}
+function closeDefinition(){
+  els.modalLayer.classList.remove("is-open");
+  state.isModalOpen = false;
+  updateDebug();
+}
+
+let hintShown = false;
+function maybeShowHint(){
+  if(hintShown) return;
+  hintShown = true;
+  els.termHint.classList.add("is-on");
+  setTimeout(()=>{ els.termHint.classList.remove("is-on"); }, 3200);
+}
+
+document.addEventListener("click", function(e){
+  const termEl = e.target.closest("[data-def]");
+  if(termEl){
+    e.stopPropagation();
+    openDefinition(termEl.getAttribute("data-def"));
+    return;
+  }
+  if(e.target === els.modalLayer){ closeDefinition(); }
+});
+document.addEventListener("keydown", function(e){
+  const termEl = document.activeElement;
+  if((e.key === "Enter" || e.key === " ") && termEl && termEl.hasAttribute && termEl.hasAttribute("data-def")){
+    e.preventDefault();
+    openDefinition(termEl.getAttribute("data-def"));
+  }
+});
+els.modalClose.addEventListener("click", closeDefinition);
+
+/* show hint once the first interactive term becomes visible on the active slide */
+document.addEventListener("pointerover", function(e){
+  if(e.target.closest && e.target.closest(".term, .vocab-pill, .rhet-card")) maybeShowHint();
+}, {once:false});
+els.slideHost.addEventListener("click", function(e){
+  if(e.target.closest && e.target.closest(".term, .vocab-pill, .rhet-card")) maybeShowHint();
+});
+
+/* ==================================================================
+   VOCAB TABS
+   ================================================================== */
+els.slideHost.addEventListener("click", function(e){
+  const tab = e.target.closest(".vocab-tab");
+  if(!tab) return;
+  const scope = tab.closest(".slide-body");
+  const idx = tab.getAttribute("data-vg");
+  scope.querySelectorAll(".vocab-tab").forEach(t=>t.classList.toggle("is-on", t===tab));
+  scope.querySelectorAll(".vocab-item").forEach(it=>it.classList.toggle("is-on", it.getAttribute("data-vgi")===idx));
+});
+
+/* ==================================================================
+   CONTROLS — buttons, keyboard, touch
+   ================================================================== */
+els.btnNext.addEventListener("click", next);
+els.btnPrev.addEventListener("click", prev);
+els.btnMusic.addEventListener("click", ()=>AudioCtl.toggle());
+els.btnFullscreen.addEventListener("click", toggleFullscreen);
+
+document.addEventListener("keydown", function(e){
+  if(state.isModalOpen){
+    if(e.key === "Escape") closeDefinition();
+    return;
+  }
+  switch(e.key){
+    case "ArrowRight": next(); break;
+    case "ArrowLeft": prev(); break;
+    case " ": e.preventDefault(); next(); break;
+    case "Enter":
+      if(!(document.activeElement && document.activeElement.hasAttribute && document.activeElement.hasAttribute("data-def"))) next();
+      break;
+    case "Escape":
+      if(state.isFullscreen) exitFullscreen();
+      break;
+    case "f": case "F": toggleFullscreen(); break;
+    case "m": case "M": AudioCtl.toggle(); break;
+  }
+});
+
+/* touch swipe */
+let touchX = null, touchY = null;
+els.canvas.addEventListener("touchstart", function(e){
+  if(e.target.closest("[data-def], #controls, #modalLayer, .vocab-tab")) { touchX = null; return; }
+  const t = e.changedTouches[0];
+  touchX = t.clientX; touchY = t.clientY;
+}, {passive:true});
+els.canvas.addEventListener("touchend", function(e){
+  if(touchX === null) return;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - touchX;
+  const dy = t.clientY - touchY;
+  touchX = null;
+  if(Math.abs(dx) < 46 || Math.abs(dx) < Math.abs(dy)*1.3) return;
+  if(dx < 0) next(); else prev();
+}, {passive:true});
+
+/* auto-hide controls */
+let hideTimer = null;
+function showControls(){
+  els.controls.classList.remove("is-dim");
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(()=>{ if(!state.isModalOpen) els.controls.classList.add("is-dim"); }, 3600);
+}
+["pointermove","pointerdown","touchstart"].forEach(ev=>{
+  document.addEventListener(ev, showControls, {passive:true});
+});
+
+/* ==================================================================
+   FULLSCREEN
+   ================================================================== */
+function toggleFullscreen(){
+  if(!document.fullscreenElement) requestFullscreen(); else exitFullscreen();
+}
+function requestFullscreen(){
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+  if(req) { try{ req.call(el); }catch(err){} }
+}
+function exitFullscreen(){
+  const ex = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+  if(ex) { try{ ex.call(document); }catch(err){} }
+}
+document.addEventListener("fullscreenchange", ()=>{
+  state.isFullscreen = !!document.fullscreenElement;
+});
+
+/* ==================================================================
+   START
+   ================================================================== */
+els.startBtn.addEventListener("click", function(){
+  els.startScreen.classList.add("is-hidden");
+  slideEls[0].classList.add("is-active");
+  preloadNeighbors(0);
+  AudioCtl.play();
+  showControls();
+  updateDebug();
+});
+
+/* ==================================================================
+   DEBUG MODE
+   ================================================================== */
+const missingAssets = new Set();
+function markAssetMissing(id){ missingAssets.add(id); updateDebug(); }
+function updateDebug(){
+  if(!DEBUG) return;
+  els.debugOverlay.classList.add("is-on");
+  const s = SLIDES[state.currentSlide];
+  els.debugOverlay.textContent =
+    "slide: " + s.id + " (" + (state.currentSlide+1) + "/" + SLIDES.length + ")\n" +
+    "transition: " + s.transition + "\n" +
+    "modal: " + state.isModalOpen + "\n" +
+    "playing: " + state.isPlaying + "\n" +
+    "fullscreen: " + state.isFullscreen + "\n" +
+    "missing assets: " + (Array.from(missingAssets).join(", ") || "—");
+}
+
+/* ==================================================================
+   GLOBAL ERROR SAFETY NET
+   ================================================================== */
+window.addEventListener("error", function(e){
+  if(DEBUG) console.warn("خطأ غير متوقع:", e.message);
+  // لا نكسر العرض؛ نستمر بصمت في وضع الاستخدام الطبيعي
+});
+window.addEventListener("unhandledrejection", function(e){
+  if(DEBUG) console.warn("خطأ Promise:", e.reason);
+});
+
+/* ==================================================================
+   INIT
+   ================================================================== */
+buildSlides();
+updateDebug();
+
+})();
+</script>
+</body>
+</html>
