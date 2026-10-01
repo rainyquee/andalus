@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>الأدب الأندلسي — من خطبة طارق بن زياد</title>
+<meta name="description" content="عرض تقديمي تفاعلي عن الأدب الأندلسي: من خطبة طارق بن زياد عند فتح الأندلس">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;background:#140a06;}
+body{font-family:var(--f-ui);-webkit-tap-highlight-color:transparent;user-select:none;touch-action:none;}
+img{display:block;max-width:100%;}
+button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit;}
+
+/* ===== TOKENS — Senja Terakota ===== */
+:root{
+  --ink:#24110c;--paper:#f6e9d2;--paper-dim:#ead7b8;--sand:#d8bc8c;
+  --clay:#b5502d;--amber:#e08a43;--gold:#d9a35f;--gold-soft:#f0c98f;
+  --line:rgba(240,201,143,.24);
+  --f-ar:'Scheherazade New','Amiri',serif;
+  --f-ui:'Tajawal','IBM Plex Sans Arabic',sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);--ease-soft:cubic-bezier(.16,.84,.44,1);--ease-cine:cubic-bezier(.65,.05,.2,1);
+  --corner:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%23e8b774' stroke-width='1.4'%3E%3Cpath d='M2 62V18Q2 2 18 2H62'/%3E%3Cpath d='M9 62V22Q9 9 22 9H62' opacity='.4'/%3E%3Cg transform='translate(18 18)'%3E%3Crect x='-5' y='-5' width='10' height='10'/%3E%3Crect x='-5' y='-5' width='10' height='10' transform='rotate(45)'/%3E%3C/g%3E%3C/svg%3E");
+  --sep:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 14' fill='none' stroke='%23e8b774' stroke-width='1.2'%3E%3Cpath d='M0 7H98M142 7H240' opacity='.7'/%3E%3Cg transform='translate(120 7)'%3E%3Crect x='-5' y='-5' width='10' height='10'/%3E%3Crect x='-5' y='-5' width='10' height='10' transform='rotate(45)'/%3E%3C/g%3E%3C/svg%3E");
+  --pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56' fill='none' stroke='%23f0c98f' stroke-width='.9'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate(45 28 28)'/%3E%3Ccircle cx='28' cy='28' r='5'/%3E%3Cpath d='M0 0l6 6M56 0l-6 6M0 56l6-6M56 56l-6-6'/%3E%3C/svg%3E");
+}
+
+/* ===== STAGE ===== */
+#stageWrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#140a06;}
+#canvas{--ts:1;position:relative;width:min(100vw,177.78vh);height:min(100vh,56.25vw);background:var(--ink);overflow:hidden;container-type:inline-size;box-shadow:0 20px 60px rgba(0,0,0,.55);}
+
+/* type scale (affected by text-size control via --ts) */
+.t-xl{font-size:calc(clamp(1.8rem,5cqw,4.2rem)*var(--ts));}
+.t-md{font-size:calc(clamp(1.05rem,2.4cqw,1.9rem)*var(--ts));}
+.t-sm{font-size:calc(clamp(.95rem,2cqw,1.6rem)*var(--ts));}
+
+/* ===== SLIDES ===== */
+.slide{position:absolute;inset:0;display:flex;align-items:var(--ai,center);justify-content:var(--jc,center);padding:5.8cqw 4.2cqw 6.8cqw;color:var(--paper);opacity:0;visibility:hidden;pointer-events:none;overflow:hidden;}
+.slide.is-active{opacity:1;visibility:visible;pointer-events:auto;z-index:5;will-change:transform,opacity;}
+.slide.is-leaving{z-index:4;will-change:transform,opacity;}
+
+.slide-bg{position:absolute;inset:-3%;z-index:0;background:var(--ink);transition:transform .9s var(--ease-soft);}
+.slide-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(var(--bb,5px)) saturate(.95) sepia(.18);opacity:0;transition:opacity .8s var(--ease);}
+.slide-bg img.is-loaded{opacity:1;}
+.slide-bg .fallback{position:absolute;inset:0;background:linear-gradient(160deg,#5b2a17,var(--ink) 58%,#a2452a 140%);}
+.slide-bg .overlay{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 108%,rgba(214,102,38,.36),transparent 60%),radial-gradient(ellipse at center,transparent 45%,rgba(15,6,3,.55)),linear-gradient(180deg,rgba(38,16,9,.5),rgba(26,11,7,.7));}
+.slide-bg::after{content:'';position:absolute;inset:0;background:var(--pat) 0 0/5.6cqw;opacity:.055;pointer-events:none;}
+.is-active .slide-bg.drift img,.is-leaving .slide-bg.drift img{animation:driftA 28s ease-out forwards;}
+.slide:nth-child(even) .slide-bg.drift img{animation-name:driftB!important;}
+@keyframes driftA{from{scale:1.14;translate:1% .6%;}to{scale:1.04;translate:-1% -.6%;}}
+@keyframes driftB{from{scale:1.03;translate:-1% 0;}to{scale:1.13;translate:1% -.8%;}}
+
+/* floating card */
+.slide-body,.speech-frame{
+  position:relative;z-index:2;width:var(--cw,80cqw);max-width:100%;max-height:100%;
+  overflow:hidden auto;scrollbar-width:none;touch-action:pan-y;
+  display:flex;flex-direction:column;justify-content:center!important;gap:.9cqw;
+  padding:2.6cqw 3.4cqw 2.8cqw!important;border-radius:1.5cqw;
+  background:linear-gradient(155deg,rgba(104,50,28,.58),rgba(46,21,13,.78) 62%,rgba(128,56,28,.5));
+  border:1px solid rgba(240,201,143,.3);
+  box-shadow:0 2.4cqw 6cqw rgba(10,3,1,.5),inset 0 1px 0 rgba(255,225,180,.16);
+  -webkit-backdrop-filter:blur(10px) saturate(1.12);backdrop-filter:blur(10px) saturate(1.12);
+}
+.slide-body::-webkit-scrollbar,.speech-frame::-webkit-scrollbar{display:none;}
+.slide-body::before,.slide-body::after,.speech-frame::before,.speech-frame::after{content:'';position:absolute;width:4cqw;height:4cqw;background:var(--corner) center/contain no-repeat;opacity:.8;pointer-events:none;}
+.slide-body::before,.speech-frame::before{top:.7cqw;right:.7cqw;transform:scaleX(-1);}
+.slide-body::after,.speech-frame::after{bottom:.7cqw;left:.7cqw;transform:scaleY(-1);}
+
+.kicker{font-family:var(--f-ui);font-weight:700;color:var(--gold-soft);display:flex;align-items:center;gap:.6em;font-size:calc(clamp(.9rem,1.7cqw,1.35rem)*var(--ts));}
+.kicker::before{content:'';width:.5em;height:.5em;background:var(--amber);transform:rotate(45deg);flex:none;}
+.slide h1,.slide h2{font-family:var(--f-ar);font-weight:700;line-height:1.35;color:#fff3dd;}
+.slide-body h2::after,.slide-body h1::after{content:'';display:block;width:15cqw;height:1.1cqw;margin-top:.5cqw;background:var(--sep) right center/100% 100% no-repeat;}
+.slide p{font-family:var(--f-ar);line-height:1.85;color:var(--paper-dim);max-width:none!important;}
+.slide .lede{color:var(--paper);}
+.stack{display:flex;flex-direction:column;gap:1cqw;max-width:none!important;}
+.slide-body .card-grid{max-width:none!important;}
+
+.lay-wide h2{font-size:calc(clamp(1.6rem,4.2cqw,3.4rem)*var(--ts));}
+.reveal{opacity:0;transform:translateY(1.4cqw);}
+.is-active .reveal{animation:revealUp .85s var(--ease-soft) forwards;}
+.is-active .reveal:nth-child(1){animation-delay:.3s;}
+.is-active .reveal:nth-child(2){animation-delay:.42s;}
+.is-active .reveal:nth-child(3){animation-delay:.56s;}
+.is-active .reveal:nth-child(4){animation-delay:.7s;}
+.is-active .reveal:nth-child(5){animation-delay:.84s;}
+.is-active .reveal:nth-child(6){animation-delay:.98s;}
+@keyframes revealUp{to{opacity:1;transform:none;}}
+.is-active .slide-body,.is-active .speech-frame{animation:cardIn 1.1s var(--ease-soft) .15s both;}
+@keyframes cardIn{from{opacity:0;transform:translateY(2.4cqw) scale(.985);}to{opacity:1;transform:none;}}
+
+/* interactive terms */
+.term{cursor:pointer;color:#fff3dd;font-weight:700;border-radius:.15em;padding:0 .08em;background:linear-gradient(rgba(224,138,67,.3),rgba(224,138,67,.3)) 0 100%/100% .12em no-repeat;transition:background-size .25s var(--ease),color .2s;}
+.term:hover,.term:focus-visible{color:var(--gold-soft);background-size:100% 100%;outline:0;}
+
+/* cover */
+.slide-cover{--ai:flex-end;padding-bottom:10.4cqw;}
+.slide-cover .slide-body{align-items:flex-start;padding:3.2cqw 4.4cqw 3.4cqw!important;background:linear-gradient(0deg,rgba(40,16,9,.84),rgba(88,40,22,.5));}
+.slide-cover .eyebrow{font-family:var(--f-ui);font-weight:700;color:var(--gold-soft);font-size:calc(clamp(.9rem,1.7cqw,1.35rem)*var(--ts));}
+.slide-cover h1{font-size:calc(clamp(2.6rem,8cqw,6.8rem)*var(--ts));text-shadow:0 .4cqw 2cqw rgba(224,138,67,.35);}
+.slide-cover .sub{font-family:var(--f-ar);color:var(--paper);font-size:calc(clamp(1.1rem,2.8cqw,2.2rem)*var(--ts));max-width:none;}
+.slide-cover .yr{font-family:var(--f-ui);font-weight:500;color:var(--gold-soft);font-size:calc(clamp(.9rem,1.5cqw,1.2rem)*var(--ts));letter-spacing:.06em;}
+.start-hint{position:absolute;z-index:3;bottom:6.9cqw;left:50%;transform:translateX(-50%);font-family:var(--f-ui);color:var(--paper-dim);font-size:clamp(.72rem,1.1cqw,.9rem);display:flex;align-items:center;gap:.5em;opacity:.75;}
+.chev{width:.6em;height:.6em;border-left:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);animation:bob 1.6s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:rotate(-45deg) translateY(0);}50%{transform:rotate(-45deg) translateY(4px);}}
+
+/* speech slides */
+.speech-frame{box-shadow:0 2.4cqw 6cqw rgba(10,3,1,.5),inset 0 1px 0 rgba(255,225,180,.16),inset -.5cqw 0 0 rgba(224,138,67,.55);background:linear-gradient(155deg,rgba(80,36,20,.66),rgba(34,15,10,.86) 62%,rgba(110,48,24,.55));}
+.speech-label{font-family:var(--f-ui);font-weight:700;color:var(--gold-soft);font-size:calc(clamp(.9rem,1.6cqw,1.3rem)*var(--ts));margin-bottom:.8cqw;display:flex;align-items:center;gap:.6em;}
+.speech-label::before{content:'';width:.5em;height:.5em;background:var(--amber);transform:rotate(45deg);flex:none;}
+.speech-text{font-family:var(--f-ar);line-height:1.95;color:var(--paper);}
+.speech-hero{font-size:calc(clamp(2.1rem,6cqw,4.8rem)*var(--ts));font-weight:700;line-height:1.4;color:#fff3dd;}
+.speech-body{font-size:calc(clamp(1.2rem,2.4cqw,1.95rem)*var(--ts));}
+.speech-note{font-family:var(--f-ar);margin-top:1.1cqw;padding-top:.9cqw;border-top:1px solid var(--line);color:var(--sand);font-size:calc(clamp(.95rem,1.85cqw,1.5rem)*var(--ts));}
+.tag-word{display:inline-flex;font-family:var(--f-ui);font-size:.55em;font-weight:700;color:#2a1008;background:var(--gold-soft);padding:.1em .7em;border-radius:999px;vertical-align:middle;margin-inline-start:.5em;}
+
+/* cards */
+.card-grid{display:grid;gap:1cqw;}
+.cards-2{grid-template-columns:repeat(2,1fr);}
+.card{background:rgba(255,224,176,.07);border:1px solid var(--line);border-radius:1cqw;padding:1.2cqw 1.5cqw;display:flex;flex-direction:column;gap:.4cqw;}
+.card .num{font-family:var(--f-ui);font-weight:700;color:var(--gold-soft);font-size:calc(clamp(1.1rem,2.6cqw,2rem)*var(--ts));}
+.card h3{font-family:var(--f-ar);font-weight:700;color:#fff3dd;font-size:calc(clamp(1.1rem,2.2cqw,1.75rem)*var(--ts));}
+.slide .card p{font-size:calc(clamp(.95rem,1.6cqw,1.4rem)*var(--ts));line-height:1.7;color:var(--paper-dim);}
+.rhet-card{cursor:pointer;transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease);}
+.rhet-card:hover{border-color:var(--amber);background:rgba(224,138,67,.16);transform:translateY(-.2cqw);}
+.rhet-card .q{font-family:var(--f-ar);font-weight:700;color:#fff3dd;font-size:calc(clamp(1.15rem,2.3cqw,1.8rem)*var(--ts));line-height:1.6;}
+.rhet-card .hint-open{font-family:var(--f-ui);color:var(--gold-soft);font-size:calc(clamp(.72rem,1.1cqw,.9rem)*var(--ts));}
+
+/* vocab */
+.vocab-tabs{display:flex;gap:.8cqw;flex-wrap:wrap;}
+.vocab-tab{font-family:var(--f-ui);font-weight:700;font-size:calc(clamp(.9rem,1.6cqw,1.3rem)*var(--ts));color:var(--paper-dim);padding:.5cqw 1.5cqw;border:1px solid var(--line);border-radius:999px;transition:all .2s var(--ease);}
+.vocab-tab.is-on{background:var(--amber);color:#2a1008;border-color:var(--amber);}
+.vocab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9cqw;}
+.vocab-item{display:none;}.vocab-item.is-on{display:block;}
+.vocab-pill{width:100%;text-align:right;border:1px solid var(--line);border-radius:.9cqw;padding:.8cqw 1.2cqw;font-family:var(--f-ar);font-weight:700;font-size:calc(clamp(1.1rem,2.1cqw,1.7rem)*var(--ts));color:#fff3dd;background:rgba(255,224,176,.07);transition:background .2s,border-color .2s;}
+.vocab-pill:hover,.vocab-pill:focus-visible{background:rgba(224,138,67,.26);border-color:var(--amber);outline:0;}
+
+/* summary */
+.slide[data-id=summary] .slide-body{text-align:center;align-items:center;}
+.slide[data-id=summary] h2::after{margin-inline:auto;}
+.chain{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.7cqw;}
+.chain span{font-family:var(--f-ui);font-weight:700;font-size:calc(clamp(.9rem,1.7cqw,1.35rem)*var(--ts));color:var(--paper);padding:.45cqw 1.2cqw;border:1px solid var(--line);border-radius:999px;background:rgba(255,224,176,.07);}
+.chain i{color:var(--amber);font-style:normal;}
+
+/* ===== START SCREEN ===== */
+#startScreen{position:absolute;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:var(--ink);transition:opacity .9s var(--ease),visibility .9s;}
+#startScreen.is-hidden{opacity:0;visibility:hidden;pointer-events:none;}
+#startBg .slide-bg{--bb:3px;}
+#startBg .slide-bg img{animation:driftA 32s ease-in-out infinite alternate;}
+#startScreen.is-hidden #startBg img{animation:none;}
+#startBg .overlay{background:radial-gradient(90% 60% at 50% 100%,rgba(230,110,40,.5),transparent 65%),radial-gradient(ellipse at center,rgba(36,17,12,.2) 20%,rgba(15,6,3,.75)),linear-gradient(180deg,rgba(38,16,9,.55),rgba(26,11,7,.6));}
+#startScreen::before,#startScreen::after{content:'';position:absolute;left:0;right:0;height:5cqw;background:#150a06;z-index:4;transform:scaleY(0);animation:bar 1.3s var(--ease-cine) .1s forwards;}
+#startScreen::before{top:0;transform-origin:top;}#startScreen::after{bottom:0;transform-origin:bottom;}
+@keyframes bar{to{transform:scaleY(1);}}
+.st-frame{position:absolute;inset:6.6cqw 3.6cqw;border:1px solid rgba(240,201,143,.28);z-index:2;pointer-events:none;}
+.st-frame i{position:absolute;width:5cqw;height:5cqw;background:var(--corner) center/contain no-repeat;}
+.st-frame i:nth-child(1){top:-.3cqw;right:-.3cqw;transform:scaleX(-1);}
+.st-frame i:nth-child(2){top:-.3cqw;left:-.3cqw;}
+.st-frame i:nth-child(3){bottom:-.3cqw;right:-.3cqw;transform:scale(-1,-1);}
+.st-frame i:nth-child(4){bottom:-.3cqw;left:-.3cqw;transform:scaleY(-1);}
+.st-in{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;gap:1.4cqw;padding:0 9cqw;}
+.st-in>*{opacity:0;animation:revealUp 1.1s var(--ease-soft) forwards;}
+.st-in>:nth-child(1){animation-delay:.7s;}.st-in>:nth-child(2){animation-delay:.95s;}.st-in>:nth-child(3){animation-delay:1.2s;}.st-in>:nth-child(4){animation-delay:1.45s;}.st-in>:nth-child(5){animation-delay:1.7s;}
+#startScreen .eyebrow{font-family:var(--f-ui);font-weight:700;color:var(--gold-soft);font-size:clamp(.9rem,1.7cqw,1.35rem);display:flex;align-items:center;gap:.8em;}
+#startScreen .eyebrow::before,#startScreen .eyebrow::after{content:'';width:.5em;height:.5em;background:var(--amber);transform:rotate(45deg);}
+#startScreen h1{font-family:var(--f-ar);font-weight:700;line-height:1.3;color:#fff3dd;font-size:clamp(2.8rem,8.4cqw,7.4rem);text-shadow:0 .5cqw 3cqw rgba(224,138,67,.45);}
+#startScreen .sub{font-family:var(--f-ar);color:var(--paper);font-size:clamp(1.1rem,2.6cqw,2.1rem);line-height:1.8;}
+.st-route{display:flex;align-items:center;gap:.9cqw;font-family:var(--f-ui);font-weight:700;color:var(--gold-soft);font-size:clamp(.8rem,1.4cqw,1.15rem);}
+.st-route i{font-style:normal;color:var(--amber);}
+#startBtn{margin-top:.8cqw;font-family:var(--f-ui);font-weight:700;font-size:clamp(1rem,1.9cqw,1.5rem);color:#2a1008;background:linear-gradient(135deg,var(--gold-soft),var(--amber) 70%);padding:.8em 2.6em;border-radius:999px;display:inline-flex;align-items:center;gap:.7em;box-shadow:0 .6cqw 3cqw rgba(224,138,67,.4);transition:transform .25s var(--ease),box-shadow .25s;}
+#startBtn:hover,#startBtn:focus-visible{transform:translateY(-3px);box-shadow:0 .8cqw 4cqw rgba(224,138,67,.6);outline:0;}
+#startBtn svg{width:1.1em;height:1.1em;}
+
+/* ===== PROGRESS / ROUTE ===== */
+#pbar{position:absolute;top:0;left:0;right:0;height:.3cqw;z-index:41;background:rgba(240,201,143,.1);}
+#pbar i{position:absolute;inset:0;background:linear-gradient(270deg,var(--clay),var(--amber),var(--gold-soft));transform-origin:right;transform:scaleX(0);transition:transform .8s var(--ease);}
+#route{position:absolute;top:1.3cqw;left:50%;transform:translateX(-50%);z-index:40;width:54cqw;display:flex;justify-content:space-between;pointer-events:none;transition:opacity .5s var(--ease);}
+.rt-track{position:absolute;left:6cqw;right:6cqw;top:.55cqw;height:2px;background:rgba(240,201,143,.25);border-radius:2px;}
+.rt-fill{position:absolute;inset:0;background:linear-gradient(270deg,var(--amber),var(--gold-soft));transform-origin:right;transform:scaleX(0);transition:transform .9s var(--ease);}
+.rt-mark{position:absolute;top:50%;right:0;width:1.2cqw;height:1.2cqw;background:var(--gold-soft);box-shadow:0 0 1.4cqw var(--amber);transform:translate(50%,-50%) rotate(45deg);transition:right .9s var(--ease);}
+.rt-node{position:relative;pointer-events:auto;width:12cqw;display:flex;flex-direction:column;align-items:center;gap:.5cqw;font-family:var(--f-ui);font-weight:700;font-size:clamp(.7rem,1.2cqw,1rem);color:rgba(246,233,210,.6);transition:color .4s;}
+.rt-node i{width:1cqw;height:1cqw;border-radius:50%;border:2px solid rgba(240,201,143,.5);background:#2a120b;transition:all .4s;}
+.rt-node.is-on{color:var(--paper);}
+.rt-node.is-on i{background:var(--amber);border-color:var(--gold-soft);}
+.rt-node.is-cur{color:var(--gold-soft);}
+
+/* ===== CONTROLS ===== */
+#controls{position:absolute;bottom:1.2cqw;left:50%;transform:translate(-50%,0);z-index:40;display:flex;align-items:center;gap:.3cqw;background:rgba(40,17,10,.78);border:1px solid var(--line);border-radius:999px;padding:.4cqw .8cqw;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:opacity .5s var(--ease),transform .5s var(--ease);}
+#controls.is-dim{opacity:0;transform:translate(-50%,10px);pointer-events:none;}
+.ctl-btn{width:clamp(30px,3.3cqw,44px);height:clamp(30px,3.3cqw,44px);display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--paper);font-family:var(--f-ui);font-weight:700;font-size:clamp(.72rem,1.2cqw,.95rem);transition:background .2s var(--ease);}
+.ctl-btn:hover,.ctl-btn:focus-visible{background:rgba(240,201,143,.16);outline:0;}
+.ctl-btn svg{width:46%;height:46%;}
+.ctl-btn.is-off{color:var(--sand);opacity:.7;}
+.ctl-sep{width:1px;height:1.4cqw;background:var(--line);margin:0 .3cqw;}
+#slideCounter{font-family:var(--f-ui);font-weight:700;font-size:clamp(.72rem,1.15cqw,.92rem);color:var(--paper-dim);padding:0 .7cqw;min-width:3.8em;text-align:center;}
+body:not(.started) #controls,body:not(.started) #route,body:not(.started) #pbar{opacity:0;pointer-events:none;}
+body.presenter #controls,body.presenter #route{opacity:0!important;pointer-events:none!important;visibility:hidden;}
+#pmini{display:none;position:absolute;bottom:1.1cqw;left:1.4cqw;z-index:41;font-family:var(--f-ui);font-weight:700;font-size:clamp(.72rem,1.1cqw,.9rem);color:var(--paper-dim);background:rgba(40,17,10,.55);padding:.4cqw 1.1cqw;border:1px solid var(--line);border-radius:999px;}
+body.presenter #pmini{display:block;}
+body.presenter .slide{padding:3cqw 3cqw 4cqw;}
+body.presenter .slide-body,body.presenter .speech-frame{width:min(94cqw,calc(var(--cw,80cqw)*1.2));}
+body.presenter .slide-cover{padding-bottom:6cqw;}
+body.presenter .start-hint{display:none;}
+
+#termHint{position:absolute;bottom:6.8cqw;left:50%;transform:translate(-50%,6px);z-index:35;background:rgba(40,17,10,.88);border:1px solid var(--line);color:var(--paper);font-family:var(--f-ui);font-weight:500;font-size:clamp(.75rem,1.2cqw,.95rem);padding:.55em 1.3em;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .45s var(--ease),transform .45s var(--ease);}
+#termHint.is-on{opacity:1;transform:translate(-50%,0);}
+#fx{position:absolute;inset:0;width:100%;height:100%;z-index:52;pointer-events:none;opacity:.8;}
+
+/* ===== SLIDE GRID ===== */
+#gridLayer{position:absolute;inset:0;z-index:65;display:flex;align-items:center;justify-content:center;background:rgba(18,8,5,.84);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s var(--ease),visibility .35s;}
+#gridLayer.is-open{opacity:1;visibility:visible;pointer-events:auto;}
+#gridPanel{width:92cqw;max-height:92%;overflow:auto;touch-action:pan-y;scrollbar-width:none;}
+.g-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1cqw;font-family:var(--f-ui);font-weight:700;color:var(--gold-soft);font-size:clamp(1rem,1.9cqw,1.5rem);}
+#gridClose{width:3.6cqw;height:3.6cqw;border-radius:50%;background:rgba(240,201,143,.14);display:flex;align-items:center;justify-content:center;}
+#gridClose svg{width:44%;height:44%;}
+#gridBody{display:grid;grid-template-columns:repeat(5,1fr);gap:1cqw;}
+.thumb{position:relative;aspect-ratio:16/9;border-radius:.8cqw;overflow:hidden;border:1px solid var(--line);background:linear-gradient(155deg,#5b2a17,var(--ink) 60%,#a2452a 140%);text-align:right;transition:transform .25s var(--ease),border-color .25s;}
+.thumb:hover,.thumb:focus-visible{transform:translateY(-.3cqw);border-color:var(--amber);outline:0;}
+.th-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.85;}
+.thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(26,11,7,.93),rgba(26,11,7,.1) 70%);}
+.th-n{position:absolute;top:.5cqw;right:.6cqw;z-index:2;font-family:var(--f-ui);font-weight:700;font-size:clamp(.7rem,1.1cqw,.9rem);color:#2a1008;background:var(--gold-soft);border-radius:999px;padding:.05cqw .6cqw;}
+.th-t{position:absolute;bottom:.6cqw;right:.7cqw;left:.7cqw;z-index:2;font-family:var(--f-ar);font-weight:700;font-size:clamp(.75rem,1.35cqw,1.1rem);line-height:1.45;color:#fff3dd;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.thumb.is-cur{border-color:var(--amber);box-shadow:0 0 0 .25cqw var(--amber);}
+
+/* ===== BOTTOM SHEET (definitions) ===== */
+#modalLayer{position:absolute;inset:0;z-index:70;display:flex;align-items:flex-end;background:rgba(18,8,5,0);visibility:hidden;pointer-events:none;transition:background .4s var(--ease),visibility .55s;}
+#modalLayer.is-open{background:rgba(18,8,5,.5);visibility:visible;pointer-events:auto;}
+#modalCard{position:relative;width:100%;min-height:34%;max-height:74%;overflow:hidden auto;touch-action:pan-y;scrollbar-width:none;display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.6fr);gap:3.4cqw;align-content:center;padding:3.4cqw 5cqw 3.6cqw;border-radius:2.2cqw 2.2cqw 0 0;background:linear-gradient(180deg,rgba(112,54,30,.9),rgba(40,18,12,.97));border-top:1px solid rgba(232,184,120,.55);box-shadow:0 -2cqw 6cqw rgba(0,0,0,.5);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);transform:translateY(102%);transition:transform .55s cubic-bezier(.2,.8,.2,1);}
+#modalLayer.is-open #modalCard{transform:none;}
+#modalCard::before{content:'';position:absolute;top:1cqw;left:50%;width:6cqw;height:.45cqw;margin-left:-3cqw;border-radius:9px;background:rgba(240,201,143,.4);}
+.sh-head{display:flex;flex-direction:column;align-items:flex-start;gap:1cqw;}
+.m-type{font-family:var(--f-ui);font-weight:700;font-size:calc(clamp(.8rem,1.4cqw,1.15rem)*var(--ts));color:#2a1008;background:var(--gold-soft);padding:.25em 1em;border-radius:999px;}
+#modalTitle{font-family:var(--f-ar);font-weight:700;line-height:1.4;color:#fff3dd;font-size:calc(clamp(1.8rem,4.6cqw,3.8rem)*var(--ts));}
+.sh-body{font-family:var(--f-ar);line-height:1.9;color:var(--paper);font-size:calc(clamp(1.2rem,2.5cqw,2rem)*var(--ts));padding-inline-start:3.4cqw;border-inline-start:1px solid var(--line);align-self:center;}
+#modalClose{position:absolute;top:1.6cqw;left:2cqw;display:flex;align-items:center;gap:.6em;padding:.5cqw 1.4cqw;border-radius:999px;background:rgba(240,201,143,.16);color:var(--paper);font-family:var(--f-ui);font-weight:700;font-size:clamp(.8rem,1.4cqw,1.1rem);}
+#modalClose:hover,#modalClose:focus-visible{background:rgba(240,201,143,.3);outline:0;}
+#modalClose svg{width:1em;height:1em;}
+
+#debugOverlay{position:absolute;top:1cqw;right:1cqw;z-index:80;background:rgba(0,0,0,.75);color:#9fe870;font-family:monospace;font-size:11px;line-height:1.5;padding:.6em .8em;border-radius:4px;white-space:pre;pointer-events:none;display:none;text-align:left;direction:ltr;}
+#debugOverlay.is-on{display:block;}
+
+/* ===== CINEMATIC TRANSITIONS (direction via --d / --w0) ===== */
+.tr-zoom.is-active{animation:xZoomIn 1s var(--ease-cine) both;}
+.tr-zoom.is-leaving{animation:xZoomOut .9s var(--ease-cine) both;}
+@keyframes xZoomIn{from{opacity:0;transform:scale(1.12);}to{opacity:1;transform:none;}}
+@keyframes xZoomOut{from{opacity:1;}to{opacity:0;transform:scale(.95);}}
+.tr-mask.is-active{animation:xMaskIn .95s var(--ease-cine) both;}
+.tr-mask.is-leaving{animation:xFadeOut .8s var(--ease) both;}
+@keyframes xMaskIn{from{clip-path:inset(100% 0 0 0);transform:scale(1.04);}to{clip-path:inset(0);transform:none;}}
+.tr-push.is-active{animation:xPushIn .9s var(--ease-cine) both;}
+.tr-push.is-leaving{animation:xPushOut .9s var(--ease-cine) both;}
+@keyframes xPushIn{from{opacity:0;transform:translate3d(calc(var(--d,1)*-7%),0,0);}to{opacity:1;transform:none;}}
+@keyframes xPushOut{from{opacity:1;}to{opacity:0;transform:translate3d(calc(var(--d,1)*7%),0,0);}}
+.tr-depth.is-active{animation:xDepthIn 1s var(--ease-cine) both;}
+.tr-depth.is-leaving{animation:xDepthOut .8s var(--ease-cine) both;}
+@keyframes xDepthIn{from{opacity:0;transform:scale(.94) translateY(2cqw);}to{opacity:1;transform:none;}}
+@keyframes xDepthOut{from{opacity:1;}to{opacity:0;transform:scale(1.06);}}
+.tr-wipe.is-active{animation:xWipeIn .9s var(--ease-cine) both;}
+.tr-wipe.is-leaving{animation:xFadeOut .9s var(--ease) both;}
+@keyframes xWipeIn{from{clip-path:var(--w0,inset(0 100% 0 0));}to{clip-path:inset(0);}}
+.tr-curtain.is-active{animation:xCurtainIn 1s var(--ease-cine) both;}
+.tr-curtain.is-leaving{animation:xFadeOut .8s var(--ease) both;}
+@keyframes xCurtainIn{from{clip-path:inset(0 50% 0 50%);}to{clip-path:inset(0);}}
+.tr-dissolve.is-active{animation:xDissolveIn .9s var(--ease) both;}
+.tr-dissolve.is-leaving{animation:xFadeOut .9s var(--ease) both;}
+@keyframes xDissolveIn{from{opacity:0;transform:scale(1.03);}to{opacity:1;transform:none;}}
+@keyframes xFadeOut{from{opacity:1;}to{opacity:0;}}
+
+@media (pointer:coarse){
+  .slide-body,.speech-frame{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
+  .is-active .slide-bg.drift img,.is-leaving .slide-bg.drift img{animation-duration:40s;}
+}
+@media (prefers-reduced-motion:reduce){
+  .slide-bg.drift img,#startBg img{animation:none!important;}
+  .reveal{animation:none!important;opacity:1!important;transform:none!important;}
+  [class*="tr-"].is-active,[class*="tr-"].is-leaving{animation-duration:.25s!important;}
+  .is-active .slide-body,.is-active .speech-frame,.st-in>*{animation:none!important;opacity:1!important;}
+  .chev{animation:none;}
+}
+@media (max-width:640px){
+  .cards-2{grid-template-columns:1fr;}
+  .vocab-grid{grid-template-columns:repeat(2,1fr);}
+  #gridBody{grid-template-columns:repeat(3,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div id="stageWrap">
+  <div id="canvas">
+
+    <!-- START SCREEN -->
+    <div id="startScreen">
+      <div id="startBg"></div>
+      <div class="st-frame"><i></i><i></i><i></i><i></i></div>
+      <div class="st-in">
+        <div class="eyebrow">عرض تقديمي تفاعلي</div>
+        <h1>الأَدَبُ الأَنْدَلُسِيُّ</h1>
+        <div class="sub">مِنْ خُطْبَةِ طَارِقِ بْنِ زِيَادٍ عِنْدَ فَتْحِ الأَنْدَلُسِ</div>
+        <div class="st-route" id="stRoute"></div>
+        <button id="startBtn">
+          <span>ابدأ العرض</span>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- SLIDES injected here by JS -->
+    <div id="slideHost"></div>
+
+    <canvas id="fx"></canvas>
+    <div id="pbar"><i id="pbarFill"></i></div>
+    <div id="route"><div class="rt-track"><i class="rt-fill" id="rtFill"></i><b class="rt-mark" id="rtMark"></b></div></div>
+
+    <div id="termHint">اضغط على الكلمة لمعرفة معناها</div>
+
+    <!-- SLIDE GRID -->
+    <div id="gridLayer">
+      <div id="gridPanel">
+        <div class="g-head"><span>الشرائح</span>
+          <button id="gridClose" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+        </div>
+        <div id="gridBody"></div>
+      </div>
+    </div>
+
+    <!-- DEFINITION BOTTOM SHEET -->
+    <div id="modalLayer">
+      <div id="modalCard" role="dialog" aria-modal="true">
+        <button id="modalClose" aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+          <span>إغلاق</span>
+        </button>
+        <div class="sh-head">
+          <div class="m-type" id="modalType">مفردة</div>
+          <h3 id="modalTitle"></h3>
+        </div>
+        <p class="sh-body" id="modalBody"></p>
+      </div>
+    </div>
+
+    <button id="pmini" aria-label="إنهاء وضع العرض"></button>
+
+    <!-- CONTROL BAR -->
+    <div id="controls">
+      <button class="ctl-btn" id="btnPrev" aria-label="السابقة" title="السابقة">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div id="slideCounter">١ / ١٦</div>
+      <button class="ctl-btn" id="btnNext" aria-label="التالية" title="التالية">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="ctl-sep"></span>
+      <button class="ctl-btn" id="btnTsDown" aria-label="تصغير الخط" title="تصغير الخط (-)">A−</button>
+      <button class="ctl-btn" id="btnTsUp" aria-label="تكبير الخط" title="تكبير الخط (+)">A+</button>
+      <button class="ctl-btn" id="btnGrid" aria-label="الشرائح" title="الشرائح (G)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1"/></svg>
+      </button>
+      <button class="ctl-btn" id="btnPresent" aria-label="وضع العرض" title="وضع العرض (P)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="12" rx="1.5"/><path d="M12 16.5V20M8 20h8"/></svg>
+      </button>
+      <span class="ctl-sep"></span>
+      <button class="ctl-btn" id="btnMusic" aria-label="الموسيقى" title="تشغيل/إيقاف الموسيقى (M)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 18V6l11-2v12M9 18a3 3 0 11-3-3 3 3 0 013 3zm11-2a3 3 0 11-3-3 3 3 0 013 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="ctl-btn" id="btnFullscreen" aria-label="ملء الشاشة" title="ملء الشاشة (F)">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H4v4M16 4h4v4M8 20H4v-4M16 20h4v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <div id="debugOverlay"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+const DEBUG = false;
+
+/* ==================================================================
+   ASSET REGISTRY — عدّل المسارات هنا فقط لتغيير الصور
+   ================================================================== */
+const ASSETS = {
+  hero:         "hero.jpg",
+  map:          "map.jpg",
+  strait:       "strait.jpg",
+  battle:       "battle.jpg",
+  architecture: "architecture.jpg",
+  manuscript:   "manuscript.jpg",
+  portrait:     "portrait.jpg",
+  closing:      "closing.jpg"
+};
+
+const AUDIO_CONFIG = {
+  src: "background.mp3",
+  volume: 0.35,
+  loop: true
+};
+
+/* ==================================================================
+   DEFINITIONS — كل التعريفات في مكان واحد
+   ================================================================== */
+const DEFINITIONS = {
+  // -------- المفردات الـ25 (من شرح المفردات) --------
+  arfah:      { title:"الأَرْفَهُ", type:"مفردة", definition:"أَفْعَلُ تَفْضِيلٍ مِنْ رَفَهَ العَيْشُ: صَارَ رَغَداً لَيِّناً." },
+  ashrar:     { title:"أَشْرَارٌ", type:"مفردة", definition:"لِئَامٌ يَتَّصِفُونَ بِالشَّرِّ." },
+  adyaa:      { title:"أَضْيَعُ", type:"مفردة", definition:"أَفْعَلُ تَفْضِيلٍ مِنْ ضَاعَ / يَضِيعُ، بِمَعْنَى فَقَدَ." },
+  aqwat:      { title:"أَقْوَاتٌ", type:"مفردة", definition:"جَمْعُ قُوتٍ: القَلِيلُ مِنَ الطَّعَامِ وَالرِّزْقِ." },
+  iqnaa:      { title:"إِقْنَاعٌ", type:"مفردة", definition:"أَنْ يَعْرِضَ الإِنْسَانُ وِجْهَةَ نَظَرٍ بِأُسْلُوبٍ يُرْضِي الآخَرِينَ وَيُطْمَئِنُهُمْ." },
+  aytam:      { title:"أَيْتَامٌ", type:"مفردة", definition:"جَمْعُ يَتِيمٍ، وَهُوَ الَّذِي فَقَدَ وَالِدَيْهِ أَوْ أَحَدَهُمَا." },
+  tabaa:      { title:"تَابَعَ / يُتَابِعُ", type:"مفردة", definition:"وَالَى يُوَالِي، وَالمَقْصُودُ: اسْتَمَرَّ." },
+  taawwud:    { title:"تَعَوَّضَ / يَتَعَوَّضُ", type:"مفردة", definition:"أَخْذُ العِوَضِ." },
+  jarua:      { title:"جَرُؤَ / يَجْرُؤُ", type:"مفردة", definition:"شَجُعَ وَأَقْدَمَ." },
+  hasina:     { title:"حَصِينَةٌ", type:"مفردة", definition:"مَنِيعَةٌ، وَدِرْعٌ حَصِينَةٌ: مُحْكَمَةٌ، وَالبَلْدَةُ الحَصِينَةُ: الَّتِي بُنِيَ حَوْلَهَا بِنَاءٌ قَوِيٌّ لِيَمْنَعَ عَنْهَا المُعْتَدِينَ." },
+  hamasa:     { title:"حَمَاسَةٌ", type:"مفردة", definition:"الشَّجَاعَةُ." },
+  khadhlan:   { title:"خَذْلَانٌ", type:"مفردة", definition:"تَرْكُ العَوْنِ وَالنَّصْرَةِ، وَالفِعْلُ: خَذَلَهُ يَخْذُلُهُ." },
+  ruub:       { title:"رَعَبَ / يَرْعَبُ", type:"مفردة", definition:"الرُّعْبُ: الفَزَعُ وَالخَوْفُ." },
+  rafaha:     { title:"رَفَهَ / يَرْفَهُ", type:"مفردة", definition:"عَاشَ فِي رَغَدٍ مِنَ العَيْشِ." },
+  silaa:      { title:"السِّلْعَةُ", type:"مفردة", definition:"مَا يُشْتَرَى وَيُبَاعُ مِنَ الأَشْيَاءِ." },
+  shawatee:   { title:"شَوَاطِئُ", type:"مفردة", definition:"جَمْعُ شَاطِئٍ، وَهُوَ الجُزْءُ مِنَ البَرِّ الَّذِي يَلِي النَّهْرَ أَوِ البَحْرَ." },
+  taghiya:    { title:"الطَّاغِيَةُ", type:"مفردة", definition:"الظَّالِمُ الَّذِي كَثُرَ ظُلْمُهُ وَكِبْرُهُ." },
+  iftaqara:   { title:"اِفْتَقَرَ / يَفْتَقِرُ", type:"مفردة", definition:"ضِدُّ: غَنِيَ / يَغْنَى." },
+  liaam:      { title:"لِئَامٌ", type:"مفردة", definition:"أَشْرَارُ النَّاسِ، وَالمُفْرَدُ: لَئِيمٌ." },
+  maduba:     { title:"مَأْدُبَةٌ", type:"مفردة", definition:"طَعَامٌ يُصْنَعُ لِدَعْوَةٍ أَوْ عُرْسٍ." },
+  madiq:      { title:"مَضِيقٌ", type:"مفردة", definition:"مَا ضَاقَ مِنَ الأَمَاكِنِ، وَالمُرَادُ هُنَا: المَمَرُّ الضَّيِّقُ مِنَ البَحْرِ بَيْنَ بَرَّيْنِ، مِثْلُ مَضِيقِ جَبَلِ طَارِقٍ." },
+  maniaa:     { title:"المَنِيعَةُ", type:"مفردة", definition:"الحَصِينَةُ، وَالفِعْلُ (مَنَعَ) كَكَرُمَ." },
+  intakhaba:  { title:"اِنْتَخَبَ / يَنْتَخِبُ", type:"مفردة", definition:"اخْتَارَ." },
+  najwa:      { title:"نَجْوَةٌ", type:"مفردة", definition:"مَا ارْتَفَعَ مِنَ الأَرْضِ، وَالمُرَادُ هُنَا: النَّجَاةُ وَالسَّلَامَةُ." },
+  huroub:     { title:"هُرُوبٌ", type:"مفردة", definition:"فِرَارٌ." },
+
+  // -------- الصور البلاغية (من خصائص النص) --------
+  ayna_almafar: { title:"أَيْنَ المَفَرُّ؟", type:"بلاغة", definition:"السُّؤَالُ هُنَا لَيْسَ حَقِيقِيّاً؛ لِأَنَّهُ لَا يَنْتَظِرُ مِنْهُمْ جَوَاباً، وَلٰكِنَّ مَعْنَاهُ النَّفْيُ، أَيْ: لَا مَفَرَّ لَكُمْ." },
+  adyaa_quote:  { title:"أَضْيَعُ مِنَ الأَيْتَامِ فِي مَأْدُبَةِ اللِّئَامِ", type:"بلاغة", definition:"تَعْبِيرٌ يَدْعُو إِلَى اليَقَظَةِ وَالحِرْصِ؛ لِأَنَّ أَعْدَاءَهُمْ أَكْثَرُ لُؤْماً وَأَحْرَصُ عَلَى اسْتِغْلَالِهِمْ." },
+  dhahabat_reeh:{ title:"ذَهَبَتْ رِيحُكُمْ", type:"بلاغة", definition:"تَعْبِيرٌ يُقْصَدُ بِهِ ذَهَابُ القُوَّةِ، فَإِذَا ذَهَبَتِ الرِّيحُ وَتَوَقَّفَتْ تَمَاماً، وَلَمْ يَجِدِ الإِنْسَانُ هَوَاءً يَتَنَفَّسُهُ، ضَعُفَ، وَأَدَّى بِهِ الضَّعْفُ إِلَى الهَلَاكِ." },
+  alqat_madina: { title:"أَلْقَتْ بِهِ إِلَيْكُمْ مَدِينَتُهُ الحَصِينَةُ", type:"بلاغة", definition:"تَعْبِيرٌ يَدُلُّ عَلَى فَقْدِ القُوَّةِ وَالأَمَانِ وَالتَّعَرُّضِ لِلضَّعْفِ، فَإِلْقَاءُ هٰذِهِ المَدِينَةِ بِمَنْ فِيهَا بَعِيداً عَنْهَا يُفْقِدُهُمْ صِفَةَ القُوَّةِ، وَكَأَنَّهُمْ صَيْدٌ سَهْلٌ." },
+
+  // -------- شخصيات وأماكن وأحداث ذُكرت في المادة --------
+  tariq:      { title:"طَارِقُ بْنُ زِيَادٍ", type:"شخصية", definition:"طَارِقُ بْنُ زِيَادٍ اللَّيْثِيُّ (٥٠-١٠٢هـ / ٦٧٠-٧٢٠م)، انْتَخَبَهُ مُوسَى بْنُ نُصَيْرٍ لِقِيَادَةِ جَيْشِ المُسْلِمِينَ لِغَزْوِ الأَنْدَلُسِ، فَقَادَ الجَيْشَ قِيَادَةَ شَجَاعَةٍ حَتَّى تَمَكَّنَ مِنْ قَتْلِ مَلِكِ القُوطِ لُوذَرِيقَ، وَفَتَحَ طُلَيْطِلَةَ عَاصِمَةَ الأَنْدَلُسِ آنَذَاكَ." },
+  musa:       { title:"مُوسَى بْنُ نُصَيْرٍ", type:"شخصية", definition:"كَانَ قَائِدُ المُسْلِمِينَ عَلَى شَمَالِ إِفْرِيقِيَا مِنْ قِبَلِ الوَلِيدِ بْنِ عَبْدِ المَلِكِ. رَحَّبَ بِعَرْضِ يُولِيَان، وَأَرْسَلَ أَوَّلَ جَيْشٍ سَنَةَ ٩١هـ، ثُمَّ أَرْسَلَ جَيْشَ طَارِقِ بْنِ زِيَادٍ سَنَةَ ٩٢هـ." },
+  yulian:     { title:"يُولِيَان", type:"شخصية", definition:"حَاكِمُ «سَبْتَةَ»، شَجَّعَ عَلَى الفَتْحِ وَعَرَضَ أَنْ يُسَلِّمَ سَبْتَةَ وَيُسَاعِدَ عَلَى الفَتْحِ. وَقِيلَ إِنَّ سَبَبَ ذٰلِكَ هُوَ النِّزَاعُ الشَّدِيدُ بَيْنَهُ وَبَيْنَ لُوذَرِيقَ مَلِكِ القُوطِ." },
+  luthariq:   { title:"لُوذَرِيقُ", type:"شخصية", definition:"مَلِكُ القُوطِ، أَعَدَّ جَيْشاً عَظِيماً قِيلَ إِنَّهُ بَلَغَ أَرْبَعِينَ أَلْفاً لِلِقَاءِ طَارِقٍ، وَانْتَهَتِ المَعْرَكَةُ بِانْتِصَارِ المُسْلِمِينَ عَلَيْهِ." },
+  waleed:     { title:"الوَلِيدُ بْنُ عَبْدِ المَلِكِ", type:"شخصية", definition:"مَنْ كَانَ مُوسَى بْنُ نُصَيْرٍ قَائِداً مِنْ قِبَلِهِ. اسْتَدْعَى مُوسَى وَطَارِقاً بَعْدَ الخِلَافِ بَيْنَهُمَا، وَأَصْلَحَ بَيْنَهُمَا." },
+  qut:        { title:"القُوطُ", type:"شخصية", definition:"القَوْمُ الَّذِينَ كَانُوا يَحْكُمُونَ الأَنْدَلُسَ قَبْلَ الفَتْحِ الإِسْلَامِيِّ، وَكَانَ مَلِكُهُمْ لُوذَرِيقَ. هُزِمُوا فِي مَعْرَكَةٍ كَبِيرَةٍ أَمَامَ جَيْشِ طَارِقٍ رَغْمَ أَنَّهُمْ كَانُوا أَكْثَرَ عَدَداً وَعُدَّةً." },
+  sabta:      { title:"سَبْتَةُ", type:"مكان", definition:"المَدِينَةُ الَّتِي كَانَ يَحْكُمُهَا يُولِيَان، وَعَرَضَ تَسْلِيمَهَا وَالمُسَاعَدَةَ عَلَى فَتْحِ الأَنْدَلُسِ." },
+  jabal_tariq:{ title:"جَبَلُ طَارِقٍ", type:"مكان", definition:"المَكَانُ الَّذِي نَزَلَ عَلَيْهِ طَارِقٌ بَعْدَ عُبُورِ المَضِيقِ عَلَى سُفُنِ يُولِيَان." },
+  tulaytila:  { title:"طُلَيْطِلَةُ", type:"مكان", definition:"العَاصِمَةُ القُوطِيَّةُ، اتَّجَهَ إِلَيْهَا طَارِقٌ بِأَكْثَرِ الجَيْشِ فَدَخَلَهَا، وَأَسَّسَ فِيهَا دَوْلَةَ المُسْلِمِينَ فِي الأَنْدَلُسِ." },
+  sharish:    { title:"شَرِيشُ", type:"مكان", definition:"سُهُولٌ قُرْبَ مَدِينَةِ قَادِسَ، الْتَقَى فِيهَا جَيْشُ طَارِقٍ بِجَيْشِ لُوذَرِيقَ فِي المَعْرَكَةِ الحَاسِمَةِ." },
+  qadis:      { title:"قَادِسُ", type:"مكان", definition:"مَدِينَةٌ أَسْبَانِيَّةٌ قُرْبَ سُهُولِ شَرِيشَ، حَيْثُ دَارَتِ المَعْرَكَةُ الكُبْرَى بَيْنَ المُسْلِمِينَ وَالقُوطِ." },
+  andalus:    { title:"الأَنْدَلُسُ", type:"مكان", definition:"شِبْهُ جَزِيرَةٍ تَقَعُ فِي الجَنُوبِ الغَرْبِيِّ مِنْ أُورُوبَّا، تَطُوفُ بِهَا المِيَاهُ مِنْ جَوَانِبِهَا إِلَّا مِنَ الشَّمَالِ الشَّرْقِيِّ. فَتَحَهَا المُسْلِمُونَ سَنَةَ ٩٢هـ / ٧١١م." },
+  madiq_event:{ title:"عُبُورُ المَضِيقِ", type:"حدث", definition:"عَبَرَ طَارِقٌ بِجَيْشِهِ الَّذِي بَلَغَ اثْنَيْ عَشَرَ أَلْفَ مُقَاتِلٍ المَضِيقَ الَّذِي سُمِّيَ فِيمَا بَعْدُ بِاسْمِهِ، عَلَى سُفُنِ يُولِيَان، وَنَزَلَ عَلَى جَبَلِ طَارِقٍ." },
+  ships_event:{ title:"إِحْرَاقُ السُّفُنِ", type:"حدث", definition:"نُسِبَ إِلَى طَارِقٍ أَنَّهُ أَحْرَقَ السُّفُنَ الَّتِي عَبَرَ بِهَا إِلَى الشَّاطِئِ الأَنْدَلُسِيِّ، حَتَّى لَا يَجِدَ جُنْدُهُ أَمَامَهُمْ سَبِيلاً إِلَّا قِتَالَ عَدُوِّهِمْ وَالاِنْتِصَارَ عَلَيْهِ." },
+  khutba_event:{ title:"الخُطْبَةُ", type:"حدث", definition:"قِيلَ: إِنَّ طَارِقاً خَطَبَ فِي جُيُوشِهِ خُطْبَةً أَثَارَتْ مَشَاعِرَهُمْ، وَأَشْعَلَتْ حَمَاسَتَهُمْ، فَتَمَكَّنُوا مِنَ الاِنْتِصَارِ عَلَى أَعْدَائِهِمْ مِنَ القُوطِ الَّذِينَ كَانُوا أَكْثَرَ مِنْهُمْ عَدَداً وَعُدَّةً. وَقَدْ نُسِبَتْ هٰذِهِ الخُطْبَةُ إِلَى طَارِقِ بْنِ زِيَادٍ." }
+};
+
+
+function T(key, label){
+  return '<span class="term" data-def="'+key+'" tabindex="0" role="button">'+label+'</span>';
+}
+function esc(s){ return s; }
+
+
+function bgHTML(assetKey, opts){
+  opts = opts || {};
+  const drift = opts.drift !== false ? " drift" : "";
+  return (
+    '<div class="slide-bg'+drift+'" data-asset="'+assetKey+'">'+
+      '<div class="fallback"></div>'+
+      '<img alt="" data-src="'+ASSETS[assetKey]+'">'+
+      '<div class="overlay"></div>'+
+    '</div>'
+  );
+}
+
+/* ==================================================================
+   SLIDE CONTENT
+   ================================================================== */
+const SLIDES = [
+
+{ // 1 — الغلاف
+  id:"cover", cls:"slide-cover", transition:"zoom",
+  bg:()=>bgHTML("hero",{overlay:"linear-gradient(0deg, rgba(13,11,9,.95) 4%, rgba(13,11,9,.35) 46%, rgba(13,11,9,.55) 100%)"}),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="eyebrow reveal">الأَدَبُ الأَنْدَلُسِيُّ — دِرَاسَةٌ فِي النَّصِّ</div>'+
+      '<h1 class="reveal">الأَدَبُ الأَنْدَلُسِيُّ</h1>'+
+      '<div class="sub reveal">مِنْ خُطْبَةِ '+T("tariq","طَارِقِ بْنِ زِيَادٍ")+' عِنْدَ فَتْحِ '+T("andalus","الأَنْدَلُسِ")+'</div>'+
+      '<div class="yr reveal">٩٢ هـ  —  ٧١١ م</div>'+
+    '</div>'+
+    '<div class="start-hint"><span>مرّر أو اضغط للمتابعة</span><span class="chev"></span></div>'
+  )
+},
+
+{ // 2 — بلاد الأندلس
+  id:"geo", transition:"mask",
+  bg:()=>bgHTML("map"),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">التَّقْدِيمُ</div>'+
+      '<h2 class="t-xl reveal">بِلَادُ '+T("andalus","الأَنْدَلُسِ")+'</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">شِبْهُ جَزِيرَةٍ تَقَعُ فِي الجَنُوبِ الغَرْبِيِّ مِنْ أُورُوبَّا، تَطُوفُ بِهَا المِيَاهُ مِنْ جَوَانِبِهَا إِلَّا مِنَ الشَّمَالِ الشَّرْقِيِّ.</p>'+
+        '<p class="t-sm reveal">أَقَالِيمُهَا الجَنُوبِيَّةُ وَالشَّرْقِيَّةُ وَالغَرْبِيَّةُ الَّتِي أَقَامَ فِيهَا المُسْلِمُونَ سُهُولٌ خَصْبَةٌ، كَثِيرَةُ الأَنْهَارِ، مُعْتَدِلَةُ الهَوَاءِ.</p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 3 — بداية الفتح
+  id:"begin", transition:"push",
+  bg:()=>bgHTML("strait",{drift:false}),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">٩١ هـ</div>'+
+      '<h2 class="t-xl reveal">بِدَايَةُ الفَتْحِ</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">كَانَ قَائِدُ المُسْلِمِينَ عَلَى شَمَالِ إِفْرِيقِيَا '+T("musa","مُوسَى بْنَ نُصَيْرٍ")+' مِنْ قِبَلِ '+T("waleed","الوَلِيدِ بْنِ عَبْدِ المَلِكِ")+'.</p>'+
+        '<p class="t-sm reveal">شَجَّعَهُ عَلَى الفَتْحِ '+T("yulian","يُولِيَان")+' حَاكِمُ '+T("sabta","سَبْتَةَ")+'، حَيْثُ عَرَضَ أَنْ يُسَلِّمَهُ سَبْتَةَ وَيُسَاعِدَهُ عَلَى الفَتْحِ. وَقِيلَ إِنَّ سَبَبَ ذٰلِكَ: النِّزَاعُ الشَّدِيدُ بَيْنَ يُولِيَان وَ'+T("luthariq","لُوذَرِيقَ")+' مَلِكِ '+T("qut","القُوطِ")+'.</p>'+
+        '<p class="t-sm reveal">رَحَّبَ مُوسَى بْنُ نُصَيْرٍ بِهٰذَا العَرْضِ، وَأَرْسَلَ أَوَّلَ جَيْشٍ إِلَيْهَا سَنَةَ ٩١هـ، فَعَادَ يَبُثُّ الطُّمَأْنِينَةَ فِي قَلْبِهِ وَيُشَجِّعُهُ عَلَى الفَتْحِ.</p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 4 — عبور المضيق
+  id:"cross", transition:"depth",
+  bg:()=>bgHTML("strait"),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">٩٢ هـ  /  ٧١١ م</div>'+
+      '<h2 class="t-xl reveal">'+T("madiq_event","عُبُورُ المَضِيقِ")+'</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">أَرْسَلَ مُوسَى بْنُ نُصَيْرٍ جَيْشاً مِنِ اثْنَيْ عَشَرَ أَلْفَ مُقَاتِلٍ (١٢٬٠٠٠) بِقِيَادَةِ '+T("tariq","طَارِقِ بْنِ زِيَادٍ")+'.</p>'+
+        '<p class="t-sm reveal">فَعَبَرَ طَارِقٌ بِجَيْشِهِ '+T("madiq","المَضِيقَ")+' الَّذِي سُمِّيَ فِيمَا بَعْدُ بِاسْمِهِ، عَلَى سُفُنِ يُولِيَان، وَنَزَلَ عَلَى '+T("jabal_tariq","جَبَلِ طَارِقٍ")+'.</p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 5 — المعركة الحاسمة
+  id:"battle", transition:"wipe",
+  bg:()=>bgHTML("battle"),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">المُوَاجَهَةُ</div>'+
+      '<h2 class="t-xl reveal">المَعْرَكَةُ الحَاسِمَةُ</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">هَزَمَ المُسْلِمُونَ كُلَّ الجُنُودِ الَّذِينَ تَعَرَّضُوا لَهُمْ عَلَى الشَّاطِئِ الأَسْبَانِيِّ.</p>'+
+        '<p class="t-sm reveal">وَصَلَ نَبَأُ طَارِقٍ وَجَيْشِهِ إِلَى مَلِكِ القُوطِ، فَأَعَدَّ جَيْشاً عَظِيماً وَأَسْرَعَ لِلِقَائِهِ فِي سُهُولِ '+T("sharish","شَرِيشَ")+' قُرْبَ مَدِينَةِ '+T("qadis","قَادِسَ")+'.</p>'+
+        '<p class="t-sm reveal">وَهُنَاكَ الْتَقَى الجَيْشَانِ فِي مَعْرَكَةٍ كَبِيرَةٍ انْتَهَتْ بِانْتِصَارِ المُسْلِمِينَ عَلَى '+T("qut","القُوطِ")+' انْتِصَاراً عَظِيماً.</p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 6 — تأسيس الدولة
+  id:"found", transition:"curtain",
+  bg:()=>bgHTML("architecture"),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">مَا بَعْدَ الاِنْتِصَارِ</div>'+
+      '<h2 class="t-xl reveal">تَأْسِيسُ الدَّوْلَةِ</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">أَرْسَلَ طَارِقٌ بَعْضَ قُوَّادِهِ لِفَتْحِ «قُرْطُبَةَ» وَ«غَرْنَاطَةَ» وَ«مَالَقَةَ» وَغَيْرِهَا مِنَ المُدُنِ وَالأَقَالِيمِ، فَفُتِحَتْ بِسُهُولَةٍ.</p>'+
+        '<p class="t-sm reveal">ثُمَّ اتَّجَهَ طَارِقٌ بِأَكْثَرِ الجَيْشِ إِلَى العَاصِمَةِ القُوطِيَّةِ '+T("tulaytila","طُلَيْطِلَةَ")+' فَدَخَلَهَا، وَأَسَّسَ دَوْلَةَ المُسْلِمِينَ فِي الأَنْدَلُسِ بَعْدَ انْتِصَارِهِمْ عَلَى القُوطِ.</p>'+
+        '<p class="t-sm reveal" style="color:var(--gold-soft);">وَقِيلَ: إِنَّ طَارِقاً خَطَبَ فِي جُيُوشِهِ '+T("khutba_event","خُطْبَةً")+' أَثَارَتْ مَشَاعِرَهُمْ، وَأَشْعَلَتْ حَمَاسَتَهُمْ، فَتَمَكَّنُوا مِنَ الاِنْتِصَارِ عَلَى أَعْدَائِهِمْ مِنَ القُوطِ الَّذِينَ كَانُوا أَكْثَرَ مِنْهُمْ عَدَداً وَعُدَّةً.</p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 7 — طارق بن زياد (الهوية)
+  id:"profile1", transition:"zoom",
+  bg:()=>bgHTML("portrait",{overlay:"linear-gradient(100deg, rgba(13,11,9,.94) 30%, rgba(13,11,9,.35) 100%)"}),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">قَائِلُ النَّصِّ</div>'+
+      '<h2 class="t-xl reveal">طَارِقُ بْنُ زِيَادٍ</h2>'+
+      '<div class="t-sm reveal" style="color:var(--gold-soft);margin-top:-.4cqw;">اللَّيْثِيُّ  ·  ٥٠ - ١٠٢ هـ  /  ٦٧٠ - ٧٢٠ م</div>'+
+      '<div class="stack" style="margin-top:1cqw;">'+
+        '<p class="lede t-md reveal">'+T("intakhaba","انْتَخَبَهُ")+' '+T("musa","مُوسَى بْنُ نُصَيْرٍ")+' لِقِيَادَةِ جَيْشِ المُسْلِمِينَ لِغَزْوِ الأَنْدَلُسِ، فَقَادَ الجَيْشَ قِيَادَةَ شَجَاعَةٍ حَتَّى تَمَكَّنَ مِنْ قَتْلِ مَلِكِ القُوطِ '+T("luthariq","لُوذَرِيقَ")+'.</p>'+
+      '</div>'+
+      '<div class="card-grid cards-2 reveal" style="margin-top:1.4cqw;max-width:60cqw;">'+
+        '<div class="card"><div class="num">٤٠٬٠٠٠</div><p style="font-size:.85em;">جَيْشُ لُوذَرِيقَ — قِيلَ إِنَّهُ بَلَغَ أَرْبَعِينَ أَلْفاً</p></div>'+
+        '<div class="card"><div class="num">١٢٬٠٠٠</div><p style="font-size:.85em;">جَيْشُ طَارِقٍ — لَا يَتَجَاوَزُ اثْنَيْ عَشَرَ أَلْفاً</p></div>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 8 — بين القيادة والخلاف
+  id:"profile2", transition:"dissolve",
+  bg:()=>bgHTML("manuscript"),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">بَعْدَ الفَتْحِ</div>'+
+      '<h2 class="t-xl reveal">بَيْنَ القِيَادَةِ وَالخِلَافِ</h2>'+
+      '<div class="stack" style="margin-top:.6cqw;">'+
+        '<p class="lede t-md reveal">تَمَكَّنَ طَارِقٌ مِنْ فَتْحِ '+T("tulaytila","طُلَيْطِلَةَ")+' عَاصِمَةِ الأَنْدَلُسِ آنَذَاكَ، ثُمَّ مَضَى فِي فَتْحِ البِلَادِ الأَنْدَلُسِيَّةِ مُخَالِفاً بِذٰلِكَ أَمْرَ قَائِدِهِ مُوسَى بْنِ نُصَيْرٍ، الَّذِي عَدَّ ذٰلِكَ مُغَامَرَةً وَمَعْصِيَةً.</p>'+
+        '<p class="t-sm reveal">فَقِيلَ: إِنَّهُ حَبَسَهُ بَعْدَ أَنْ أَبْعَدَهُ عَنِ القِيَادَةِ، ثُمَّ اسْتَدْعَاهُمَا '+T("waleed","الوَلِيدُ بْنُ عَبْدِ المَلِكِ")+' وَأَصْلَحَ بَيْنَهُمَا، وَعَادَ طَارِقٌ إِلَى قِيَادَةِ الجَيْشِ.</p>'+
+      '</div>'+
+      '<div class="stack reveal" style="margin-top:1.3cqw;padding-top:1.1cqw;border-top:1px solid var(--line);max-width:60cqw;">'+
+        '<p class="t-sm" style="color:var(--sand);">وَقَدْ نُسِبَتْ هٰذِهِ '+T("khutba_event","الخُطْبَةُ")+' إِلَى طَارِقِ بْنِ زِيَادٍ<span class="tag-word">نُسِبَتْ</span></p>'+
+        '<p class="t-sm" style="color:var(--sand);">كَمَا نُسِبَ إِلَيْهِ أَنَّهُ '+T("ships_event","أَحْرَقَ السُّفُنَ")+' الَّتِي عَبَرَ بِهَا إِلَى الشَّاطِئِ الأَنْدَلُسِيِّ، حَتَّى لَا يَجِدَ جُنْدُهُ أَمَامَهُمْ سَبِيلاً إِلَّا قِتَالَ عَدُوِّهِمْ وَالاِنْتِصَارَ عَلَيْهِ.<span class="tag-word">نُسِبَ</span></p>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 9 — أين المفر (النص أ-١)
+  id:"speechA1", cls:"slide-speech", transition:"mask",
+  bg:()=>bgHTML("manuscript",{overlay:"linear-gradient(200deg, rgba(13,11,9,.55), rgba(13,11,9,.9) 75%)"}),
+  body:()=>(
+    '<div class="speech-frame">'+
+      '<div class="speech-label reveal">النَّصُّ — بَعْدَ أَنْ حَمِدَ اللهَ وَأَثْنَى عَلَيْهِ قَالَ</div>'+
+      '<div class="speech-text">'+
+        '<div class="speech-hero reveal">«أَيُّهَا النَّاسُ: '+T("ayna_almafar","أَيْنَ المَفَرُّ؟")+'»</div>'+
+        '<div class="speech-body reveal" style="margin-top:1cqw;">البَحْرُ وَرَاءَكُمْ وَالعَدُوُّ أَمَامَكُمْ، وَلَيْسَ لَكُمْ وَاللهِ إِلَّا الصِّدْقُ وَالصَّبْرُ.</div>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 10 — أضيع من الأيتام (النص أ-٢)
+  id:"speechA2", cls:"slide-speech", transition:"push",
+  bg:()=>bgHTML("manuscript",{overlay:"linear-gradient(200deg, rgba(13,11,9,.55), rgba(13,11,9,.9) 75%)"}),
+  body:()=>(
+    '<div class="speech-frame">'+
+      '<div class="speech-label reveal">تَتِمَّةُ النَّصِّ (أ)</div>'+
+      '<div class="speech-text speech-body" style="max-width:84cqw;">'+
+        '<span class="reveal" style="display:block;">وَاعْلَمُوا أَنَّكُمْ فِي هٰذِهِ الجَزِيرَةِ '+T("adyaa_quote","أَضْيَعُ مِنَ الأَيْتَامِ فِي مَأْدُبَةِ اللِّئَامِ")+'، وَلَا '+T("aqwat","أَقْوَاتَ")+' لَكُمْ إِلَّا مَا تَسْتَخْلِصُونَهُ مِنْ أَيْدِي عَدُوِّكُمْ.</span>'+
+        '<span class="reveal" style="display:block;margin-top:.8cqw;">وَإِنِ امْتَدَّتِ الأَيَّامُ عَلَى '+T("iftaqara","اِفْتِقَارِكُمْ")+' وَلَمْ تُنْجِزُوا لَكُمْ أَمْراً '+T("dhahabat_reeh","ذَهَبَتْ رِيحُكُمْ")+'، وَتَعَوَّضَتِ القُلُوبُ مِنْ رُعْبِهَا مِنْكُمُ '+T("jarua","الجُرْأَةَ")+' عَلَيْكُمْ.</span>'+
+        '<span class="reveal" style="display:block;margin-top:.8cqw;">فَادْفَعُوا عَنْ أَنْفُسِكُمْ '+T("khadhlan","خَذْلَانَ")+' هٰذِهِ العَاقِبَةِ مِنْ أَمْرِكُمْ بِمُنَاجَزَةِ هٰذَا '+T("taghiya","الطَّاغِيَةِ")+'، فَقَدْ '+T("alqat_madina","أَلْقَتْ بِهِ إِلَيْكُمْ مَدِينَتُهُ الحَصِينَةُ")+'، وَإِنَّ انْتِهَازَ الفُرْصَةِ فِيهِ لَمُمْكِنٌ إِنْ سَمَحْتُمْ لِأَنْفُسِكُمْ بِالمَوْتِ.</span>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 11 — مشاركة الخطر (ب)
+  id:"speechB", cls:"slide-speech", transition:"curtain",
+  bg:()=>bgHTML("manuscript",{overlay:"linear-gradient(200deg, rgba(13,11,9,.55), rgba(13,11,9,.9) 75%)"}),
+  body:()=>(
+    '<div class="speech-frame">'+
+      '<div class="speech-label reveal">النَّصُّ (ب) — مُشَارَكَةُ الخَطَرِ</div>'+
+      '<div class="speech-text speech-body reveal" style="max-width:82cqw;">وَإِنِّي لَمْ أُحَذِّرْكُمْ أَمْراً أَنَا عَنْهُ بِ'+T("najwa","نَجْوَةٍ")+'، وَلَا حَمَلْتُكُمْ عَلَى خُطَّةٍ أَرْخَصُ مَتَاعٍ فِيهَا النُّفُوسُ — أَبْرَأُ مِنْهَا بِنَفْسِي.</div>'+
+      '<div class="speech-note reveal">بَيَانُ المَعْنَى: تَقْوِيَةُ عَزَائِمِهِمْ لِأَنَّهُ سَيُشَارِكُهُمْ كُلَّ أَمْرٍ أَشَارَ بِهِ عَلَيْهِمْ.</div>'+
+    '</div>'
+  )
+},
+
+{ // 12 — الصبر والفرج (ج)
+  id:"speechC", cls:"slide-speech", transition:"depth",
+  bg:()=>bgHTML("architecture",{overlay:"linear-gradient(200deg, rgba(13,11,9,.6), rgba(13,11,9,.92) 78%)"}),
+  body:()=>(
+    '<div class="speech-frame">'+
+      '<div class="speech-label reveal">النَّصُّ (ج) — الصَّبْرُ وَالفَرَجُ</div>'+
+      '<div class="speech-text speech-body reveal" style="max-width:82cqw;">وَاعْلَمُوا أَنَّكُمْ إِنْ صَبَرْتُمْ عَلَى الأَشَقِّ قَلِيلاً اسْتَمْتَعْتُمْ بِ'+T("arfah","الأَرْفَهِ")+' الطَّوِيلِ، فَلَا تَرْغَبُوا بِأَنْفُسِكُمْ عَنْ نَفْسِي، فَمَا حَظُّكُمْ فِيهِ بِأَوْفَى مِنْ حَظِّي.</div>'+
+      '<div class="speech-note reveal">بَيَانُ المَعْنَى: بَيَّنَ لَهُمْ أَنَّ الصَّبْرَ عَلَى الصَّعْبِ يُحَقِّقُ لَهُمْ مَا يُحِبُّونَ.</div>'+
+    '</div>'
+  )
+},
+
+{ // 13 — خصائص النص الأدبية
+  id:"features", transition:"wipe",
+  bg:()=>bgHTML("architecture"),
+  body:()=>(
+    '<div class="slide-body" style="justify-content:flex-start;padding-top:7cqw;">'+
+      '<div class="kicker reveal">قِرَاءَةٌ فِي الأُسْلُوبِ</div>'+
+      '<h2 class="t-xl reveal">خَصَائِصُ النَّصِّ الأَدَبِيَّةُ</h2>'+
+      '<div class="card-grid cards-2 reveal" style="margin-top:1.4cqw;">'+
+        '<div class="card"><h3>وُضُوحُ الأَلْفَاظِ</h3><p>أَلْفَاظُ هٰذِهِ الخُطْبَةِ وَاضِحَةٌ، وَمَا قَدْ يَكُونُ فِيهَا مِنْ كَلِمَاتٍ غَرِيبَةٍ يَسْتَطِيعُ القَارِئُ أَنْ يَفْهَمَهَا مِنَ السِّيَاقِ.</p></div>'+
+        '<div class="card"><h3>مُنَاسَبَةُ الأَفْكَارِ</h3><p>الأَفْكَارُ مُنَاسِبَةٌ لِمَوْضُوعِ الخُطْبَةِ، تَعْتَمِدُ عَلَى إِثَارَةِ الحَمَاسَةِ فِي نُفُوسِ الجُنْدِ، وَحَثِّهِمْ عَلَى سُرْعَةِ الهُجُومِ وَتَرْغِيبِهِمْ فِي المَوْتِ فِي سَبِيلِ اللهِ.</p></div>'+
+        '<div class="card"><h3>الحَثُّ وَالإِقْنَاعُ</h3><p>جَمَعَتِ الخُطْبَةُ بَيْنَ حَثِّ الخَطِيبِ المُحَارِبِينَ وَحَضِّهِمْ عَلَى الشَّجَاعَةِ، وَبَيْنَ '+T("iqnaa","إِقْنَاعِهِمْ")+' بِأُسْلُوبِ القَائِدِ الحَازِمِ، فَبَيَّنَ أَنَّ فِرَارَهُمْ لَيْسَ نَجَاةً بَلْ هُوَ الهَلَاكُ عَيْنُهُ.</p></div>'+
+        '<div class="card"><h3>أَدَوَاتُ التَّأْثِيرِ</h3><p>اسْتَعَانَ الخَطِيبُ لِلتَّأْثِيرِ بِقِصَرِ الجُمَلِ، وَاخْتِيَارِ الأَلْفَاظِ المُلَائِمَةِ، وَالمُزَاوَجَةِ بَيْنَ الأَسَالِيبِ الخَبَرِيَّةِ وَالإِنْشَائِيَّةِ.</p></div>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 14 — الصور البلاغية
+  id:"rhetoric", transition:"zoom",
+  bg:()=>bgHTML("manuscript"),
+  body:()=>(
+    '<div class="slide-body" style="justify-content:flex-start;padding-top:7cqw;">'+
+      '<div class="kicker reveal">أَمْثِلَةٌ مِنَ النَّصِّ</div>'+
+      '<h2 class="t-xl reveal">الصُّوَرُ البَلَاغِيَّةُ</h2>'+
+      '<div class="card-grid cards-2 reveal" style="margin-top:1.4cqw;">'+
+        '<div class="card rhet-card" data-def="ayna_almafar"><div class="q">أَيْنَ المَفَرُّ؟</div><div class="hint-open">اضغط لعرض الشرح</div></div>'+
+        '<div class="card rhet-card" data-def="adyaa_quote"><div class="q">أَضْيَعُ مِنَ الأَيْتَامِ فِي مَأْدُبَةِ اللِّئَامِ</div><div class="hint-open">اضغط لعرض الشرح</div></div>'+
+        '<div class="card rhet-card" data-def="dhahabat_reeh"><div class="q">ذَهَبَتْ رِيحُكُمْ</div><div class="hint-open">اضغط لعرض الشرح</div></div>'+
+        '<div class="card rhet-card" data-def="alqat_madina"><div class="q">أَلْقَتْ بِهِ إِلَيْكُمْ مَدِينَتُهُ الحَصِينَةُ</div><div class="hint-open">اضغط لعرض الشرح</div></div>'+
+      '</div>'+
+    '</div>'
+  )
+},
+
+{ // 15 — المفردات
+  id:"vocab", transition:"push",
+  bg:()=>bgHTML("manuscript"),
+  body:()=>{
+    const groups = [
+      ["arfah","ashrar","adyaa","aqwat","iqnaa","aytam","tabaa","taawwud"],
+      ["jarua","hasina","hamasa","khadhlan","ruub","rafaha","silaa","shawatee"],
+      ["taghiya","iftaqara","liaam","maduba","madiq","maniaa","intakhaba","najwa","huroub"]
+    ];
+    let tabs = groups.map((g,i)=>'<button class="vocab-tab'+(i===0?' is-on':'')+'" data-vg="'+i+'">المَجْمُوعَةُ '+(["الأُولَى","الثَّانِيَةُ","الثَّالِثَةُ"][i])+'</button>').join("");
+    let items = groups.map((g,i)=>{
+      let pills = g.map(k=>'<button class="vocab-pill" data-def="'+k+'">'+DEFINITIONS[k].title+'</button>').join("");
+      return '<div class="vocab-item'+(i===0?' is-on':'')+'" data-vgi="'+i+'"><div class="vocab-grid">'+pills+'</div></div>';
+    }).join("");
+    return (
+      '<div class="slide-body" style="justify-content:flex-start;padding-top:6.4cqw;">'+
+        '<div class="kicker reveal">٢٥ كَلِمَةً</div>'+
+        '<h2 class="t-xl reveal" style="margin-bottom:.6cqw;">شَرْحُ المُفْرَدَاتِ</h2>'+
+        '<div class="vocab-tabs reveal">'+tabs+'</div>'+
+        items+
+      '</div>'
+    );
+  }
+},
+
+{ // 16 — الخلاصة
+  id:"summary", transition:"dissolve",
+  bg:()=>bgHTML("closing",{overlay:"linear-gradient(0deg, rgba(13,11,9,.96) 10%, rgba(13,11,9,.45) 55%, rgba(13,11,9,.75) 100%)"}),
+  body:()=>(
+    '<div class="slide-body">'+
+      '<div class="kicker reveal">الخُلَاصَةُ</div>'+
+      '<h2 class="t-xl reveal">مِنَ التَّارِيخِ إِلَى الأَدَبِ</h2>'+
+      '<div class="chain reveal">'+
+        '<span>الفَتْحُ ٩٢هـ</span><i>←</i><span>الخُطْبَةُ</span><i>←</i><span>الإِقْنَاعُ</span><i>←</i><span>البَلَاغَةُ</span><i>←</i><span>الأَدَبُ الأَنْدَلُسِيُّ</span>'+
+      '</div>'+
+      '<p class="lede t-md reveal" style="max-width:74cqw;">وَقِيلَ: إِنَّ طَارِقاً خَطَبَ فِي جُيُوشِهِ خُطْبَةً أَثَارَتْ مَشَاعِرَهُمْ، وَأَشْعَلَتْ حَمَاسَتَهُمْ، فَتَمَكَّنُوا مِنَ الاِنْتِصَارِ عَلَى أَعْدَائِهِمْ مِنَ القُوطِ الَّذِينَ كَانُوا أَكْثَرَ مِنْهُمْ عَدَداً وَعُدَّةً.</p>'+
+    '</div>'
+  )
+}
+
+];
+
+
+/* ==================================================================
+   STATE + ELEMENTS
+   ================================================================== */
+const state = { currentSlide:0, isTransitioning:false, isModalOpen:false, isGridOpen:false, isPresenter:false, isPlaying:false, isFullscreen:false, ts:1 };
+const els = {};
+["startScreen","startBtn","startBg","stRoute","slideHost","controls","btnPrev","btnNext","btnMusic","btnFullscreen","btnTsUp","btnTsDown","btnGrid","btnPresent","slideCounter","modalLayer","modalCard","modalType","modalTitle","modalBody","modalClose","termHint","debugOverlay","canvas","gridLayer","gridBody","gridClose","route","rtFill","rtMark","pbarFill","pmini","fx"].forEach(function(id){ els[id] = document.getElementById(id); });
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const ARABIC_DIGITS = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
+function toArabicNum(n){ return String(n).split("").map(d=>ARABIC_DIGITS[+d] || d).join(""); }
+
+/* card width (cqw), image blur (px), and side (r = right, l = left) per slide */
+const LAY = {
+  cover:{w:86,b:2}, geo:{w:62,b:4,s:"r"}, begin:{w:78,b:5,s:"l"}, cross:{w:62,b:3,s:"r"},
+  battle:{w:68,b:4,s:"l"}, found:{w:78,b:5,s:"r"}, profile1:{w:68,b:3,s:"l"}, profile2:{w:80,b:5,s:"r"},
+  speechA1:{w:84,b:7}, speechA2:{w:88,b:8}, speechB:{w:82,b:8}, speechC:{w:82,b:8},
+  features:{w:88,b:6,wide:1}, rhetoric:{w:88,b:6,wide:1}, vocab:{w:88,b:6,wide:1}, summary:{w:76,b:3}
+};
+const ROUTE_KEYS = ["sabta","jabal_tariq","sharish","tulaytila"];
+const ROUTE_SLIDES = [2,3,4,5];
+
+/* ==================================================================
+   BUILD SLIDES (pre-rendered, hidden)
+   ================================================================== */
+const slideEls = [], assetKeys = [];
+function buildSlides(){
+  const frag = document.createDocumentFragment();
+  SLIDES.forEach((s, i)=>{
+    const el = document.createElement("div");
+    const L = LAY[s.id] || {};
+    el.className = "slide " + (s.cls||"") + (L.wide ? " lay-wide" : "") + " tr-" + s.transition;
+    el.dataset.index = i;
+    el.dataset.id = s.id;
+    el.style.setProperty("--cw", (L.w||80)+"cqw");
+    el.style.setProperty("--bb", (L.b||5)+"px");
+    if(L.s) el.style.setProperty("--jc", L.s==="r" ? "flex-start" : "flex-end");
+    const bg = s.bg();
+    const m = /data-asset="(\w+)"/.exec(bg);
+    assetKeys[i] = m && m[1];
+    el.innerHTML = bg + s.body();
+    frag.appendChild(el);
+    slideEls.push(el);
+  });
+  els.slideHost.appendChild(frag);
+  els.startBg.innerHTML = bgHTML("hero",{drift:false});
+  els.stRoute.innerHTML = ROUTE_KEYS.map(k=>"<span>"+DEFINITIONS[k].title+"</span>").join("<i>←</i>");
+  els.route.insertAdjacentHTML("beforeend", ROUTE_KEYS.map((k,j)=>'<button class="rt-node" data-s="'+ROUTE_SLIDES[j]+'" aria-label="'+DEFINITIONS[k].title+'"><i></i><span>'+DEFINITIONS[k].title+'</span></button>').join(""));
+  updateUI(0);
+}
+
+/* Lazy / preload image loading with graceful fallback */
+function loadImgIn(el){
+  const img = el && el.querySelector(".slide-bg img");
+  if(!img || img.dataset.loaded) return;
+  img.dataset.loaded = "1";
+  const src = img.getAttribute("data-src");
+  const probe = new Image();
+  probe.onload = ()=>{ img.src = src; img.classList.add("is-loaded"); };
+  probe.onerror = ()=>{ if(DEBUG) markAssetMissing(el.dataset.id || "start"); };
+  probe.src = src;
+}
+function loadSlideImages(index){ loadImgIn(slideEls[index]); }
+function preloadNeighbors(index){
+  [index-1, index, index+1, index+2].forEach(i=>{
+    if(i>=0 && i<SLIDES.length) loadSlideImages(i);
+  });
+}
+
+/* ==================================================================
+   UI: counter, progress bar, route
+   ================================================================== */
+let curBg = null;
+function updateUI(i){
+  const n = SLIDES.length;
+  const label = toArabicNum(i+1) + " / " + toArabicNum(n);
+  els.slideCounter.textContent = label;
+  els.pmini.textContent = label;
+  els.pbarFill.style.transform = "scaleX(" + (i/(n-1)) + ")";
+  const pos = Math.max(0, Math.min(1, (i - ROUTE_SLIDES[0]) / (ROUTE_SLIDES[3]-ROUTE_SLIDES[0])));
+  els.rtFill.style.transform = "scaleX(" + pos + ")";
+  els.rtMark.style.right = (pos*100) + "%";
+  els.route.querySelectorAll(".rt-node").forEach((nd,j)=>{
+    nd.classList.toggle("is-on", i >= ROUTE_SLIDES[j]);
+    nd.classList.toggle("is-cur", i === ROUTE_SLIDES[j]);
+  });
+  curBg = slideEls[i] ? slideEls[i].querySelector(".slide-bg") : null;
+}
+
+/* ==================================================================
+   NAVIGATION
+   ================================================================== */
+function goTo(index, dir){
+  if(state.isTransitioning) return;
+  if(index < 0 || index >= SLIDES.length) return;
+  if(index === state.currentSlide) return;
+
+  const from = slideEls[state.currentSlide];
+  const to = slideEls[index];
+  const d = index > state.currentSlide ? 1 : -1;
+  state.isTransitioning = true;
+
+  [to, from].forEach(el=>{
+    el.style.setProperty("--d", d);
+    el.style.setProperty("--w0", d>0 ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)");
+  });
+  loadSlideImages(index);
+  to.classList.add("is-active");
+  from.classList.add("is-leaving");
+
+  const cleanup = ()=>{
+    from.classList.remove("is-active","is-leaving");
+    to.classList.remove("is-leaving");
+    state.currentSlide = index;
+    state.isTransitioning = false;
+    updateUI(index);
+    preloadNeighbors(index);
+    updateDebug();
+  };
+
+  let done = 0;
+  const onEnd = (e)=>{
+    if(e.target !== to && e.target !== from) return;
+    done++;
+    if(done >= 2){
+      to.removeEventListener("animationend", onEnd);
+      from.removeEventListener("animationend", onEnd);
+      cleanup();
+    }
+  };
+  to.addEventListener("animationend", onEnd);
+  from.addEventListener("animationend", onEnd);
+  // safety fallback in case one animation event doesn't fire
+  setTimeout(()=>{ if(state.isTransitioning) cleanup(); }, 1400);
+}
+
+function next(){ goTo(state.currentSlide+1, 1); }
+function prev(){ goTo(state.currentSlide-1, -1); }
+
+/* ==================================================================
+   AUDIO CONTROLLER
+   ================================================================== */
+const AudioCtl = (function(){
+  let audio = null;
+  let enabled = true;
+  function ensure(){
+    if(audio) return audio;
+    audio = new Audio();
+    audio.src = AUDIO_CONFIG.src;
+    audio.loop = AUDIO_CONFIG.loop;
+    audio.volume = AUDIO_CONFIG.volume;
+    audio.preload = "auto";
+    audio.addEventListener("error", ()=>{ if(DEBUG) console.warn("تعذّر تحميل الموسيقى"); });
+    return audio;
+  }
+  function play(){
+    try{
+      const a = ensure();
+      const p = a.play();
+      if(p && p.catch) p.catch(()=>{ /* منع التشغيل التلقائي من المتصفح، سيُحاول لاحقاً بتفاعل المستخدم */ });
+      state.isPlaying = true;
+      updateMusicBtn();
+    }catch(err){ if(DEBUG) console.warn(err); }
+  }
+  function pause(){
+    try{ if(audio) audio.pause(); }catch(err){}
+    state.isPlaying = false;
+    updateMusicBtn();
+  }
+  function toggle(){
+    if(!enabled) return;
+    if(state.isPlaying) pause(); else play();
+  }
+  return { play, pause, toggle };
+})();
+
+function updateMusicBtn(){
+  els.btnMusic.classList.toggle("is-off", !state.isPlaying);
+}
+
+
+/* ==================================================================
+   BOTTOM SHEET / DEFINITIONS
+   ================================================================== */
+function openDefinition(key){
+  const def = DEFINITIONS[key];
+  if(!def) return;
+  els.modalType.textContent = def.type;
+  els.modalTitle.textContent = def.title;
+  els.modalBody.textContent = def.definition;
+  els.modalCard.scrollTop = 0;
+  els.modalLayer.classList.add("is-open");
+  state.isModalOpen = true;
+  try{ els.modalClose.focus({preventScroll:true}); }catch(err){}
+  updateDebug();
+}
+function closeDefinition(){
+  els.modalLayer.classList.remove("is-open");
+  state.isModalOpen = false;
+  updateDebug();
+}
+
+let hintShown = false;
+function maybeShowHint(){
+  if(hintShown) return;
+  hintShown = true;
+  els.termHint.classList.add("is-on");
+  setTimeout(()=>{ els.termHint.classList.remove("is-on"); }, 3200);
+}
+
+/* ==================================================================
+   SLIDE GRID
+   ================================================================== */
+function buildGrid(){
+  if(els.gridBody.children.length) return;
+  SLIDES.forEach((s,i)=>{
+    const b = document.createElement("button");
+    b.className = "thumb"; b.dataset.i = i;
+    const h = slideEls[i].querySelector("h2,h1,.speech-label");
+    b.innerHTML = '<div class="th-img" style="background-image:url(\''+ASSETS[assetKeys[i]]+'\')"></div><span class="th-n">'+toArabicNum(i+1)+'</span><span class="th-t"></span>';
+    b.querySelector(".th-t").textContent = h ? h.textContent : "";
+    els.gridBody.appendChild(b);
+  });
+}
+function openGrid(){
+  buildGrid();
+  els.gridBody.querySelectorAll(".thumb").forEach((t,i)=>t.classList.toggle("is-cur", i===state.currentSlide));
+  els.gridLayer.classList.add("is-open");
+  state.isGridOpen = true;
+}
+function closeGrid(){ els.gridLayer.classList.remove("is-open"); state.isGridOpen = false; }
+
+/* ==================================================================
+   TEXT SIZE + PRESENTER MODE
+   ================================================================== */
+function applyTS(){ els.canvas.style.setProperty("--ts", (state.ts * (state.isPresenter ? 1.1 : 1)).toFixed(2)); }
+function changeTS(delta){
+  state.ts = Math.max(.8, Math.min(1.5, Math.round((state.ts+delta)*10)/10));
+  applyTS();
+}
+function togglePresenter(force){
+  state.isPresenter = force === undefined ? !state.isPresenter : force;
+  document.body.classList.toggle("presenter", state.isPresenter);
+  applyTS();
+  if(!state.isPresenter) showControls();
+}
+
+/* ==================================================================
+   EVENTS
+   ================================================================== */
+document.addEventListener("click", function(e){
+  const termEl = e.target.closest("[data-def]");
+  if(termEl){
+    e.stopPropagation();
+    openDefinition(termEl.getAttribute("data-def"));
+    return;
+  }
+  if(e.target === els.modalLayer){ closeDefinition(); }
+  if(e.target === els.gridLayer){ closeGrid(); }
+  const th = e.target.closest(".thumb");
+  if(th){ const i = +th.dataset.i; closeGrid(); setTimeout(()=>goTo(i), 220); return; }
+  const rn = e.target.closest(".rt-node");
+  if(rn){ goTo(+rn.dataset.s); }
+});
+els.modalClose.addEventListener("click", closeDefinition);
+els.gridClose.addEventListener("click", closeGrid);
+document.addEventListener("pointerover", function(e){
+  if(e.target.closest && e.target.closest(".term, .vocab-pill, .rhet-card")) maybeShowHint();
+});
+els.slideHost.addEventListener("click", function(e){
+  if(e.target.closest && e.target.closest(".term, .vocab-pill, .rhet-card")) maybeShowHint();
+});
+
+/* vocab tabs */
+els.slideHost.addEventListener("click", function(e){
+  const tab = e.target.closest(".vocab-tab");
+  if(!tab) return;
+  const scope = tab.closest(".slide-body");
+  const idx = tab.getAttribute("data-vg");
+  scope.querySelectorAll(".vocab-tab").forEach(t=>t.classList.toggle("is-on", t===tab));
+  scope.querySelectorAll(".vocab-item").forEach(it=>it.classList.toggle("is-on", it.getAttribute("data-vgi")===idx));
+});
+
+els.btnNext.addEventListener("click", next);
+els.btnPrev.addEventListener("click", prev);
+els.btnMusic.addEventListener("click", ()=>AudioCtl.toggle());
+els.btnFullscreen.addEventListener("click", toggleFullscreen);
+els.btnTsUp.addEventListener("click", ()=>changeTS(.1));
+els.btnTsDown.addEventListener("click", ()=>changeTS(-.1));
+els.btnGrid.addEventListener("click", openGrid);
+els.btnPresent.addEventListener("click", ()=>togglePresenter(true));
+els.pmini.addEventListener("click", ()=>togglePresenter(false));
+
+document.addEventListener("keydown", function(e){
+  const ae = document.activeElement;
+  const onTerm = ae && ae.hasAttribute && ae.hasAttribute("data-def");
+  if((e.key === "Enter" || e.key === " ") && onTerm){
+    e.preventDefault();
+    openDefinition(ae.getAttribute("data-def"));
+    return;
+  }
+  if(e.key === "m" || e.key === "M"){ AudioCtl.toggle(); return; }
+  if(!document.body.classList.contains("started")){
+    if(e.key === "Enter" || e.key === " "){ e.preventDefault(); els.startBtn.click(); }
+    return;
+  }
+  if(state.isModalOpen){
+    if(e.key === "Escape") closeDefinition();
+    return;
+  }
+  if(state.isGridOpen){
+    if(e.key === "Escape" || e.key === "g" || e.key === "G") closeGrid();
+    return;
+  }
+  switch(e.key){
+    case "ArrowRight": next(); break;
+    case "ArrowLeft": prev(); break;
+    case " ": e.preventDefault(); next(); break;
+    case "Enter":
+      if(!(ae && ae.tagName === "BUTTON")) next();
+      break;
+    case "Home": goTo(0); break;
+    case "End": goTo(SLIDES.length-1); break;
+    case "Escape":
+      if(state.isPresenter) togglePresenter(false);
+      else if(state.isFullscreen) exitFullscreen();
+      break;
+    case "f": case "F": toggleFullscreen(); break;
+    case "p": case "P": togglePresenter(); break;
+    case "g": case "G": openGrid(); break;
+    case "+": case "=": changeTS(.1); break;
+    case "-": case "_": changeTS(-.1); break;
+  }
+});
+
+/* touch swipe (slides) + swipe-down (sheet) */
+let touchX = null, touchY = null;
+els.canvas.addEventListener("touchstart", function(e){
+  if(e.target.closest("[data-def], #controls, #route, #pmini, #modalLayer, #gridLayer, .vocab-tab")) { touchX = null; return; }
+  const t = e.changedTouches[0];
+  touchX = t.clientX; touchY = t.clientY;
+}, {passive:true});
+els.canvas.addEventListener("touchend", function(e){
+  if(touchX === null) return;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - touchX;
+  const dy = t.clientY - touchY;
+  touchX = null;
+  if(Math.abs(dx) < 46 || Math.abs(dx) < Math.abs(dy)*1.3) return;
+  if(dx < 0) next(); else prev();
+}, {passive:true});
+let sheetY = null;
+els.modalCard.addEventListener("touchstart", function(e){ sheetY = e.changedTouches[0].clientY; }, {passive:true});
+els.modalCard.addEventListener("touchend", function(e){
+  if(sheetY !== null && e.changedTouches[0].clientY - sheetY > 80 && els.modalCard.scrollTop <= 0) closeDefinition();
+  sheetY = null;
+}, {passive:true});
+
+/* auto-hide controls */
+let hideTimer = null;
+function showControls(){
+  if(state.isPresenter) return;
+  els.controls.classList.remove("is-dim");
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(()=>{ if(!state.isModalOpen && !state.isGridOpen) els.controls.classList.add("is-dim"); }, 3600);
+}
+["pointermove","pointerdown","touchstart"].forEach(ev=>{
+  document.addEventListener(ev, showControls, {passive:true});
+});
+
+/* lightweight parallax (pointer only; touch relies on image drift) */
+let px = 0, py = 0, rafP = 0;
+els.canvas.addEventListener("pointermove", function(e){
+  if(e.pointerType === "touch" || reduceMotion) return;
+  const r = els.canvas.getBoundingClientRect();
+  px = (e.clientX - r.left)/r.width - .5;
+  py = (e.clientY - r.top)/r.height - .5;
+  if(rafP) return;
+  rafP = requestAnimationFrame(function(){
+    rafP = 0;
+    if(curBg) curBg.style.transform = "translate3d("+(px*-2.4).toFixed(2)+"cqw,"+(py*-1.8).toFixed(2)+"cqw,0)";
+  });
+});
+
+/* ==================================================================
+   FULLSCREEN
+   ================================================================== */
+function toggleFullscreen(){
+  if(!document.fullscreenElement) requestFullscreen(); else exitFullscreen();
+}
+function requestFullscreen(){
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+  if(req) { try{ req.call(el); }catch(err){} }
+}
+function exitFullscreen(){
+  const ex = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+  if(ex) { try{ ex.call(document); }catch(err){} }
+}
+document.addEventListener("fullscreenchange", ()=>{
+  state.isFullscreen = !!document.fullscreenElement;
+});
+
+/* ==================================================================
+   START
+   ================================================================== */
+els.startBtn.addEventListener("click", function(){
+  document.body.classList.add("started");
+  els.startScreen.classList.add("is-hidden");
+  slideEls[0].classList.add("is-active");
+  preloadNeighbors(0);
+  AudioCtl.play();
+  showControls();
+  updateUI(0);
+  updateDebug();
+});
+
+/* ==================================================================
+   DUST / LIGHT PARTICLES (very subtle, throttled to ~30fps)
+   ================================================================== */
+(function(){
+  const c = els.fx, x = c.getContext("2d");
+  let W = 1, H = 1, last = 0;
+  const P = [];
+  const spr = document.createElement("canvas");
+  spr.width = spr.height = 32;
+  const g = spr.getContext("2d"), gr = g.createRadialGradient(16,16,0,16,16,16);
+  gr.addColorStop(0,"rgba(255,214,150,1)"); gr.addColorStop(.4,"rgba(240,150,70,.45)"); gr.addColorStop(1,"rgba(240,150,70,0)");
+  g.fillStyle = gr; g.fillRect(0,0,32,32);
+  function size(){
+    const r = els.canvas.getBoundingClientRect(), d = Math.min(window.devicePixelRatio||1, 1.5);
+    W = c.width = Math.max(1, r.width*d); H = c.height = Math.max(1, r.height*d);
+  }
+  function mk(init){ return { x:Math.random()*W, y:init ? Math.random()*H : H+20, s:(4+Math.random()*14)*(W/1280), v:.15+Math.random()*.4, a:.18+Math.random()*.5, p:Math.random()*6.28, w:.3+Math.random()*.7 }; }
+  size();
+  const N = window.matchMedia("(pointer:coarse)").matches ? 16 : 28;
+  for(let i=0;i<N;i++) P.push(mk(true));
+  function draw(t){
+    requestAnimationFrame(draw);
+    if(document.hidden || t-last < 33) return;
+    last = t;
+    x.clearRect(0,0,W,H);
+    for(const q of P){
+      q.y -= q.v*(W/1280);
+      q.x += Math.sin(t/1800+q.p)*.25*q.w;
+      if(q.y < -20) Object.assign(q, mk(false));
+      x.globalAlpha = q.a*(.55+.45*Math.sin(t/900+q.p));
+      x.drawImage(spr, q.x, q.y, q.s, q.s);
+    }
+  }
+  window.addEventListener("resize", size);
+  if(!reduceMotion) requestAnimationFrame(draw);
+})();
+
+/* ==================================================================
+   DEBUG MODE
+   ================================================================== */
+const missingAssets = new Set();
+function markAssetMissing(id){ missingAssets.add(id); updateDebug(); }
+function updateDebug(){
+  if(!DEBUG) return;
+  els.debugOverlay.classList.add("is-on");
+  const s = SLIDES[state.currentSlide];
+  els.debugOverlay.textContent =
+    "slide: " + s.id + " (" + (state.currentSlide+1) + "/" + SLIDES.length + ")\n" +
+    "transition: " + s.transition + "\n" +
+    "modal: " + state.isModalOpen + "\n" +
+    "playing: " + state.isPlaying + "\n" +
+    "fullscreen: " + state.isFullscreen + "\n" +
+    "missing assets: " + (Array.from(missingAssets).join(", ") || "—");
+}
+
+/* ==================================================================
+   GLOBAL ERROR SAFETY NET
+   ================================================================== */
+window.addEventListener("error", function(e){
+  if(DEBUG) console.warn("خطأ غير متوقع:", e.message);
+});
+window.addEventListener("unhandledrejection", function(e){
+  if(DEBUG) console.warn("خطأ Promise:", e.reason);
+});
+
+/* ==================================================================
+   INIT
+   ================================================================== */
+buildSlides();
+loadImgIn(els.startBg);
+updateDebug();
+
+})();
+</script>
+</body>
+</html>
