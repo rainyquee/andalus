@@ -7,7 +7,8 @@
 <meta name="description" content="عرض تقديمي تفاعلي عن الأدب الأندلسي: من خطبة طارق بن زياد عند فتح الأندلس">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
 <style>
 /* ===== RESET ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -40,17 +41,21 @@ button{font-family:inherit;border:none;background:none;cursor:pointer;color:inhe
 
 /* ===== SLIDES ===== */
 .slide{position:absolute;inset:0;display:flex;align-items:var(--ai,center);justify-content:var(--jc,center);padding:5.8cqw 4.2cqw 6.8cqw;color:var(--paper);opacity:0;visibility:hidden;pointer-events:none;overflow:hidden;}
-.slide.is-active{opacity:1;visibility:visible;pointer-events:auto;z-index:5;will-change:transform,opacity;}
-.slide.is-leaving{z-index:4;will-change:transform,opacity;}
+.slide:not(.is-active):not(.is-leaving){content-visibility:hidden;}
+.slide.is-active{opacity:1;visibility:visible;pointer-events:auto;z-index:5;}
+.slide.is-leaving{z-index:4;}
+.slide.is-settled{animation:none!important;}
 
-.slide-bg{position:absolute;inset:-3%;z-index:0;background:var(--ink);transition:transform .9s var(--ease-soft);}
+.slide-bg{position:absolute;inset:-3%;z-index:0;background:var(--ink);transition:transform .9s var(--ease-soft);contain:strict;}
+.bg-motion{position:absolute;inset:0;}
+.is-active .bg-motion,.is-leaving .bg-motion{will-change:transform;}
 .slide-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(var(--bb,5px)) saturate(.95) sepia(.18);opacity:0;transition:opacity .8s var(--ease);}
 .slide-bg img.is-loaded{opacity:1;}
 .slide-bg .fallback{position:absolute;inset:0;background:linear-gradient(160deg,#5b2a17,var(--ink) 58%,#a2452a 140%);}
 .slide-bg .overlay{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 108%,rgba(214,102,38,.36),transparent 60%),radial-gradient(ellipse at center,transparent 45%,rgba(15,6,3,.55)),linear-gradient(180deg,rgba(38,16,9,.5),rgba(26,11,7,.7));}
 .slide-bg::after{content:'';position:absolute;inset:0;background:var(--pat) 0 0/5.6cqw;opacity:.055;pointer-events:none;}
-.is-active .slide-bg.drift img,.is-leaving .slide-bg.drift img{animation:driftA 28s ease-out forwards;}
-.slide:nth-child(even) .slide-bg.drift img{animation-name:driftB!important;}
+.is-active .slide-bg.drift .bg-motion,.is-leaving .slide-bg.drift .bg-motion{animation:driftA 28s ease-out forwards;}
+.slide:nth-child(even) .slide-bg.drift .bg-motion{animation-name:driftB!important;}
 @keyframes driftA{from{scale:1.14;translate:1% .6%;}to{scale:1.04;translate:-1% -.6%;}}
 @keyframes driftB{from{scale:1.03;translate:-1% 0;}to{scale:1.13;translate:1% -.8%;}}
 
@@ -63,7 +68,6 @@ button{font-family:inherit;border:none;background:none;cursor:pointer;color:inhe
   background:linear-gradient(155deg,rgba(104,50,28,.58),rgba(46,21,13,.78) 62%,rgba(128,56,28,.5));
   border:1px solid rgba(240,201,143,.3);
   box-shadow:0 2.4cqw 6cqw rgba(10,3,1,.5),inset 0 1px 0 rgba(255,225,180,.16);
-  -webkit-backdrop-filter:blur(10px) saturate(1.12);backdrop-filter:blur(10px) saturate(1.12);
 }
 .slide-body::-webkit-scrollbar,.speech-frame::-webkit-scrollbar{display:none;}
 .slide-body::before,.slide-body::after,.speech-frame::before,.speech-frame::after{content:'';position:absolute;width:4cqw;height:4cqw;background:var(--corner) center/contain no-repeat;opacity:.8;pointer-events:none;}
@@ -105,6 +109,7 @@ button{font-family:inherit;border:none;background:none;cursor:pointer;color:inhe
 .slide-cover .yr{font-family:var(--f-ui);font-weight:500;color:var(--gold-soft);font-size:calc(clamp(.9rem,1.5cqw,1.2rem)*var(--ts));letter-spacing:.06em;}
 .start-hint{position:absolute;z-index:3;bottom:6.9cqw;left:50%;transform:translateX(-50%);font-family:var(--f-ui);color:var(--paper-dim);font-size:clamp(.72rem,1.1cqw,.9rem);display:flex;align-items:center;gap:.5em;opacity:.75;}
 .chev{width:.6em;height:.6em;border-left:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);animation:bob 1.6s ease-in-out infinite;}
+.slide:not(.is-active):not(.is-leaving) .chev{animation:none;}
 @keyframes bob{0%,100%{transform:rotate(-45deg) translateY(0);}50%{transform:rotate(-45deg) translateY(4px);}}
 
 /* speech slides */
@@ -131,7 +136,7 @@ button{font-family:inherit;border:none;background:none;cursor:pointer;color:inhe
 
 /* vocab */
 .vocab-tabs{display:flex;gap:.8cqw;flex-wrap:wrap;}
-.vocab-tab{font-family:var(--f-ui);font-weight:700;font-size:calc(clamp(.9rem,1.6cqw,1.3rem)*var(--ts));color:var(--paper-dim);padding:.5cqw 1.5cqw;border:1px solid var(--line);border-radius:999px;transition:all .2s var(--ease);}
+.vocab-tab{font-family:var(--f-ui);font-weight:700;font-size:calc(clamp(.9rem,1.6cqw,1.3rem)*var(--ts));color:var(--paper-dim);padding:.5cqw 1.5cqw;border:1px solid var(--line);border-radius:999px;transition:background-color .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease);}
 .vocab-tab.is-on{background:var(--amber);color:#2a1008;border-color:var(--amber);}
 .vocab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9cqw;}
 .vocab-item{display:none;}.vocab-item.is-on{display:block;}
@@ -149,8 +154,8 @@ button{font-family:inherit;border:none;background:none;cursor:pointer;color:inhe
 #startScreen{position:absolute;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:var(--ink);transition:opacity .9s var(--ease),visibility .9s;}
 #startScreen.is-hidden{opacity:0;visibility:hidden;pointer-events:none;}
 #startBg .slide-bg{--bb:3px;}
-#startBg .slide-bg img{animation:driftA 32s ease-in-out infinite alternate;}
-#startScreen.is-hidden #startBg img{animation:none;}
+#startBg .bg-motion{animation:driftA 32s ease-in-out infinite alternate;}
+#startScreen.is-hidden #startBg .bg-motion{animation:none;}
 #startBg .overlay{background:radial-gradient(90% 60% at 50% 100%,rgba(230,110,40,.5),transparent 65%),radial-gradient(ellipse at center,rgba(36,17,12,.2) 20%,rgba(15,6,3,.75)),linear-gradient(180deg,rgba(38,16,9,.55),rgba(26,11,7,.6));}
 #startScreen::before,#startScreen::after{content:'';position:absolute;left:0;right:0;height:5cqw;background:#150a06;z-index:4;transform:scaleY(0);animation:bar 1.3s var(--ease-cine) .1s forwards;}
 #startScreen::before{top:0;transform-origin:top;}#startScreen::after{bottom:0;transform-origin:bottom;}
@@ -180,15 +185,15 @@ button{font-family:inherit;border:none;background:none;cursor:pointer;color:inhe
 #route{position:absolute;top:1.3cqw;left:50%;transform:translateX(-50%);z-index:40;width:54cqw;display:flex;justify-content:space-between;pointer-events:none;transition:opacity .5s var(--ease);}
 .rt-track{position:absolute;left:6cqw;right:6cqw;top:.55cqw;height:2px;background:rgba(240,201,143,.25);border-radius:2px;}
 .rt-fill{position:absolute;inset:0;background:linear-gradient(270deg,var(--amber),var(--gold-soft));transform-origin:right;transform:scaleX(0);transition:transform .9s var(--ease);}
-.rt-mark{position:absolute;top:50%;right:0;width:1.2cqw;height:1.2cqw;background:var(--gold-soft);box-shadow:0 0 1.4cqw var(--amber);transform:translate(50%,-50%) rotate(45deg);transition:right .9s var(--ease);}
+.rt-mark{position:absolute;top:50%;right:0;width:1.2cqw;height:1.2cqw;background:var(--gold-soft);box-shadow:0 0 1.4cqw var(--amber);transform:translate(50%,-50%) rotate(45deg);transition:transform .9s var(--ease);}
 .rt-node{position:relative;pointer-events:auto;width:12cqw;display:flex;flex-direction:column;align-items:center;gap:.5cqw;font-family:var(--f-ui);font-weight:700;font-size:clamp(.7rem,1.2cqw,1rem);color:rgba(246,233,210,.6);transition:color .4s;}
-.rt-node i{width:1cqw;height:1cqw;border-radius:50%;border:2px solid rgba(240,201,143,.5);background:#2a120b;transition:all .4s;}
+.rt-node i{width:1cqw;height:1cqw;border-radius:50%;border:2px solid rgba(240,201,143,.5);background:#2a120b;transition:background-color .4s,border-color .4s;}
 .rt-node.is-on{color:var(--paper);}
 .rt-node.is-on i{background:var(--amber);border-color:var(--gold-soft);}
 .rt-node.is-cur{color:var(--gold-soft);}
 
 /* ===== CONTROLS ===== */
-#controls{position:absolute;bottom:1.2cqw;left:50%;transform:translate(-50%,0);z-index:40;display:flex;align-items:center;gap:.3cqw;background:rgba(40,17,10,.78);border:1px solid var(--line);border-radius:999px;padding:.4cqw .8cqw;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:opacity .5s var(--ease),transform .5s var(--ease);}
+#controls{position:absolute;bottom:1.2cqw;left:50%;transform:translate(-50%,0);z-index:40;display:flex;align-items:center;gap:.3cqw;background:rgba(40,17,10,.88);border:1px solid var(--line);border-radius:999px;padding:.4cqw .8cqw;transition:opacity .5s var(--ease),transform .5s var(--ease);}
 #controls.is-dim{opacity:0;transform:translate(-50%,10px);pointer-events:none;}
 .ctl-btn{width:clamp(30px,3.3cqw,44px);height:clamp(30px,3.3cqw,44px);display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--paper);font-family:var(--f-ui);font-weight:700;font-size:clamp(.72rem,1.2cqw,.95rem);transition:background .2s var(--ease);}
 .ctl-btn:hover,.ctl-btn:focus-visible{background:rgba(240,201,143,.16);outline:0;}
@@ -207,10 +212,10 @@ body.presenter .start-hint{display:none;}
 
 #termHint{position:absolute;bottom:6.8cqw;left:50%;transform:translate(-50%,6px);z-index:35;background:rgba(40,17,10,.88);border:1px solid var(--line);color:var(--paper);font-family:var(--f-ui);font-weight:500;font-size:clamp(.75rem,1.2cqw,.95rem);padding:.55em 1.3em;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .45s var(--ease),transform .45s var(--ease);}
 #termHint.is-on{opacity:1;transform:translate(-50%,0);}
-#fx{position:absolute;inset:0;width:100%;height:100%;z-index:52;pointer-events:none;opacity:.8;}
+#fx{position:absolute;inset:0;width:100%;height:100%;z-index:52;pointer-events:none;opacity:.7;}
 
 /* ===== SLIDE GRID ===== */
-#gridLayer{position:absolute;inset:0;z-index:65;display:flex;align-items:center;justify-content:center;background:rgba(18,8,5,.84);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s var(--ease),visibility .35s;}
+#gridLayer{position:absolute;inset:0;z-index:65;display:flex;align-items:center;justify-content:center;background:rgba(18,8,5,.93);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s var(--ease),visibility .35s;}
 #gridLayer.is-open{opacity:1;visibility:visible;pointer-events:auto;}
 #gridPanel{width:92cqw;max-height:92%;overflow:auto;touch-action:pan-y;scrollbar-width:none;}
 .g-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1cqw;font-family:var(--f-ui);font-weight:700;color:var(--gold-soft);font-size:clamp(1rem,1.9cqw,1.5rem);}
@@ -228,7 +233,7 @@ body.presenter .start-hint{display:none;}
 /* ===== BOTTOM SHEET (definitions) ===== */
 #modalLayer{position:absolute;inset:0;z-index:70;display:flex;align-items:flex-end;background:rgba(18,8,5,0);visibility:hidden;pointer-events:none;transition:background .4s var(--ease),visibility .55s;}
 #modalLayer.is-open{background:rgba(18,8,5,.5);visibility:visible;pointer-events:auto;}
-#modalCard{position:relative;width:100%;min-height:34%;max-height:74%;overflow:hidden auto;touch-action:pan-y;scrollbar-width:none;display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.6fr);gap:3.4cqw;align-content:center;padding:3.4cqw 5cqw 3.6cqw;border-radius:2.2cqw 2.2cqw 0 0;background:linear-gradient(180deg,rgba(112,54,30,.9),rgba(40,18,12,.97));border-top:1px solid rgba(232,184,120,.55);box-shadow:0 -2cqw 6cqw rgba(0,0,0,.5);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);transform:translateY(102%);transition:transform .55s cubic-bezier(.2,.8,.2,1);}
+#modalCard{position:relative;width:100%;min-height:34%;max-height:74%;overflow:hidden auto;touch-action:pan-y;scrollbar-width:none;display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.6fr);gap:3.4cqw;align-content:center;padding:3.4cqw 5cqw 3.6cqw;border-radius:2.2cqw 2.2cqw 0 0;background:linear-gradient(180deg,rgba(112,54,30,.95),rgba(40,18,12,.97));border-top:1px solid rgba(232,184,120,.55);box-shadow:0 -2cqw 6cqw rgba(0,0,0,.5);transform:translateY(102%);transition:transform .55s cubic-bezier(.2,.8,.2,1);}
 #modalLayer.is-open #modalCard{transform:none;}
 #modalCard::before{content:'';position:absolute;top:1cqw;left:50%;width:6cqw;height:.45cqw;margin-left:-3cqw;border-radius:9px;background:rgba(240,201,143,.4);}
 .sh-head{display:flex;flex-direction:column;align-items:flex-start;gap:1cqw;}
@@ -270,11 +275,10 @@ body.presenter .start-hint{display:none;}
 @keyframes xFadeOut{from{opacity:1;}to{opacity:0;}}
 
 @media (pointer:coarse){
-  .slide-body,.speech-frame{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);}
-  .is-active .slide-bg.drift img,.is-leaving .slide-bg.drift img{animation-duration:40s;}
+  .is-active .slide-bg.drift .bg-motion,.is-leaving .slide-bg.drift .bg-motion{animation-duration:40s;}
 }
 @media (prefers-reduced-motion:reduce){
-  .slide-bg.drift img,#startBg img{animation:none!important;}
+  .bg-motion{animation:none!important;}
   .reveal{animation:none!important;opacity:1!important;transform:none!important;}
   [class*="tr-"].is-active,[class*="tr-"].is-leaving{animation-duration:.25s!important;}
   .is-active .slide-body,.is-active .speech-frame,.st-in>*{animation:none!important;opacity:1!important;}
@@ -285,6 +289,23 @@ body.presenter .start-hint{display:none;}
   .vocab-grid{grid-template-columns:repeat(2,1fr);}
   #gridBody{grid-template-columns:repeat(3,1fr);}
 }
+
+/* ===== PERFORMANCE LAYER (adaptive: html.lite / html.lite2 are set by JS) ===== */
+html:not(.lite) .slide-body,html:not(.lite) .speech-frame{-webkit-backdrop-filter:blur(8px) saturate(1.1);backdrop-filter:blur(8px) saturate(1.1);}
+@media (pointer:coarse){html:not(.lite) .slide-body,html:not(.lite) .speech-frame{-webkit-backdrop-filter:blur(6px) saturate(1.1);backdrop-filter:blur(6px) saturate(1.1);}}
+/* lite: no backdrop blur (bg is already blurred) — compensate with a faint tint, lighter shadows */
+html.lite .slide-body,html.lite .speech-frame{background-color:rgba(30,12,7,.2);}
+html.lite .slide-body{box-shadow:0 1.2cqw 3cqw rgba(10,3,1,.45),inset 0 1px 0 rgba(255,225,180,.16);}
+html.lite .speech-frame{box-shadow:0 1.2cqw 3cqw rgba(10,3,1,.45),inset 0 1px 0 rgba(255,225,180,.16),inset -.5cqw 0 0 rgba(224,138,67,.55);}
+/* lite: clip-path transitions repaint every frame -> same feel with compositor-only transforms */
+@keyframes xRiseIn{from{opacity:0;transform:translate3d(0,4%,0);}to{opacity:1;transform:none;}}
+html.lite .tr-mask.is-active:not(.is-leaving){animation:xRiseIn .8s var(--ease-cine) both;}
+html.lite .tr-wipe.is-active:not(.is-leaving){animation:xPushIn .8s var(--ease-cine) both;}
+html.lite .tr-curtain.is-active:not(.is-leaving){animation:xDissolveIn .8s var(--ease) both;}
+/* lite2 (weak devices): static background, no continuous motion */
+html.lite2 .bg-motion{animation:none!important;}
+/* pause continuous animation when nobody can see it */
+body.ov .bg-motion,body.ov .chev,html.is-paused .bg-motion,html.is-paused .chev{animation-play-state:paused!important;}
 </style>
 </head>
 <body>
@@ -469,7 +490,7 @@ function bgHTML(assetKey, opts){
   return (
     '<div class="slide-bg'+drift+'" data-asset="'+assetKey+'">'+
       '<div class="fallback"></div>'+
-      '<img alt="" data-src="'+ASSETS[assetKey]+'">'+
+      '<div class="bg-motion"><img alt="" decoding="async" data-src="'+ASSETS[assetKey]+'"></div>'+
       '<div class="overlay"></div>'+
     '</div>'
   );
@@ -748,6 +769,46 @@ const els = {};
 ["startScreen","startBtn","startBg","stRoute","slideHost","controls","btnPrev","btnNext","btnMusic","btnFullscreen","btnTsUp","btnTsDown","btnGrid","btnPresent","slideCounter","modalLayer","modalCard","modalType","modalTitle","modalBody","modalClose","termHint","debugOverlay","canvas","gridLayer","gridBody","gridClose","route","rtFill","rtMark","pbarFill","pmini","fx"].forEach(function(id){ els[id] = document.getElementById(id); });
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/* ---------- adaptive performance tier ----------
+   level 0 = full · 1 = lite (no backdrop blur, compositor-only transitions, fewer particles)
+   level 2 = weak device (also static background, particles off). Only ever steps DOWN. */
+const root = document.documentElement;
+const isCoarse = window.matchMedia("(pointer:coarse)").matches;
+const perf = { level:0 };
+let started = false;
+(function(){
+  const mem = navigator.deviceMemory || 8, cores = navigator.hardwareConcurrency || 8;
+  const cn = navigator.connection, save = !!(cn && cn.saveData);
+  let l = 0;
+  if(mem <= 4 || (isCoarse && cores <= 6)) l = 1;
+  if(save || mem <= 1 || cores <= 2) l = 2;
+  perf.level = l;
+  root.classList.toggle("lite", l >= 1);
+  root.classList.toggle("lite2", l >= 2);
+})();
+function setPerf(l){
+  if(l <= perf.level) return;
+  perf.level = l;
+  root.classList.add("lite");
+  root.classList.toggle("lite2", l >= 2);
+  Particles.setLevel();
+}
+/* samples frame times during a transition; two slow transitions in a row -> step down a tier */
+let slowRuns = 0, probeId = 0, navCount = 0;
+function probe(ms){
+  if(perf.level >= 2 || document.hidden) return;
+  const id = ++probeId; let first = 0, last = 0, n = 0, sum = 0;
+  requestAnimationFrame(function tick(t){
+    if(id !== probeId) return;
+    if(!first) first = t; else { const d = t - last; if(d < 400){ sum += d; n++; } }
+    last = t;
+    if(t - first < ms){ requestAnimationFrame(tick); return; }
+    if(n > 10 && sum/n > 30){ if(++slowRuns >= 2){ slowRuns = 0; setPerf(perf.level + 1); } } else slowRuns = 0;
+  });
+}
+const idle = window.requestIdleCallback ? function(fn){ requestIdleCallback(fn,{timeout:1500}); } : function(fn){ setTimeout(fn,250); };
+document.addEventListener("visibilitychange", function(){ root.classList.toggle("is-paused", document.hidden); });
+
 const ARABIC_DIGITS = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
 function toArabicNum(n){ return String(n).split("").map(d=>ARABIC_DIGITS[+d] || d).join(""); }
 
@@ -790,28 +851,44 @@ function buildSlides(){
   updateUI(0);
 }
 
-/* Lazy / preload image loading with graceful fallback */
-function loadImgIn(el){
+/* Lazy / preload image loading with graceful fallback.
+   Single request (no probe Image), async decode, fade in only once decoded. */
+function loadImgIn(el, hi){
   const img = el && el.querySelector(".slide-bg img");
   if(!img || img.dataset.loaded) return;
   img.dataset.loaded = "1";
-  const src = img.getAttribute("data-src");
-  const probe = new Image();
-  probe.onload = ()=>{ img.src = src; img.classList.add("is-loaded"); };
-  probe.onerror = ()=>{ if(DEBUG) markAssetMissing(el.dataset.id || "start"); };
-  probe.src = src;
+  img.decoding = "async";
+  if(hi) img.fetchPriority = "high";
+  const show = ()=>{ img.classList.add("is-loaded"); };
+  img.onload = ()=>{ if(img.decode){ img.decode().then(show, show); } else show(); };
+  img.onerror = ()=>{ if(DEBUG) markAssetMissing(el.dataset.id || "start"); };
+  img.src = img.getAttribute("data-src");
 }
 function loadSlideImages(index){ loadImgIn(slideEls[index]); }
 function preloadNeighbors(index){
-  [index-1, index, index+1, index+2].forEach(i=>{
-    if(i>=0 && i<SLIDES.length) loadSlideImages(i);
+  loadSlideImages(index);
+  if(index+1 < SLIDES.length) loadSlideImages(index+1);
+  idle(function(){
+    if(index-1 >= 0) loadSlideImages(index-1);
+    if(perf.level < 1 && index+2 < SLIDES.length) loadSlideImages(index+2);
+    if(perf.level >= 1) releaseFar(index);
+  });
+}
+/* lite tiers: free decoded bitmaps of slides far from the current one */
+function releaseFar(index){
+  slideEls.forEach((el,i)=>{
+    if(Math.abs(i-index) <= 3) return;
+    const img = el.querySelector(".slide-bg img");
+    if(img && img.dataset.loaded && img.getAttribute("src")){
+      img.classList.remove("is-loaded"); img.removeAttribute("src"); delete img.dataset.loaded;
+    }
   });
 }
 
 /* ==================================================================
    UI: counter, progress bar, route
    ================================================================== */
-let curBg = null;
+let curBg = null, rtNodes = null;
 function updateUI(i){
   const n = SLIDES.length;
   const label = toArabicNum(i+1) + " / " + toArabicNum(n);
@@ -820,17 +897,21 @@ function updateUI(i){
   els.pbarFill.style.transform = "scaleX(" + (i/(n-1)) + ")";
   const pos = Math.max(0, Math.min(1, (i - ROUTE_SLIDES[0]) / (ROUTE_SLIDES[3]-ROUTE_SLIDES[0])));
   els.rtFill.style.transform = "scaleX(" + pos + ")";
-  els.rtMark.style.right = (pos*100) + "%";
-  els.route.querySelectorAll(".rt-node").forEach((nd,j)=>{
+  /* track is 42cqw wide (54cqw route − 2×6cqw); move by transform, not `right` */
+  els.rtMark.style.transform = "translate(calc(50% - " + (pos*42).toFixed(3) + "cqw),-50%) rotate(45deg)";
+  if(!rtNodes) rtNodes = els.route.querySelectorAll(".rt-node");
+  rtNodes.forEach((nd,j)=>{
     nd.classList.toggle("is-on", i >= ROUTE_SLIDES[j]);
     nd.classList.toggle("is-cur", i === ROUTE_SLIDES[j]);
   });
   curBg = slideEls[i] ? slideEls[i].querySelector(".slide-bg") : null;
+  lastPx = lastPy = 9; /* force next parallax write */
 }
 
 /* ==================================================================
    NAVIGATION
    ================================================================== */
+let navTimer = 0;
 function goTo(index, dir){
   if(state.isTransitioning) return;
   if(index < 0 || index >= SLIDES.length) return;
@@ -840,39 +921,41 @@ function goTo(index, dir){
   const to = slideEls[index];
   const d = index > state.currentSlide ? 1 : -1;
   state.isTransitioning = true;
+  if(navCount++ > 0) probe(950);
 
   [to, from].forEach(el=>{
     el.style.setProperty("--d", d);
     el.style.setProperty("--w0", d>0 ? "inset(0 100% 0 0)" : "inset(0 0 0 100%)");
   });
   loadSlideImages(index);
+  from.classList.remove("is-settled");
+  to.classList.remove("is-settled");
   to.classList.add("is-active");
   from.classList.add("is-leaving");
 
+  let done = 0;
   const cleanup = ()=>{
-    from.classList.remove("is-active","is-leaving");
+    clearTimeout(navTimer);
+    to.removeEventListener("animationend", onEnd);
+    from.removeEventListener("animationend", onEnd);
+    from.classList.remove("is-active","is-leaving","is-settled");
     to.classList.remove("is-leaving");
+    to.classList.add("is-settled");           /* drop the filled animation -> frees the slide's compositor layer */
+    const fb = from.querySelector(".slide-bg"); if(fb) fb.style.transform = "";
     state.currentSlide = index;
     state.isTransitioning = false;
     updateUI(index);
     preloadNeighbors(index);
     updateDebug();
   };
-
-  let done = 0;
   const onEnd = (e)=>{
     if(e.target !== to && e.target !== from) return;
-    done++;
-    if(done >= 2){
-      to.removeEventListener("animationend", onEnd);
-      from.removeEventListener("animationend", onEnd);
-      cleanup();
-    }
+    if(++done >= 2) cleanup();
   };
   to.addEventListener("animationend", onEnd);
   from.addEventListener("animationend", onEnd);
   // safety fallback in case one animation event doesn't fire
-  setTimeout(()=>{ if(state.isTransitioning) cleanup(); }, 1400);
+  navTimer = setTimeout(()=>{ if(state.isTransitioning) cleanup(); }, 1400);
 }
 
 function next(){ goTo(state.currentSlide+1, 1); }
@@ -923,6 +1006,10 @@ function updateMusicBtn(){
 /* ==================================================================
    BOTTOM SHEET / DEFINITIONS
    ================================================================== */
+function syncOv(){
+  document.body.classList.toggle("ov", state.isModalOpen || state.isGridOpen);
+  Particles.hold(state.isGridOpen);
+}
 function openDefinition(key){
   const def = DEFINITIONS[key];
   if(!def) return;
@@ -932,19 +1019,26 @@ function openDefinition(key){
   els.modalCard.scrollTop = 0;
   els.modalLayer.classList.add("is-open");
   state.isModalOpen = true;
+  syncOv();
   try{ els.modalClose.focus({preventScroll:true}); }catch(err){}
   updateDebug();
 }
 function closeDefinition(){
   els.modalLayer.classList.remove("is-open");
   state.isModalOpen = false;
+  syncOv();
   updateDebug();
 }
 
 let hintShown = false;
+function onHintHover(e){
+  if(e.target.closest && e.target.closest(".term, .vocab-pill, .rhet-card")) maybeShowHint();
+}
 function maybeShowHint(){
   if(hintShown) return;
   hintShown = true;
+  document.removeEventListener("pointerover", onHintHover);
+  els.slideHost.removeEventListener("click", onHintHover);
   els.termHint.classList.add("is-on");
   setTimeout(()=>{ els.termHint.classList.remove("is-on"); }, 3200);
 }
@@ -952,24 +1046,41 @@ function maybeShowHint(){
 /* ==================================================================
    SLIDE GRID
    ================================================================== */
+function fillThumbs(){
+  const cur = state.currentSlide;
+  const order = SLIDES.map((_,i)=>i).sort((a,b)=>Math.abs(a-cur)-Math.abs(b-cur));
+  let k = 0;
+  (function step(){
+    if(k >= order.length) return;
+    const el = els.gridBody.children[order[k++]];
+    const d = el && el.querySelector(".th-img");
+    if(d && d.dataset.bg){ d.style.backgroundImage = "url('" + d.dataset.bg + "')"; delete d.dataset.bg; }
+    setTimeout(step, perf.level ? 80 : 40);
+  })();
+}
 function buildGrid(){
   if(els.gridBody.children.length) return;
+  const frag = document.createDocumentFragment();
   SLIDES.forEach((s,i)=>{
     const b = document.createElement("button");
     b.className = "thumb"; b.dataset.i = i;
     const h = slideEls[i].querySelector("h2,h1,.speech-label");
-    b.innerHTML = '<div class="th-img" style="background-image:url(\''+ASSETS[assetKeys[i]]+'\')"></div><span class="th-n">'+toArabicNum(i+1)+'</span><span class="th-t"></span>';
+    b.innerHTML = '<div class="th-img" data-bg="'+ASSETS[assetKeys[i]]+'"></div><span class="th-n">'+toArabicNum(i+1)+'</span><span class="th-t"></span>';
     b.querySelector(".th-t").textContent = h ? h.textContent : "";
-    els.gridBody.appendChild(b);
+    frag.appendChild(b);
   });
+  els.gridBody.appendChild(frag);
+  fillThumbs();
 }
 function openGrid(){
   buildGrid();
-  els.gridBody.querySelectorAll(".thumb").forEach((t,i)=>t.classList.toggle("is-cur", i===state.currentSlide));
+  const kids = els.gridBody.children;
+  for(let i=0;i<kids.length;i++) kids[i].classList.toggle("is-cur", i===state.currentSlide);
   els.gridLayer.classList.add("is-open");
   state.isGridOpen = true;
+  syncOv();
 }
-function closeGrid(){ els.gridLayer.classList.remove("is-open"); state.isGridOpen = false; }
+function closeGrid(){ els.gridLayer.classList.remove("is-open"); state.isGridOpen = false; syncOv(); }
 
 /* ==================================================================
    TEXT SIZE + PRESENTER MODE
@@ -983,7 +1094,7 @@ function togglePresenter(force){
   state.isPresenter = force === undefined ? !state.isPresenter : force;
   document.body.classList.toggle("presenter", state.isPresenter);
   applyTS();
-  if(!state.isPresenter) showControls();
+  if(!state.isPresenter) showControls(true);
 }
 
 /* ==================================================================
@@ -1005,12 +1116,8 @@ document.addEventListener("click", function(e){
 });
 els.modalClose.addEventListener("click", closeDefinition);
 els.gridClose.addEventListener("click", closeGrid);
-document.addEventListener("pointerover", function(e){
-  if(e.target.closest && e.target.closest(".term, .vocab-pill, .rhet-card")) maybeShowHint();
-});
-els.slideHost.addEventListener("click", function(e){
-  if(e.target.closest && e.target.closest(".term, .vocab-pill, .rhet-card")) maybeShowHint();
-});
+document.addEventListener("pointerover", onHintHover, {passive:true});
+els.slideHost.addEventListener("click", onHintHover);
 
 /* vocab tabs */
 els.slideHost.addEventListener("click", function(e){
@@ -1097,31 +1204,47 @@ els.modalCard.addEventListener("touchend", function(e){
   sheetY = null;
 }, {passive:true});
 
-/* auto-hide controls */
-let hideTimer = null;
-function showControls(){
+/* auto-hide controls (timer reset is throttled — pointermove fires very often) */
+let hideTimer = 0, lastShow = 0;
+function showControls(force){
   if(state.isPresenter) return;
+  const now = performance.now();
+  if(!force && now - lastShow < 250 && !els.controls.classList.contains("is-dim")) return;
+  lastShow = now;
   els.controls.classList.remove("is-dim");
   clearTimeout(hideTimer);
   hideTimer = setTimeout(()=>{ if(!state.isModalOpen && !state.isGridOpen) els.controls.classList.add("is-dim"); }, 3600);
 }
-["pointermove","pointerdown","touchstart"].forEach(ev=>{
-  document.addEventListener(ev, showControls, {passive:true});
+["pointermove","pointerdown"].forEach(ev=>{
+  document.addEventListener(ev, ()=>showControls(), {passive:true});
 });
 
-/* lightweight parallax (pointer only; touch relies on image drift) */
-let px = 0, py = 0, rafP = 0;
+/* very subtle parallax: pointer only, one rAF write per frame, cached rect, skipped when idle/overlay/weak device */
+let px = 0, py = 0, lastPx = 9, lastPy = 9, rafP = 0, canvasRect = null;
+function applyParallax(){
+  rafP = 0;
+  if(!curBg) return;
+  if(Math.abs(px-lastPx) < .012 && Math.abs(py-lastPy) < .012) return;
+  lastPx = px; lastPy = py;
+  curBg.style.transform = "translate3d("+(px*-2).toFixed(2)+"cqw,"+(py*-1.4).toFixed(2)+"cqw,0)";
+}
 els.canvas.addEventListener("pointermove", function(e){
-  if(e.pointerType === "touch" || reduceMotion) return;
-  const r = els.canvas.getBoundingClientRect();
-  px = (e.clientX - r.left)/r.width - .5;
-  py = (e.clientY - r.top)/r.height - .5;
-  if(rafP) return;
-  rafP = requestAnimationFrame(function(){
-    rafP = 0;
-    if(curBg) curBg.style.transform = "translate3d("+(px*-2.4).toFixed(2)+"cqw,"+(py*-1.8).toFixed(2)+"cqw,0)";
-  });
-});
+  if(reduceMotion || perf.level >= 2 || !started || e.pointerType === "touch" || state.isModalOpen || state.isGridOpen) return;
+  if(!canvasRect) canvasRect = els.canvas.getBoundingClientRect();
+  px = (e.clientX - canvasRect.left)/canvasRect.width - .5;
+  py = (e.clientY - canvasRect.top)/canvasRect.height - .5;
+  if(!rafP) rafP = requestAnimationFrame(applyParallax);
+}, {passive:true});
+
+/* one debounced resize path: invalidates cached rect + resizes particle canvas */
+let resizeT = 0;
+function onResize(){
+  canvasRect = null;
+  clearTimeout(resizeT);
+  resizeT = setTimeout(()=>Particles.resize(), 160);
+}
+if(window.ResizeObserver) new ResizeObserver(onResize).observe(els.canvas);
+else window.addEventListener("resize", onResize);
 
 /* ==================================================================
    FULLSCREEN
@@ -1146,51 +1269,82 @@ document.addEventListener("fullscreenchange", ()=>{
    START
    ================================================================== */
 els.startBtn.addEventListener("click", function(){
+  if(started) return;
+  started = true;
   document.body.classList.add("started");
   els.startScreen.classList.add("is-hidden");
   slideEls[0].classList.add("is-active");
   preloadNeighbors(0);
   AudioCtl.play();
-  showControls();
+  showControls(true);
   updateUI(0);
   updateDebug();
+  /* once the intro has faded out, remove it from rendering entirely (frees its blurred image layer) */
+  setTimeout(()=>{ els.startScreen.style.display = "none"; els.startBg.textContent = ""; }, 1000);
+  setTimeout(()=>{ if(state.currentSlide === 0 && !state.isTransitioning) slideEls[0].classList.add("is-settled"); }, 1250);
 });
 
 /* ==================================================================
-   DUST / LIGHT PARTICLES (very subtle, throttled to ~30fps)
+   DUST / LIGHT PARTICLES — few sprites, time-based, stops when hidden/covered
    ================================================================== */
-(function(){
+const Particles = (function(){
   const c = els.fx, x = c.getContext("2d");
-  let W = 1, H = 1, last = 0;
+  let W = 1, H = 1, last = 0, raf = 0, running = false, held = false, N = 0, gap = 33, dprCap = 1.5;
   const P = [];
   const spr = document.createElement("canvas");
   spr.width = spr.height = 32;
   const g = spr.getContext("2d"), gr = g.createRadialGradient(16,16,0,16,16,16);
   gr.addColorStop(0,"rgba(255,214,150,1)"); gr.addColorStop(.4,"rgba(240,150,70,.45)"); gr.addColorStop(1,"rgba(240,150,70,0)");
   g.fillStyle = gr; g.fillRect(0,0,32,32);
-  function size(){
-    const r = els.canvas.getBoundingClientRect(), d = Math.min(window.devicePixelRatio||1, 1.5);
-    W = c.width = Math.max(1, r.width*d); H = c.height = Math.max(1, r.height*d);
+
+  function reset(q, init){
+    q.x = Math.random()*W; q.y = init ? Math.random()*H : H+20;
+    q.s = (4+Math.random()*14)*(W/1280); q.v = .15+Math.random()*.4;
+    q.a = .12+Math.random()*.38; q.p = Math.random()*6.28; q.w = .3+Math.random()*.7;
+    return q;
   }
-  function mk(init){ return { x:Math.random()*W, y:init ? Math.random()*H : H+20, s:(4+Math.random()*14)*(W/1280), v:.15+Math.random()*.4, a:.18+Math.random()*.5, p:Math.random()*6.28, w:.3+Math.random()*.7 }; }
-  size();
-  const N = window.matchMedia("(pointer:coarse)").matches ? 16 : 28;
-  for(let i=0;i<N;i++) P.push(mk(true));
-  function draw(t){
-    requestAnimationFrame(draw);
-    if(document.hidden || t-last < 33) return;
+  function config(){
+    const l = perf.level;
+    N = (reduceMotion || l >= 2) ? 0 : (l === 1 ? 9 : (isCoarse ? 14 : 22));
+    gap = l === 1 ? 42 : 33;
+    dprCap = l >= 1 ? 1 : 1.5;
+  }
+  function size(){
+    const r = els.canvas.getBoundingClientRect(), d = Math.min(window.devicePixelRatio||1, dprCap);
+    W = c.width = Math.max(1, Math.round(r.width*d)); H = c.height = Math.max(1, Math.round(r.height*d));
+    P.length = 0;
+    for(let i=0;i<N;i++) P.push(reset({}, true));
+  }
+  function frame(t){
+    raf = requestAnimationFrame(frame);
+    const dt = t - last;
+    if(dt < gap) return;
     last = t;
+    const f = Math.min(dt, 100)/33, k = (W/1280)*f;
     x.clearRect(0,0,W,H);
-    for(const q of P){
-      q.y -= q.v*(W/1280);
-      q.x += Math.sin(t/1800+q.p)*.25*q.w;
-      if(q.y < -20) Object.assign(q, mk(false));
+    for(let i=0;i<P.length;i++){
+      const q = P[i];
+      q.y -= q.v*k;
+      q.x += Math.sin(t/1800+q.p)*.25*q.w*f;
+      if(q.y < -20) reset(q,false);
       x.globalAlpha = q.a*(.55+.45*Math.sin(t/900+q.p));
       x.drawImage(spr, q.x, q.y, q.s, q.s);
     }
   }
-  window.addEventListener("resize", size);
-  if(!reduceMotion) requestAnimationFrame(draw);
+  function start(){ if(running || N === 0 || held || document.hidden) return; running = true; last = 0; raf = requestAnimationFrame(frame); }
+  function stop(){ running = false; cancelAnimationFrame(raf); }
+  function apply(){
+    stop(); config();
+    if(N === 0){ c.style.display = "none"; return; }
+    c.style.display = ""; size(); start();
+  }
+  document.addEventListener("visibilitychange", function(){ if(document.hidden) stop(); else start(); });
+  apply();
+  return {
+    setLevel: apply,
+    resize: function(){ if(N){ size(); } },
+    hold: function(b){ held = !!b; if(held) stop(); else start(); }
+  };
 })();
 
 /* ==================================================================
@@ -1225,7 +1379,7 @@ window.addEventListener("unhandledrejection", function(e){
    INIT
    ================================================================== */
 buildSlides();
-loadImgIn(els.startBg);
+loadImgIn(els.startBg, true);
 updateDebug();
 
 })();
