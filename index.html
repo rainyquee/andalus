@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#fff6e7">
+<meta name="theme-color" content="#1b2470">
 <title>خطبة طارق بن زياد — الدرس التاسع</title>
 <meta name="description" content="عرض تقديمي تفاعلي عن الأدب الأندلسي: من خطبة طارق بن زياد عند فتح الأندلس">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -757,6 +757,16 @@ body:not(.started) #shine{display:none;}
 body.ov #shine *,html.is-paused #shine *{animation-play-state:paused!important;}
 .op-sp.g::before{background:radial-gradient(circle,rgba(247,207,115,.5),rgba(247,207,115,.12) 45%,transparent 68%);}
 .op-sp.g::after{background:linear-gradient(135deg,#fff6e7,#f7cf73 60%,#fff6e7);}
+
+/* ===== MODE PERFORMA (?mode=full|lite|ultra) — melengkapi html.lite / html.lite2 ===== */
+@supports (height:100dvh){#canvas{width:min(100vw,177.78dvh);height:min(100dvh,56.25vw);}}
+#shine,#opShine{contain:layout paint style;}
+html.lite #shine,html.lite #opShine{-webkit-mask-image:none;mask-image:none;}
+html.lite2 .op-blur{display:none;}
+html.lite2 .op-sp{animation:none;opacity:.55;transform:translate(-50%,-50%);}
+html.lite2 .op-fl{animation:none;opacity:.4;}
+html.lite2 #startBtn::after,html.lite2 .chev{animation:none!important;}
+html.lite2 #shine{transition:none;}
 </style>
 </head>
 <body>
@@ -1222,13 +1232,18 @@ let started = false;
   let l = 0;
   if(mem <= 4 || (isCoarse && cores <= 6)) l = 1;
   if(save || mem <= 1 || cores <= 2) l = 2;
+  let mq = ""; try{ mq = (new URLSearchParams(location.search).get("mode") || "").toLowerCase(); }catch(e){}
+  const MQ = { full:0, lite:1, ultra:2, lite2:2, "ultra-lite":2 };
+  if(Object.prototype.hasOwnProperty.call(MQ, mq)){ l = MQ[mq]; perf.locked = true; }
   perf.level = l;
+  root.setAttribute("data-perf", ["full","lite","ultra"][l]);
   root.classList.toggle("lite", l >= 1);
   root.classList.toggle("lite2", l >= 2);
 })();
 function setPerf(l){
-  if(l <= perf.level) return;
+  if(perf.locked || l <= perf.level) return;
   perf.level = l;
+  root.setAttribute("data-perf", l >= 2 ? "ultra" : "lite");
   root.classList.add("lite");
   root.classList.toggle("lite2", l >= 2);
   Particles.setLevel();
@@ -1806,7 +1821,7 @@ els.startBtn.addEventListener("click", function(){
   Sync.ready();
   Sync.terms();
   /* once the intro has faded out, remove it from rendering entirely (frees its blurred image layer) */
-  setTimeout(()=>{ els.startScreen.style.display = "none"; els.startBg.textContent = ""; const sh = document.getElementById("opShine"); if(sh) sh.textContent = ""; }, 1000);
+  setTimeout(()=>{ els.startScreen.style.display = "none"; els.startBg.textContent = ""; const sh = document.getElementById("opShine"); if(sh) sh.textContent = ""; els.startScreen.querySelectorAll(".op-img").forEach(function(n){ n.remove(); }); }, 1000);
   setTimeout(()=>{ if(state.currentSlide === 0 && !state.isTransitioning) slideEls[0].classList.add("is-settled"); }, 1250);
 });
 
@@ -1954,7 +1969,6 @@ const Shine = (function(){
 })();
 
 buildSlides();
-loadImgIn(els.startBg, true);
 updateDebug();
 
 })();
