@@ -8,8 +8,8 @@
 <meta name="description" content="عرض تقديمي تفاعلي عن الأدب الأندلسي: من خطبة طارق بن زياد عند فتح الأندلس">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&family=Baloo+Bhaijaan+2:wght@700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&family=Baloo+Bhaijaan+2:wght@700;800&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&family=Baloo+Bhaijaan+2:wght@700;800&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&family=Baloo+Bhaijaan+2:wght@700;800&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet"></noscript>
 <style>
 /* ===== RESET ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -705,6 +705,58 @@ body.ov #controls.is-dim{opacity:1;pointer-events:auto;transform:translate(-50%,
 .plr-4{left:83%;top:12%;--r:5deg;}
 .plr-5{left:76%;top:40%;--r:-4deg;}
 .plr-6{left:84%;top:64%;--r:3deg;}
+
+/* ===== SLIDE 6-11: orang + nama ungu ===== */
+#route{width:78cqw;}
+.rt-node{width:6.5cqw;font-size:clamp(.55rem,.95cqw,.85rem);text-align:center;line-height:1.25;}
+.rt-track{left:3.25cqw;right:3.25cqw;}
+.tr-person.is-active{animation:xDissolveIn .6s var(--ease) both;}
+.tr-person.is-leaving{animation:xFadeOut .6s var(--ease) both;}
+.slide-person .slide-body{align-items:center;justify-content:center!important;text-align:center;}
+.slide-person .nm{margin:0;font-family:'Baloo Bhaijaan 2','Poppins',system-ui,sans-serif;font-weight:800;font-size:calc(15cqw*var(--ts));line-height:1.1;letter-spacing:.01em;direction:ltr;unicode-bidi:isolate;color:#c4a8ff!important;-webkit-text-stroke:.3cqw #2b1a6b;paint-order:stroke fill;text-shadow:0 .8cqw 3cqw rgba(43,26,107,.55),0 0 4cqw rgba(196,168,255,.45);}
+.slide-person .nm::after{display:none;}
+@keyframes nmIn{from{translate:-115cqw 0;}to{translate:0 0;}}
+@keyframes nmOut{from{translate:0 0;}to{translate:calc(var(--d,1)*120cqw) 0;}}
+.slide-person.is-active .nm{animation:nmIn .45s cubic-bezier(.16,.9,.24,1) .12s both;}
+.slide.slide-person.is-active.is-leaving .nm{animation:nmOut .5s cubic-bezier(.55,0,1,.45) both;}
+
+/* ===== SLIDE 6-11: nama lebih kecil, turun ke area dada, font estetik ===== */
+.slide-person.slide-thanks .slide-body{justify-content:flex-start!important;padding:34cqw 0 0!important;}
+.slide-person .nm{font-family:'Cormorant Garamond','Playfair Display',Georgia,serif;font-style:italic;font-weight:600;font-size:calc(6.2cqw*var(--ts));letter-spacing:.06em;line-height:1.1;color:#f3eeff!important;-webkit-text-stroke:0;paint-order:normal;text-shadow:0 0 1.1cqw rgba(196,168,255,.75),0 .2cqw 1.4cqw rgba(15,10,60,.8);}
+.slide-person .nm::after{display:block;content:'';width:72%;height:1px;margin:.7cqw auto 0;background:linear-gradient(90deg,transparent,rgba(243,238,255,.9),transparent);}
+
+/* ===== PEMBUKAAN: estetik.png + kilau layar penuh (makin ke tengah makin hilang) + blur di area sama ===== */
+#startScreen{--opm:radial-gradient(ellipse 64% 62% at 50% 47%,transparent 0,transparent 30%,#000 84%);}
+#startScreen .op-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:opIn 1.4s ease both;}
+#startScreen .op-blur{filter:blur(.9cqw);transform:scale(1.05);-webkit-mask-image:var(--opm);mask-image:var(--opm);}
+#opShine{position:absolute;inset:0;overflow:hidden;pointer-events:none;-webkit-mask-image:var(--opm);mask-image:var(--opm);}
+.op-sp{position:absolute;width:var(--s);height:var(--s);opacity:0;animation:opTw var(--t) ease-in-out var(--w) infinite;}
+.op-sp::before{content:'';position:absolute;inset:-90%;background:radial-gradient(circle,rgba(170,200,255,.5),rgba(120,150,255,.12) 45%,transparent 68%);}
+.op-sp::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#fff,#bcd2ff 60%,#fff);clip-path:polygon(50% 0,59% 41%,100% 50%,59% 59%,50% 100%,41% 59%,0 50%,41% 41%);}
+.op-fl{position:absolute;width:22cqw;height:2.4cqw;border-radius:50%;background:linear-gradient(90deg,transparent,rgba(255,90,170,.55) 18%,rgba(255,170,70,.6) 36%,rgba(255,245,150,.65) 50%,rgba(90,255,210,.55) 66%,rgba(90,150,255,.6) 82%,transparent);filter:blur(.3cqw);transform:rotate(var(--r));opacity:0;animation:opFl 6s ease-in-out var(--w) infinite;}
+@keyframes opIn{from{opacity:0;}to{opacity:1;}}
+@keyframes opTw{0%,100%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(0);}50%{opacity:var(--a,1);transform:translate(-50%,-50%) scale(1) rotate(90deg);}}
+@keyframes opFl{0%,100%{opacity:0;}50%{opacity:.8;}}
+@keyframes opBtn{from{opacity:0;translate:0 1.2cqw;}to{opacity:1;translate:0 0;}}
+@keyframes opSheen{0%,55%{transform:translateX(0) skewX(-20deg);}100%{transform:translateX(420%) skewX(-20deg);}}
+#startBtn{bottom:2.4cqw;font-family:'Amiri','Tajawal',serif;font-weight:700;font-size:clamp(.95rem,1.7cqw,1.45rem);letter-spacing:.02em;color:#f2f6ff;background:linear-gradient(180deg,rgba(150,180,255,.38),rgba(30,50,170,.55) 55%,rgba(20,35,140,.6));border:0;padding:.4em 1.9em .5em;gap:.7em;border-radius:999px;overflow:hidden;isolation:isolate;text-shadow:0 0 .7cqw rgba(190,215,255,.95);box-shadow:inset 0 0 0 1px rgba(210,225,255,.7),inset 0 1px 0 rgba(255,255,255,.75),0 0 2cqw rgba(110,150,255,.55),0 .7cqw 2cqw rgba(5,10,60,.5);opacity:0;animation:opBtn 1s ease 1.3s both;transition:transform .25s var(--ease),box-shadow .25s,background .25s;}
+#startBtn::after{content:'';position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:opSheen 4.2s ease-in-out 2.4s infinite;pointer-events:none;}
+#startBtn:hover,#startBtn:focus-visible{background:linear-gradient(180deg,rgba(190,212,255,.5),rgba(50,75,200,.62) 55%,rgba(30,50,160,.68));color:#fff;transform:translateY(-.25cqw);box-shadow:inset 0 0 0 1px #fff,inset 0 1px 0 #fff,0 0 3cqw rgba(140,180,255,.85),0 .9cqw 2.4cqw rgba(5,10,60,.55);outline:0;}
+#startBtn:active{transform:translateY(.1cqw);}
+#startBtn svg{width:.95em;height:.95em;flex:none;}
+@media (prefers-reduced-motion:reduce){.op-sp{animation:none;opacity:.6;transform:translate(-50%,-50%);}.op-fl{animation:none;opacity:.5;}#startBtn::after{animation:none;}}
+
+/* ===== SLIDE 4: poin ٢ setara poin ١ ===== */
+.kh-h2{margin-top:.3cqw;line-height:1.55;}
+.kh-grid .kh-item{padding:.75cqw 1.1cqw;}
+.slide .kh-grid .kh-item p{font-size:calc(clamp(.9rem,1.5cqw,1.3rem)*var(--ts));line-height:1.6;}
+
+/* ===== SHINE di semua slide (intensitas diatur per slide lewat opacity) ===== */
+#shine{position:absolute;inset:0;z-index:51;overflow:hidden;pointer-events:none;opacity:0;transition:opacity .9s var(--ease);--opm:radial-gradient(ellipse 66% 64% at 50% 50%,transparent 0,transparent 34%,#000 86%);-webkit-mask-image:var(--opm);mask-image:var(--opm);}
+body:not(.started) #shine{display:none;}
+body.ov #shine *,html.is-paused #shine *{animation-play-state:paused!important;}
+.op-sp.g::before{background:radial-gradient(circle,rgba(247,207,115,.5),rgba(247,207,115,.12) 45%,transparent 68%);}
+.op-sp.g::after{background:linear-gradient(135deg,#fff6e7,#f7cf73 60%,#fff6e7);}
 </style>
 </head>
 <body>
@@ -718,91 +770,18 @@ body.ov #controls.is-dim{opacity:1;pointer-events:auto;transform:translate(-50%,
       <div class="st-route" id="stRoute" aria-hidden="true"></div>
       <div class="poster">
         <h1 class="sr-only">الأندلس الأدب — LIPIA, Surabaya — 30 Oktober 2026</h1>
-        <svg class="pt-svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <radialGradient id="ptOrgTL" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(40 30) scale(520 400)"><stop offset="0" stop-color="#f7cf73"/><stop offset=".45" stop-color="#e9a733" stop-opacity=".85"/><stop offset="1" stop-color="#b0720a" stop-opacity="0"/></radialGradient>
-            <radialGradient id="ptOrgTR" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1620 90) scale(470 360)"><stop offset="0" stop-color="#f7cf73"/><stop offset=".5" stop-color="#e9a733" stop-opacity=".8"/><stop offset="1" stop-color="#b0720a" stop-opacity="0"/></radialGradient>
-            <radialGradient id="ptOrgBL" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(10 930) scale(520 360)"><stop offset="0" stop-color="#f7cf73"/><stop offset=".5" stop-color="#e9a733" stop-opacity=".8"/><stop offset="1" stop-color="#b0720a" stop-opacity="0"/></radialGradient>
-            <radialGradient id="ptOrgBR" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1630 760) scale(380 330)"><stop offset="0" stop-color="#f7cf73"/><stop offset=".55" stop-color="#e9a733" stop-opacity=".7"/><stop offset="1" stop-color="#b0720a" stop-opacity="0"/></radialGradient>
-            <radialGradient id="ptVig" cx=".5" cy=".5" r=".75"><stop offset=".35" stop-color="#0f1648" stop-opacity=".18"/><stop offset="1" stop-color="#0f1648" stop-opacity="0"/></radialGradient>
-            <linearGradient id="ptBar" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4655cf"/><stop offset="1" stop-color="#283593"/></linearGradient>
-            <linearGradient id="ptFinger" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f7cf73"/><stop offset=".6" stop-color="#e9a733"/><stop offset="1" stop-color="#4655cf"/></linearGradient>
-            <linearGradient id="ptYel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbdc9a"/><stop offset="1" stop-color="#f7cf73"/></linearGradient>
-            <filter id="ptBlur" x="-10%" y="-10%" width="120%" height="130%"><feGaussianBlur stdDeviation="9"/></filter>
-            <filter id="ptGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 .86  0 0 0 0 .7  0 0 0 .5 -.12"/></filter>
-            <text id="ptA" class="pt-ar" x="800" y="198" font-size="130" text-anchor="middle" transform="rotate(-3 800 150)">الأندلس</text>
-            <text id="ptB" class="pt-ar" x="800" y="435" font-size="250" text-anchor="middle">الأدب</text>
-            <polygon id="ptHex" points="0,-52 45,-26 45,26 0,52 -45,26 -45,-26"/>
-          </defs>
-
-          <rect width="1600" height="900" fill="#1b2470"/>
-          <g class="pt-drift">
-            <!-- lengkung atas -->
-            <path d="M410 -10 C 430 90 500 128 548 128 C 604 128 650 60 656 -10 Z" fill="#4f63e0"/>
-            <path d="M900 -10 C 920 80 985 112 1030 112 C 1085 112 1120 50 1128 -10 Z" fill="#4f63e0"/>
-            <!-- batang miring kiri -->
-            <path d="M318 250 L 70 640" stroke="#4f63e0" stroke-width="200" stroke-linecap="round" fill="none"/>
-            <path d="M318 250 L 70 640" stroke="url(#ptBar)" stroke-width="200" stroke-linecap="round" fill="none" opacity=".55"/>
-            <!-- pita bergelombang kanan -->
-            <path d="M1700 20 C 1450 90 1250 200 1090 330" stroke="#e9a733" stroke-width="150" stroke-linecap="round" fill="none"/>
-            <path d="M1700 190 C 1480 230 1330 300 1210 400" stroke="#c98a14" stroke-width="110" stroke-linecap="round" fill="none"/>
-            <path d="M1700 330 C 1500 350 1380 420 1280 520" stroke="#f7cf73" stroke-width="100" stroke-linecap="round" fill="none"/>
-            <path d="M1700 470 C 1520 480 1420 540 1330 640" stroke="#c98a14" stroke-width="95" stroke-linecap="round" fill="none"/>
-            <path d="M1700 610 C 1540 620 1450 690 1370 790" stroke="#d9961a" stroke-width="95" stroke-linecap="round" fill="none"/>
-            <path d="M1700 760 C 1570 770 1500 830 1440 920" stroke="#b87a10" stroke-width="85" stroke-linecap="round" fill="none"/>
-            <!-- jari kiri bawah -->
-            <path d="M40 960 L 150 770" stroke="url(#ptFinger)" stroke-width="130" stroke-linecap="round" fill="none"/>
-            <path d="M200 980 L 290 840" stroke="#4655cf" stroke-width="110" stroke-linecap="round" fill="none"/>
-            <path d="M330 990 L 390 890" stroke="#4f63e0" stroke-width="100" stroke-linecap="round" fill="none"/>
-            <path d="M470 1000 L 510 930" stroke="#e9a733" stroke-width="90" stroke-linecap="round" fill="none"/>
-          </g>
-          <rect width="1600" height="900" fill="url(#ptOrgTL)"/>
-          <rect width="1600" height="900" fill="url(#ptOrgTR)"/>
-          <rect width="1600" height="900" fill="url(#ptOrgBL)"/>
-          <rect width="1600" height="900" fill="url(#ptOrgBR)"/>
-          <rect width="1600" height="900" fill="url(#ptVig)"/>
-          <rect width="1600" height="900" filter="url(#ptGrain)" opacity=".35" style="mix-blend-mode:soft-light"/>
-
-          <!-- percikan -->
-          <g class="pt-sparks" stroke="#fff6e7" stroke-width="17" stroke-linecap="round" fill="none">
-            <path class="pt-sp" d="M438 78 L 488 124"/><path class="pt-sp" d="M404 150 L 466 168" style="animation-delay:.35s"/>
-            <path class="pt-sp" d="M1162 78 L 1112 124" style="animation-delay:.2s"/><path class="pt-sp" d="M1196 150 L 1134 168" style="animation-delay:.55s"/>
-          </g>
-
-          <!-- judul: stiker (bayangan > garis kuning > garis maroon > isi) -->
-          <g class="pt-title" stroke-linejoin="round" stroke-linecap="round">
-            <g filter="url(#ptBlur)" opacity=".55" transform="translate(0 18)">
-              <use href="#ptA" fill="#5a3a05" stroke="#5a3a05" stroke-width="84"/><use href="#ptB" fill="#5a3a05" stroke="#5a3a05" stroke-width="92"/>
-            </g>
-            <use href="#ptA" fill="#fff6e7" stroke="#fff6e7" stroke-width="76"/><use href="#ptB" fill="#fff6e7" stroke="#fff6e7" stroke-width="86"/>
-            <use href="#ptA" fill="#283593" stroke="#283593" stroke-width="44"/><use href="#ptB" fill="#283593" stroke="#283593" stroke-width="52"/>
-            <use href="#ptA" fill="#fff6e7"/><use href="#ptB" fill="url(#ptYel)"/>
-          </g>
-
-          <!-- lokasi -->
-          <g class="pt-pill" style="animation-delay:.7s">
-            <rect x="600" y="550" width="478" height="84" rx="42" fill="#6a4506" opacity=".55" transform="translate(0 8)"/>
-            <rect x="600" y="550" width="478" height="84" rx="42" fill="#fff6e7" stroke="#f7cf73" stroke-width="5"/>
-            <text class="pt-lat" x="852" y="609" font-size="50" text-anchor="middle" fill="#283593">LIPIA, Surabaya</text>
-            <g transform="translate(588 592)">
-              <use href="#ptHex" fill="#283593" stroke="#fff6e7" stroke-width="9" stroke-linejoin="round"/>
-              <path transform="translate(-21 -24) scale(1.75)" fill="#fff6e7" fill-rule="evenodd" d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
-            </g>
-          </g>
-          <!-- tanggal -->
-          <g class="pt-pill" style="animation-delay:.9s">
-            <rect x="610" y="654" width="384" height="68" rx="34" fill="#6a4506" opacity=".55" transform="translate(0 8)"/>
-            <rect x="610" y="654" width="384" height="68" rx="34" fill="#fff6e7" stroke="#f7cf73" stroke-width="5"/>
-            <text class="pt-lat" x="778" y="701" font-size="37" text-anchor="middle" fill="#283593">30 Oktober 2026</text>
-            <g transform="translate(1002 688)">
-              <use href="#ptHex" fill="#283593" stroke="#fff6e7" stroke-width="9" stroke-linejoin="round" transform="scale(.92)"/>
-              <g transform="translate(-20 -20) scale(1.67)" fill="none" stroke="#fff6e7" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 6.5V12l3.8 2.2"/></g>
-            </g>
-          </g>
-        </svg>
+        <img class="op-img" src="estetik.png" alt="" decoding="async" fetchpriority="high" onerror="this.style.display='none'">
+        <img class="op-img op-blur" src="estetik.png" alt="" aria-hidden="true" decoding="async" onerror="this.style.display='none'">
+        <div id="opShine" aria-hidden="true">
+          <b class="op-fl" style="left:-3%;top:84%;--r:-28deg;--w:0s"></b>
+          <b class="op-fl" style="left:78%;top:8%;--r:-18deg;--w:-2s"></b>
+          <b class="op-fl" style="left:84%;top:80%;--r:-32deg;--w:-4s"></b>
+          <b class="op-fl" style="left:-2%;top:40%;--r:-40deg;--w:-1s"></b>
+          <b class="op-fl" style="left:70%;top:36%;--r:-12deg;--w:-3s"></b>
+        </div>
         <button id="startBtn" type="button">
           <span>ابدأ العرض</span>
-          <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z" fill="currentColor"/></svg>
         </button>
       </div>
     </div>
@@ -810,6 +789,7 @@ body.ov #controls.is-dim{opacity:1;pointer-events:auto;transform:translate(-50%,
     <!-- SLIDES injected here by JS -->
     <div id="slideHost"></div>
 
+    <div id="shine" aria-hidden="true"></div>
     <canvas id="fx"></canvas>
     <div id="pbar"><i id="pbarFill"></i></div>
     <div id="route"><div class="rt-track"><i class="rt-fill" id="rtFill"></i><b class="rt-mark" id="rtMark"></b></div></div>
@@ -850,7 +830,7 @@ body.ov #controls.is-dim{opacity:1;pointer-events:auto;transform:translate(-50%,
       <button class="ctl-btn" id="btnPrev" aria-label="السابقة" title="السابقة">
         <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <div id="slideCounter">١ / ٦</div>
+      <div id="slideCounter">١ / ١٢</div>
       <button class="ctl-btn" id="btnNext" aria-label="التالية" title="التالية">
         <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
@@ -893,6 +873,7 @@ const ASSETS = {
   portrait:     "portrait.jpg",
   closing:      "closing.jpg",
   firqah5:      "firqah5.png",
+  p1: "person%20(1).jpg", p2: "person%20(2).jpg", p3: "person%20(3).jpg", p4: "person%20(4).jpg", p5: "person%20(5).jpg", p6: "person%20(6).jpg",
   khutbah:      "rainyquee_poster.jpg"
 };
 
@@ -1103,6 +1084,14 @@ function bgDoor(){
 const OV_NASS = "linear-gradient(200deg,rgba(15,22,80,.5),rgba(15,22,80,.88) 75%)";
 const dl = (s)=>' style="animation-delay:'+s+'s"';
 
+/* slide 6-11: satu slide per orang (foto person (n).jpg + nama ungu meluncur dari kiri, keluar ke kanan saat next) */
+const PERSON_NAMES = ["Ibul", "Syafiq", "Ayub", "Sunni", "Abdullah", "Raihan"];
+const PERSON_SLIDES = PERSON_NAMES.map((nm,k)=>({
+  id:"person"+(k+1), cls:"slide-thanks slide-person", transition:"person",
+  bg:()=>bgHTML("p"+(k+1),{drift:false, ov:"transparent"}),
+  body:()=>'<div class="slide-body"><h2 class="nm">'+nm+'</h2></div>'
+}));
+
 const SLIDES = [
 
 { // 1 — قائل النص (ملخص)
@@ -1177,8 +1166,8 @@ const SLIDES = [
         '<div class="kh-item reveal"'+dl(1.4)+'><span class="kh-l"><i>ج</i></span><p>'+T("bayan","بَيَانُ")+' أَنَّ '+T("zuruf","الظُّرُوفَ")+' '+T("munasiba","مُنَاسِبَةٌ")+' '+T("hujum","لِلْهُجُومِ")+' عَلَى '+T("aduww","العَدُوِّ")+'، فَقَدِ '+T("ibtaada","ابْتَعَدَ")+' عَنْ '+T("madinatuhu","مَدِينَتِهِ")+' '+T("hasina","الحَصِينَةِ")+'.</p></div>'+
         '<div class="kh-item reveal"'+dl(1.7)+'><span class="kh-l"><i>د</i></span><p>'+T("taqwiya","تَقْوِيَةُ")+' '+T("azaim","عَزَائِمِهِمْ")+' لِأَنَّهُ '+T("sayusharik","سَيُشَارِكُهُمْ")+' كُلَّ '+T("amr","أَمْرٍ")+' '+T("ashara","أَشَارَ")+' بِهِ عَلَيْهِمْ.</p></div>'+
         '<div class="kh-item reveal"'+dl(2.0)+'><span class="kh-l"><i>هـ</i></span><p>'+T("bayyana","بَيَّنَ")+' لَهُمْ أَنَّ '+T("sabr_tahammul","الصَّبْرَ")+' عَلَى '+T("saab","الصَّعْبِ")+' '+T("yuhaqqiq","يُحَقِّقُ")+' لَهُمْ مَا '+T("yuhibbun","يُحِبُّونَ")+'.</p></div>'+
-        '<div class="kh-item kh-two reveal"'+dl(2.5)+'><span class="kh-l"><i>٢</i></span><p>'+T("alfaz","أَلْفَاظُ")+' هٰذِهِ الخُطْبَةِ '+T("wadiha","وَاضِحَةٌ")+'، وَمَا يَكُونُ فِيهَا مِنْ كَلِمَاتٍ '+T("ghariba","غَرِيبَةٍ")+' '+T("yastatii","يَسْتَطِيعُ")+' '+T("qari","القَارِئُ")+' أَنْ '+T("yafhamuha","يَفْهَمَهَا")+' مِنَ '+T("siyaq","السِّيَاقِ")+'.</p></div>'+
       '</div>'+
+      '<div class="kh-h kh-h2 reveal"'+dl(2.5)+'><span class="kh-no">٢</span><span>'+T("alfaz","أَلْفَاظُ")+' هٰذِهِ الخُطْبَةِ '+T("wadiha","وَاضِحَةٌ")+'، وَمَا يَكُونُ فِيهَا مِنْ كَلِمَاتٍ '+T("ghariba","غَرِيبَةٍ")+' '+T("yastatii","يَسْتَطِيعُ")+' '+T("qari","القَارِئُ")+' أَنْ '+T("yafhamuha","يَفْهَمَهَا")+' مِنَ '+T("siyaq","السِّيَاقِ")+'.</span></div>'+
     '</div>'
   )
 },
@@ -1196,6 +1185,8 @@ const SLIDES = [
     '</div>'
   )
 },
+
+...PERSON_SLIDES,
 
 { // 6 — الشكر
   id:"thanks", cls:"slide-thanks", transition:"curtain",
@@ -1215,7 +1206,7 @@ const SLIDES = [
    ================================================================== */
 const state = { currentSlide:0, isTransitioning:false, isModalOpen:false, isGridOpen:false, isPresenter:false, isPlaying:false, isFullscreen:false, ts:1 };
 const els = {};
-["startScreen","startBtn","startBg","stRoute","slideHost","controls","btnPrev","btnNext","btnMusic","btnFullscreen","btnTsUp","btnTsDown","btnGrid","btnPresent","slideCounter","modalLayer","modalCard","modalType","modalTitle","modalBody","modalClose","termHint","debugOverlay","canvas","gridLayer","gridBody","gridClose","route","rtFill","rtMark","pbarFill","pmini","fx"].forEach(function(id){ els[id] = document.getElementById(id); });
+["startScreen","startBtn","startBg","stRoute","slideHost","controls","btnPrev","btnNext","btnMusic","btnFullscreen","btnTsUp","btnTsDown","btnGrid","btnPresent","slideCounter","modalLayer","modalCard","modalType","modalTitle","modalBody","modalClose","termHint","debugOverlay","canvas","gridLayer","gridBody","gridClose","route","rtFill","rtMark","pbarFill","pmini","fx","shine"].forEach(function(id){ els[id] = document.getElementById(id); });
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------- adaptive performance tier ----------
@@ -1241,6 +1232,7 @@ function setPerf(l){
   root.classList.add("lite");
   root.classList.toggle("lite2", l >= 2);
   Particles.setLevel();
+  try{ Shine.setLevel(); }catch(e){}
 }
 /* samples frame times during a transition; two slow transitions in a row -> step down a tier */
 let slowRuns = 0, probeId = 0, navCount = 0;
@@ -1266,7 +1258,7 @@ const LAY = {
   qail:{w:54,b:0,s:"r"}, nassA:{w:90,b:6}, nassBC:{w:90,b:6},
   khas12:{w:90,b:6}, khas34:{w:90,b:5}, thanks:{w:54,b:2,s:"l"}
 };
-const ROUTE_LABELS = ["قَائِلُ النَّصِّ","النَّصُّ ( أ )","النَّصُّ ( ب ، ج )","الخَصَائِصُ ١ - ٢","الخَصَائِصُ ٣ - ٤","شُكْرٌ وَتَقْدِيرٌ"];
+const ROUTE_LABELS = ["قائل النص","النص أ","النص ب ج","خصائص ١-٢","خصائص ٣-٤","Ibul","Syafiq","Ayub","Sunni","Abdullah","Raihan","شكر"];
 
 /* ==================================================================
    BUILD SLIDES (pre-rendered, hidden)
@@ -1345,14 +1337,15 @@ function releaseFar(index){
 let curBg = null, rtNodes = null;
 function updateUI(i){
   const n = SLIDES.length;
+  try{ Shine.set(i); }catch(e){}
   const label = toArabicNum(i+1) + " / " + toArabicNum(n);
   els.slideCounter.textContent = label;
   els.pmini.textContent = label;
   els.pbarFill.style.transform = "scaleX(" + (i/(n-1)) + ")";
   const pos = Math.max(0, Math.min(1, i/(n-1)));
   els.rtFill.style.transform = "scaleX(" + pos + ")";
-  /* track is 66cqw wide (78cqw route − 2×6cqw); move by transform, not `right` */
-  els.rtMark.style.transform = "translate(calc(50% - " + (pos*66).toFixed(3) + "cqw),-50%) rotate(45deg)";
+  /* track is 71.5cqw wide (78cqw route − 2×3.25cqw); move by transform, not `right` */
+  els.rtMark.style.transform = "translate(calc(50% - " + (pos*71.5).toFixed(3) + "cqw),-50%) rotate(45deg)";
   if(!rtNodes) rtNodes = els.route.querySelectorAll(".rt-node");
   rtNodes.forEach((nd,j)=>{
     nd.classList.toggle("is-on", i >= j);
@@ -1813,7 +1806,7 @@ els.startBtn.addEventListener("click", function(){
   Sync.ready();
   Sync.terms();
   /* once the intro has faded out, remove it from rendering entirely (frees its blurred image layer) */
-  setTimeout(()=>{ els.startScreen.style.display = "none"; els.startBg.textContent = ""; }, 1000);
+  setTimeout(()=>{ els.startScreen.style.display = "none"; els.startBg.textContent = ""; const sh = document.getElementById("opShine"); if(sh) sh.textContent = ""; }, 1000);
   setTimeout(()=>{ if(state.currentSlide === 0 && !state.isTransitioning) slideEls[0].classList.add("is-settled"); }, 1250);
 });
 
@@ -1911,6 +1904,55 @@ window.addEventListener("unhandledrejection", function(e){
 /* ==================================================================
    INIT
    ================================================================== */
+/* ==================================================================
+   OPENING SHINE — kilau layar penuh, makin ke tengah makin hilang
+   ================================================================== */
+(function(){
+  const host = document.getElementById("opShine"); if(!host) return;
+  const lv = (typeof perf !== "undefined" && perf.level) || 0;
+  const N = lv >= 2 ? 10 : ((lv === 1 || isCoarse) ? 16 : 26);
+  let s = "";
+  for(let i = 0, t = 0; i < N && t < 500; t++){
+    const x = Math.random(), y = Math.random();
+    const d = Math.hypot((x-.5)/.5, (y-.48)/.5);
+    if(d < .55 || Math.random() > d-.4) continue;
+    i++;
+    s += '<i class="op-sp" style="left:'+(x*100).toFixed(1)+'%;top:'+(y*100).toFixed(1)+'%;--s:'+(.7+d*1.5+Math.random()).toFixed(2)+'cqw;--a:'+Math.min(1,d).toFixed(2)+';--t:'+(2.2+Math.random()*3).toFixed(1)+'s;--w:-'+(Math.random()*5).toFixed(1)+'s"></i>';
+  }
+  host.insertAdjacentHTML("beforeend", s);
+})();
+
+/* ==================================================================
+   SHINE — kilau tiap slide; makin ke tengah makin hilang, intensitas per slide
+   ================================================================== */
+const Shine = (function(){
+  const host = els.shine;
+  const MAP = { qail:.9, nassA:.5, nassBC:.5, khas12:.4, khas34:.4, thanks:1 };
+  const FL = [[-3,84,-28,0],[78,8,-18,-2],[84,80,-32,-4],[-2,40,-40,-1]];
+  let built = 0;
+  function build(){
+    if(!host) return;
+    const l = perf.level, n = l >= 2 ? 8 : ((l === 1 || isCoarse) ? 14 : 22);
+    if(n === built) return;
+    built = n;
+    let s = FL.map(function(f){ return '<b class="op-fl" style="left:'+f[0]+'%;top:'+f[1]+'%;--r:'+f[2]+'deg;--w:'+f[3]+'s"></b>'; }).join("");
+    for(let i = 0, t = 0; i < n && t < 500; t++){
+      const x = Math.random(), y = Math.random(), d = Math.hypot((x-.5)/.5, (y-.48)/.5);
+      if(d < .55 || Math.random() > d-.4) continue;
+      i++;
+      s += '<i class="op-sp'+(Math.random() < .35 ? ' g' : '')+'" style="left:'+(x*100).toFixed(1)+'%;top:'+(y*100).toFixed(1)+'%;--s:'+(.7+d*1.4+Math.random()*.9).toFixed(2)+'cqw;--a:'+Math.min(1,d).toFixed(2)+';--t:'+(2.2+Math.random()*3).toFixed(1)+'s;--w:-'+(Math.random()*5).toFixed(1)+'s"></i>';
+    }
+    host.innerHTML = s;
+  }
+  function set(i){
+    if(!host) return;
+    build();
+    const id = SLIDES[i].id;
+    host.style.opacity = MAP[id] !== undefined ? MAP[id] : (id.indexOf("person") === 0 ? .75 : .5);
+  }
+  return { set: set, setLevel: build };
+})();
+
 buildSlides();
 loadImgIn(els.startBg, true);
 updateDebug();
