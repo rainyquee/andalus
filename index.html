@@ -763,6 +763,36 @@ html.lite2 #shine{transition:none;}
 .kh-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:sepia(.15) saturate(.95);}
 .kh-ph.is-empty img{display:none;}
 .kh-ph.is-empty::after{content:'foto.png';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;direction:ltr;font-family:var(--f-ui);font-weight:700;font-size:1.3cqw;color:#a8420a;opacity:.7;}
+
+/* ===== AREA GAMBAR (placeholder) — slide 2 (nassA), 3 (nassBC), 5 (khas34) =====
+   Ganti dengan gambar: taruh <img class="lz" alt="" data-src="namafile.jpg"> di dalam <figure class="img-ph"> (JS slide).
+   Gambar otomatis menutup penanda "AREA GAMBAR" (object-fit:cover, rasio tetap). */
+.img-ph{position:relative;align-self:center;width:100%;margin:0;overflow:hidden;border-radius:.9cqw;border:.2cqw solid #f3c28a;background:linear-gradient(160deg,#fff6e7,#fdebd3);box-shadow:0 .6cqw 1.6cqw rgba(90,40,8,.18),0 0 0 .4cqw rgba(247,207,115,.35);}
+.img-ph::before{content:'';position:absolute;inset:.7cqw;border:.15cqw dashed rgba(196,128,12,.55);border-radius:.5cqw;pointer-events:none;}
+.img-ph-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5cqw;padding:1.4cqw;direction:ltr;text-align:center;font-family:var(--f-ui);color:#a8420a;}
+.img-ph-in svg{width:3.2cqw;height:3.2cqw;opacity:.75;flex:none;}
+.img-ph-in b{font-weight:700;letter-spacing:.12em;font-size:clamp(.62rem,1.15cqw,.95rem);}
+.img-ph-in span{font-size:clamp(.55rem,.95cqw,.8rem);line-height:1.4;opacity:.75;}
+.img-ph img{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;}
+.img-ph-p{aspect-ratio:3/4;}
+.img-ph-l{aspect-ratio:4/3;}
+
+/* slide 2: teks (kanan) + gambar potret (kiri) */
+.sp-split{display:grid;grid-template-columns:minmax(0,1fr) 22cqw;column-gap:2cqw;align-items:center;}
+.sp-split .speech-text{min-width:0;}
+.slide[data-id=nassA] .nass-hero{font-size:calc(clamp(1.4rem,3cqw,2.6rem)*var(--ts));}
+.slide[data-id=nassA] .nass-p{font-size:calc(clamp(.95rem,1.7cqw,1.45rem)*var(--ts));}
+/* slide 3: gambar lanskap (kanan) + dua blok teks (kiri) */
+.sp-split-b{grid-template-columns:26cqw minmax(0,1fr);}
+.sp-col{display:flex;flex-direction:column;gap:.8cqw;min-width:0;}
+.sp-col .nass-block{margin-top:0;}
+.slide[data-id=nassBC] .nass-bt{font-size:calc(clamp(1rem,2.05cqw,1.75rem)*var(--ts));}
+/* slide 5: kartu tetap, gambar kecil proporsional di kolom samping */
+.kh-img5{display:grid;grid-template-columns:minmax(0,1fr) 16cqw;column-gap:1.6cqw!important;align-items:center;}
+.kh-img5 .kh-top{grid-column:1/-1;}
+.kh-img5 .kh-cols{grid-column:1;}
+.kh-img5 .img-ph{grid-column:2;}
+.slide .kh-img5 .kh-big p{font-size:calc(clamp(.95rem,1.7cqw,1.45rem)*var(--ts));}
 </style>
 </head>
 <body>
@@ -1088,6 +1118,12 @@ function bgDoor(){
 }
 const OV_NASS = "linear-gradient(200deg,rgba(88,34,5,.5),rgba(88,34,5,.88) 75%)";
 const dl = (s)=>' style="animation-delay:'+s+'s"';
+/* penanda area gambar (placeholder) untuk slide 2, 3, 5 */
+const IMG_PH_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 8"/></svg>';
+/* gambar otomatis: taruh file di folder yang sama dengan index.html, nama: <base>.jpg / .jpeg / .png / .webp
+   (slide 2 = foto2, slide 3 = foto3, slide 5 = foto5). Kalau file tidak ada, penanda AREA GAMBAR tetap tampil. */
+function imgNext(im){ const a=(im.dataset.alt||"").split(",").filter(Boolean); if(a.length){ im.dataset.alt=a.slice(1).join(","); im.src=a[0]; } else im.remove(); }
+function imgPh(cls, hint, d, base){ return '<figure class="img-ph '+cls+' reveal"'+dl(d)+'><div class="img-ph-in">'+IMG_PH_ICON+'<b>AREA GAMBAR</b><span>'+hint+' &middot; '+base+'.jpg</span></div><img class="lz" alt="" data-src="'+base+'.jpg" data-alt="'+base+'.jpeg,'+base+'.png,'+base+'.webp" onerror="imgNext(this)"></figure>'; }
 
 const SLIDES = [
 
@@ -1121,12 +1157,15 @@ const SLIDES = [
   body:()=>(
     '<div class="speech-frame">'+
       '<div class="speech-label reveal">النَّصُّ ( أ ) — بَعْدَ أَنْ '+T("hamida","حَمِدَ")+' اللهَ وَ'+T("athna","أَثْنَى")+' عَلَيْهِ قَالَ</div>'+
+      '<div class="sp-split">'+
       '<div class="speech-text nass">'+
         '<div class="nass-hero reveal"'+dl(.55)+'>«'+T("ayyuha","أَيُّهَا")+' النَّاسُ: '+T("ayna_almafar","أَيْنَ المَفَرُّ؟")+'</div>'+
         '<div class="nass-p reveal"'+dl(1.1)+'>'+T("bahr","البَحْرُ")+' وَرَاءَكُمْ، وَ'+T("aduww","العَدُوُّ")+' أَمَامَكُمْ، وَلَيْسَ لَكُمْ وَاللهِ إِلَّا '+T("sidq","الصِّدْقُ")+' وَ'+T("sabr","الصَّبْرُ")+'.</div>'+
         '<div class="nass-p reveal"'+dl(1.8)+'>'+T("ilamu","وَاعْلَمُوا")+' أَنَّكُمْ فِي هٰذِهِ '+T("jazira","الجَزِيرَةِ")+' '+T("adyaa_quote","أَضْيَعُ مِنَ الأَيْتَامِ فِي مَأْدُبَةِ اللِّئَامِ")+'، وَلَا '+T("aqwat","أَقْوَاتَ")+' لَكُمْ إِلَّا مَا '+T("tastakhlisun","تَسْتَخْلِصُونَهُ")+' مِنْ أَيْدِي '+T("aduwwukum","عَدُوِّكُمْ")+'،</div>'+
         '<div class="nass-p reveal"'+dl(2.6)+'>وَإِنِ '+T("imtaddat","امْتَدَّتِ")+' '+T("ayyam","الأَيَّامُ")+' عَلَى '+T("iftaqara","افْتِقَارِكُمْ")+' وَلَمْ '+T("tunjizu","تُنْجِزُوا")+' لَكُمْ '+T("amr","أَمْراً")+' '+T("dhahabat_reeh","ذَهَبَتْ رِيحُكُمْ")+'، وَ'+T("taawwud","تَعَوَّضَتِ")+' '+T("qulub","القُلُوبُ")+' مِنْ '+T("ruub","رُعْبِهَا")+' مِنْكُمُ '+T("jura","الجُرْأَةَ")+' عَلَيْكُمْ،</div>'+
         '<div class="nass-p reveal"'+dl(3.4)+'>'+T("fadfau","فَادْفَعُوا")+' عَنْ أَنْفُسِكُمْ '+T("khadhlan","خَذْلَانَ")+' هٰذِهِ '+T("aqiba","العَاقِبَةِ")+' مِنْ أَمْرِكُمْ '+T("munajaza","بِمُنَاجَزَةِ")+' هٰذَا '+T("taghiya","الطَّاغِيَةِ")+'، فَقَدْ '+T("alqat_madina","أَلْقَتْ بِهِ إِلَيْكُمْ مَدِينَتُهُ الحَصِينَةُ")+'، وَإِنَّ '+T("intihaz","انْتِهَازَ")+' '+T("fursa","الفُرْصَةِ")+' فِيهِ '+T("mumkin","لَمُمْكِنٌ")+' إِنْ '+T("samahtum","سَمَحْتُمْ")+' لِأَنْفُسِكُمْ '+T("mawt","بِالمَوْتِ")+'.»</div>'+
+      '</div>'+
+      imgPh('img-ph-p','Ilustrasi pasukan Thariq bin Ziyad / pasukan Muslim di Selat Gibraltar',.9,'foto2')+
       '</div>'+
     '</div>'
   )
@@ -1138,6 +1177,9 @@ const SLIDES = [
   body:()=>(
     '<div class="speech-frame">'+
       '<div class="speech-label reveal">النَّصُّ ( ب ) وَ ( ج )</div>'+
+      '<div class="sp-split sp-split-b">'+
+      imgPh('img-ph-l','Pasukan bersiap sebelum pertempuran / penaklukan Andalusia',.8,'foto3')+
+      '<div class="sp-col">'+
       '<div class="nass-block reveal"'+dl(.5)+'>'+
         '<div class="nass-badge"><i>ب</i></div>'+
         '<div class="nass-bt">«وَإِنِّي لَمْ '+T("uhadhdhir","أُحَذِّرْكُمْ")+' '+T("amr","أَمْراً")+' أَنَا عَنْهُ بِ'+T("najwa","نَجْوَةٍ")+'، وَلَا '+T("hamaltukum","حَمَلْتُكُمْ")+' عَلَى '+T("khutta","خُطَّةٍ")+' '+T("arkhas","أَرْخَصُ")+' '+T("mataa","مَتَاعٍ")+' فِيهَا '+T("nufus","النُّفُوسُ")+' ـ '+T("abrau","أَبْرَأُ")+' مِنْهَا '+T("binafsi","بِنَفْسِي")+'.»</div>'+
@@ -1145,6 +1187,7 @@ const SLIDES = [
       '<div class="nass-block reveal"'+dl(1.6)+'>'+
         '<div class="nass-badge"><i>ج</i></div>'+
         '<div class="nass-bt">«'+T("ilamu","وَاعْلَمُوا")+' أَنَّكُمْ إِنْ '+T("sabartum","صَبَرْتُمْ")+' عَلَى '+T("ashaqq","الأَشَقِّ")+' '+T("qaliLan","قَلِيلاً")+' '+T("istamtaatum","اسْتَمْتَعْتُمْ")+' بِ'+T("arfah","الأَرْفَهِ")+' '+T("tawil","الطَّوِيلِ")+'، فَلَا '+T("targhabu","تَرْغَبُوا")+' بِأَنْفُسِكُمْ عَنْ نَفْسِي، فَمَا '+T("hazz","حَظُّكُمْ")+' فِيهِ '+T("awfa","بِأَوْفَى")+' مِنْ '+T("hazzi","حَظِّي")+'.»</div>'+
+      '</div>'+
       '</div>'+
     '</div>'
   )
@@ -1175,12 +1218,13 @@ const SLIDES = [
   id:"khas34", transition:"wipe",
   bg:()=>bgHTML("manuscript",{ov:"linear-gradient(200deg,rgba(88,34,5,.55),rgba(88,34,5,.9) 75%)"}),
   body:()=>(
-    '<div class="slide-body kh">'+
+    '<div class="slide-body kh kh-img5">'+
       '<div class="kh-top reveal"><h2>'+T("khasais","خَصَائِصُ")+' '+T("nass_kalam","النَّصِّ")+'</h2><span class="kh-range">٣ - ٤</span></div>'+
       '<div class="kh-cols">'+
         '<div class="kh-big kh-3 reveal"'+dl(.6)+'><span class="kh-bn">٣</span><p>'+T("afkar","الأَفْكَارُ")+' '+T("munasiba","مُنَاسِبَةٌ")+' '+T("mawdu","لِمَوْضُوعِ")+' الخُطْبَةِ، '+T("taatamid","تَعْتَمِدُ")+' عَلَى '+T("ithara","إِثَارَةِ")+' الحَمَاسَةِ فِي '+T("nufus_jamaa","نُفُوسِ")+' '+T("jund","الجُنْدِ")+'، '+T("hathth","وَحَثِّهِمْ")+' عَلَى '+T("sura","سُرْعَةِ")+' '+T("hujum","الهُجُومِ")+' عَلَى '+T("aduww_khasm","العَدُوِّ")+' '+T("targhib","وَتَرْغِيبِهِمْ")+' فِي '+T("mawt_intiha","المَوْتِ")+' فِي '+T("sabil","سَبِيلِ")+' اللهِ.</p></div>'+
         '<div class="kh-big kh-4 reveal"'+dl(1.5)+'><span class="kh-bn">٤</span><p>'+T("jamaat","جَمَعَتِ")+' الخُطْبَةُ بَيْنَ '+T("hathth","حَثِّ")+' '+T("khatib","الخَطِيبِ")+' '+T("muharibun","المُحَارِبِينَ")+' وَ'+T("hadd","حَضِّهِمْ")+' عَلَى '+T("shajaa","الشَّجَاعَةِ")+' وَ'+T("iqdam","الإِقْدَامِ")+'، وَبَيْنَ '+T("iqnaa","إِقْنَاعِهِمْ")+' '+T("uslub","بِأُسْلُوبِ")+' '+T("qaid","القَائِدِ")+' '+T("hazim","الحَازِمِ")+'، فَ'+T("bayyana","بَيَّنَ")+' أَنَّ '+T("firar","فِرَارَهُمْ")+' لَيْسَ '+T("naja","نَجَاةً")+' بَلْ هُوَ '+T("halak","الهَلَاكُ")+' '+T("ayn","عَيْنُهُ")+'، فَ'+T("bahr","البَحْرُ")+' وَرَاءَهُمْ وَ'+T("aduww_khasm","العَدُوُّ")+' أَمَامَهُمْ. كَمَا '+T("bayyana","بَيَّنَ")+' أَنَّ '+T("fursa","الفُرْصَةَ")+' '+T("munasiba","مُنَاسِبَةٌ")+' '+T("hujum","لِلْهُجُومِ")+' عَلَى '+T("aduww_khasm","العَدُوِّ")+'.</p></div>'+
       '</div>'+
+      imgPh('img-ph-p','Manuskrip Arab / kaligrafi / arsitektur Andalusia',1.1,'foto5')+
     '</div>'
   )
 },
